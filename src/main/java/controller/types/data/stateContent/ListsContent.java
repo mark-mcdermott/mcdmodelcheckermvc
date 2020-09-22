@@ -1,4 +1,4 @@
-package controller.types.data.content;
+package controller.types.data.stateContent;
 
 public class ListsContent {
 

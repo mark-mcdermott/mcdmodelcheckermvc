@@ -2,8 +2,8 @@ package controller;
 
 import controller.content.Models;
 import controller.types.data.Data;
-import controller.types.data.content.Content;
-import controller.types.data.content.ListsContent;
+import controller.types.data.stateContent.Content;
+import controller.types.data.stateContent.ListsContent;
 import model.Model;
 import view.View;
 

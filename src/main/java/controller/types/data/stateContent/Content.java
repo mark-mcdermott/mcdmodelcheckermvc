@@ -1,6 +1,4 @@
-package controller.types.data.content;
-
-import com.google.inject.internal.util.Lists;
+package controller.types.data.stateContent;
 
 public class Content {
 

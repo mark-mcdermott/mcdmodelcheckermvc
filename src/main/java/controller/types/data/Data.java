@@ -1,7 +1,7 @@
 package controller.types.data;
 
 import controller.types.data.checkedModel.CheckedModel;
-import controller.types.data.content.Content;
+import controller.types.data.stateContent.Content;
 import controller.types.data.selections.Selections;
 
 public class Data {
