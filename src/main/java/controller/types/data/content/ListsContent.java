@@ -10,4 +10,8 @@ public class ListsContent {
     String[] states;
     String[] labels;
 
+    public ListsContent(String[] models) {
+        this.models = models;
+    }
+
 }

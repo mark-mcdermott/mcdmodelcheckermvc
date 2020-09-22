@@ -12,9 +12,9 @@ public class Main {
             public void run() {
                 Model model = new Model();
                 View view = new View(model);
+                model.addObserver(view);
                 Controller controller = new Controller(model,view);
 
-                model.addObserver(view);
                 view.setVisible(true);
             }
         });

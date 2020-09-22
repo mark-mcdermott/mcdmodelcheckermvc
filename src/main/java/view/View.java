@@ -12,11 +12,15 @@ public class View extends JFrame implements Observer {
 
     public View(Model model) {
         components = new Components();
-        analyzerShell(this);
+        // analyzerShell(this);
     }
 
     public void update(Observable o, Object arg) {
-
+        if (arg == "ANALY_DEFAULT") {
+            System.out.println("update!!");
+            analyzerShell(this);
+            repaint();
+        }
     }
 
     public void analyzerShell(JFrame frame) {
