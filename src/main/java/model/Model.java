@@ -1,10 +1,16 @@
 package model;
 
+import controller.types.data.Data;
+
 import java.util.Observable;
 
 public class Model extends Observable {
 
-    public Model() {
+    Data data;
 
+    public Model() { }
+
+    public void setData(Data data) {
+        this.data = data;
     }
 }

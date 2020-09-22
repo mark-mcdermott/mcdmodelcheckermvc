@@ -14,9 +14,7 @@ public class Main {
                 View view = new View(model);
                 Controller controller = new Controller(model,view);
 
-
                 model.addObserver(view);
-                view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 view.setVisible(true);
             }
         });

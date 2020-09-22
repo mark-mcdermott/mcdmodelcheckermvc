@@ -8,11 +8,19 @@ import java.util.Observer;
 
 public class View extends JFrame implements Observer {
 
-    public View(Model model) {
+    Components components;
 
+    public View(Model model) {
+        components = new Components();
+        analyzerShell(this);
     }
 
     public void update(Observable o, Object arg) {
 
+    }
+
+    public void analyzerShell(JFrame frame) {
+        components.sharedComponents(frame);
+        components.analyzerComponents();
     }
 }
