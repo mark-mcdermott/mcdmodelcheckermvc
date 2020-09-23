@@ -24,7 +24,6 @@ public class Model extends Observable {
         this.notifyObservers(data.getStateStr()); // send new app state to view
     }
 
-
     // generic getters/setters
 
     public Data getData() {

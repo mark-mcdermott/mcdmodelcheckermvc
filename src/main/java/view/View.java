@@ -2,14 +2,20 @@ package view;
 
 import _options.DirectedGraphOptions;
 import _options.Options;
-import controller.types.data.AppState;
-import controller.types.data.DisplayType;
-import controller.types.data.ListsContent;
-import controller.types.data.Selections;
+import controller.Controller;
+import controller.types.data.*;
+import controller.utils.ExceptionMessage;
 import model.Model;
+import org.xml.sax.SAXException;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,22 +28,37 @@ import static java.awt.BorderLayout.PAGE_START;
 public class View extends JFrame implements Observer {
 
     Model model;
+    Controller controller;
     Components components;
     Options options;
 
-    public View(Model model) {
+    public View(Model model, Controller controller) {
         this.model = model;
+        this.controller = controller;
         this.components = new Components();
         this.options = new Options();
     }
 
     public void update(Observable o, Object arg) {
-        if (arg == "ANALY_DEFAULT") {
+        if (arg == "INITIAL_RUN") {
+            renderAnalyzerInitalRender();
+        } else if (arg == "ANALY_DEFAULT") {
             renderAnalyzerDefaultState();
         }
     }
 
+    private void renderAnalyzerInitalRender() {
+        analyzerShell(this);
+        populateLists();
+        setSelections();
+        // TODO: grayOutInactiveSections(appState)
+        drawGraphs();
+        addAnalyzerListeners();
+        repaint();
+    }
+
     private void renderAnalyzerDefaultState() {
+        this.getContentPane().removeAll();
         analyzerShell(this);
         populateLists();
         setSelections();
@@ -49,7 +70,58 @@ public class View extends JFrame implements Observer {
 
     private void addAnalyzerListeners() {
 
+        // file list
+        //controller.fileListener(components, model);
+
+        components.fileList.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    String[] selectedFiles = getListSelections(components.fileList);
+                    Integer selectedLoops = model.getLoops();
+                    File[] xmlFileCache = model.getFilesCache();
+                    Integer selectedStep = model.getSelectedStep() == null ? null : Integer.parseInt(model.getSelectedStep());
+                    try {
+                        GraphsContent graphsContent = controller.getGraphsContent(selectedFiles, selectedLoops, xmlFileCache, selectedStep);
+                        Data data = model.getData();
+                        data.setFileSelections(selectedFiles);
+                        data.setGraphsContent(graphsContent);
+                        data.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
+                        model.setData(data);
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    } catch (ExceptionMessage exceptionMessage) {
+                        exceptionMessage.printStackTrace();
+                    } catch (ParserConfigurationException parserConfigurationException) {
+                        parserConfigurationException.printStackTrace();
+                    } catch (SAXException saxException) {
+                        saxException.printStackTrace();
+                    }
+
+                }
+            }
+        });
+
     }
+
+    private String[] getListSelections(JList list) {
+        // Object[] selectedFilesObj = list.getSelectedValues();
+        // String[] selectedFiles = Arrays.copyOf(selectedFilesObj, selectedFilesObj.length, String[].class);
+        ListModel listModel = list.getModel();
+        int[] selectedIndices = list.getSelectedIndices();
+        int numElems = selectedIndices.length;
+        String[] listElems = new String[numElems];
+        for (int i=0; i<numElems; i++) {
+            listElems[i] = listModel.getElementAt(selectedIndices[i]).toString();
+        }
+        return listElems;
+    }
+
+    private String getListElemFromIndex(int index, JList list) {
+        return list.getModel().getElementAt(index).toString();
+    }
+
+
+
 
     private void drawGraphs() {
         DirectedGraphOptions graphOptions3AcrossSpot1 = options.graphOptions3AcrossSpot1();
@@ -65,7 +137,7 @@ public class View extends JFrame implements Observer {
         DrawGraph drawGraph = new DrawGraph(graphOptions3AcrossSpot1); // TODO maybe change the param name
 
         JPanel mainGraphPanel = components.mainGraphPanel;
-        if (appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
+        if (appState == INITIAL_RUN || appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
             // draw one-across graph
             if (type == XML_ONLY) { drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList()); }
             else if (type == TRANS_ONLY) { drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList()); }

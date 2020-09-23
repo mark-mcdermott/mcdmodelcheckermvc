@@ -15,10 +15,13 @@ public class Main {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Model model = new Model();
-                View view = new View(model);
-                model.addObserver(view);
+                Controller controller = null;
                 try {
-                    Controller controller = new Controller(model,view);
+                    controller = new Controller(model);
+                    View view = new View(model, controller);
+                    model.addObserver(view);
+                    controller.setInitialData();
+                    view.setVisible(true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (ExceptionMessage exceptionMessage) {
@@ -28,8 +31,6 @@ public class Main {
                 } catch (SAXException e) {
                     e.printStackTrace();
                 }
-
-                view.setVisible(true);
             }
         });
     }

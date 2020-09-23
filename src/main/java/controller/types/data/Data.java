@@ -32,6 +32,26 @@ public class Data {
         return selections;
     }
 
+    public void setFileSelections(String[] files) {
+        getSelections().setFiles(files);
+    }
+
+    public void setDisplaySelections(DisplayType displayType) {
+        getSelections().setDisplay(displayType);
+    }
+    public void setStepSelections(String step) {
+        getSelections().setStep(step);
+    }
+    public void setModelSelections(String model) {
+        getSelections().setModel(model);
+    }
+    public void setLoopSelections(Integer loops) {
+        getSelections().setLoop(loops);
+    }
+    public void setStateSelections(String state) {
+        getSelections().setState(state);
+    }
+
     public void setSelections(Selections selections) {
         this.selections = selections;
     }
