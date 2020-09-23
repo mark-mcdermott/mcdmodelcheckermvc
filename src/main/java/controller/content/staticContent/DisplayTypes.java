@@ -1,4 +1,4 @@
-package controller.content;
+package controller.content.staticContent;
 
 import controller.types.data.DisplayType;
 

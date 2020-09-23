@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class ReadXml {
 
         ArrayList<VertexList> individualVertexLists = new ArrayList<VertexList>();
         for (String xmlFilename : xmlFilenamesArrList) {
-            VertexList thisVertexList = xml.xmlToVertexList(xmlFilename, xmlDirPath, labelHash);
+            VertexList thisVertexList = xml.xmlFilepathToVertexList(xmlFilename, xmlDirPath, labelHash);
             individualVertexLists.add(thisVertexList);
         }
 
@@ -92,19 +93,24 @@ public class ReadXml {
         return vertexList;
     }
 
-    public VertexList xmlToVertexList(String xmlFileName, String pathToXmlFile, LabelHash labelHash) throws ParserConfigurationException, SAXException, IOException, ExceptionMessage {
+    public VertexList xmlFilepathToVertexList(String xmlFileName, String pathToXmlFile, LabelHash labelHash) throws ParserConfigurationException, SAXException, IOException, ExceptionMessage {
         String xmlFilePath;
 
         // init vars
         vertexList = new VertexList();
         options = new Options();
-        ListHelper
-                ListHelper = new ListHelper();
+        ListHelper ListHelper = new ListHelper();
 
         // get xml vertex list
         xmlFilePath = pathToXmlFile + xmlFileName;
-        xmlDoc = xmlToDoc(xmlFilePath, labelHash);
+        xmlDoc = xmlFilepathToDoc(xmlFilePath, labelHash);
         vertexList = docToVertexList(xmlDoc, xmlFileName, labelHash);
+        return vertexList;
+    }
+
+    public VertexList xmlFileToVertexList(File file, LabelHash labelHash) throws FileNotFoundException, ExceptionMessage {
+        xmlDoc = xmlFileToDoc(file);
+        vertexList = docToVertexList(xmlDoc, null, labelHash);
         return vertexList;
     }
 
@@ -340,7 +346,7 @@ public class ReadXml {
 
      */
 
-    public Document xmlToDoc(String filepath, LabelHash labelHash) throws IOException, SAXException, ParserConfigurationException {
+    public Document xmlFilepathToDoc(String filepath, LabelHash labelHash) throws IOException, SAXException, ParserConfigurationException {
         File openFile;
         Scanner scanner;
         String content;
@@ -356,6 +362,17 @@ public class ReadXml {
         docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         inputSource = new InputSource(new StringReader(content));
         doc = docBuilder.parse(inputSource);
+        return doc;
+    }
+
+    public Document xmlFileToDoc(File file) throws FileNotFoundException {
+        Scanner scanner = new Scanner(file);
+        scanner.useDelimiter("\\Z");
+        String content = scanner.next();
+        scanner.close();
+        DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        InputSource inputSource = new InputSource(new StringReader(content));
+        Document doc = docBuilder.parse(inputSource);
         return doc;
     }
 

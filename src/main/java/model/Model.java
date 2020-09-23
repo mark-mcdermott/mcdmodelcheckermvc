@@ -1,23 +1,39 @@
 package model;
 
 import controller.types.data.*;
+import controller.filesCache.
 
+import java.io.File;
+import java.nio.file.Files;
 import java.util.Observable;
 
 public class Model extends Observable {
 
     Data data;
+    File[] xmlFileCache;
 
     public Model() { }
+
+    // setter that notifies observers (view) of the changes (so view can update with the new data)
+    public void setData(Data data) {
+        this.data = data;
+        this.setChanged();
+        this.notifyObservers(data.getStateStr()); // send new app state to view
+    }
+
+
+    // generic getters/setters
 
     public Data getData() {
         return data;
     }
 
-    public void setData(Data data) {
-        this.data = data;
-        this.setChanged();
-        this.notifyObservers(data.getStateStr()); // send new app state to view
+    public File[] getFilesCache() {
+        return xmlFileCache;
+    }
+
+    public void setXmlFileCache(File[] filesCache) {
+        this.xmlFileCache = xmlFileCache;
     }
 
     public AppState getAppState() {
@@ -137,5 +153,7 @@ public class Model extends Observable {
     public void setLabels(String[] labels) {
         getData().getListsContent().setLabels(labels);
     }
+
+
 
 }

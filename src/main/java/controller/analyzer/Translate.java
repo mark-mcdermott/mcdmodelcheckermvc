@@ -34,6 +34,11 @@ public class Translate {
     View view;
     Options options;
 
+    public Translate() {
+        this.options = new Options();
+        this.debug = options.getDebug();
+        this.targetNumNodesExpanded = options.getTargetNumNodesExpanded();
+    }
 
     public Translate(Model model, View view) {
         this.model = model;
@@ -44,12 +49,12 @@ public class Translate {
     }
 
     // get translated vertexList without interleavings
-    public VertexList getTranslatedVertexListNoInterleavings(VertexList origVertexList, int numLoops, Boolean isStepSelected, Boolean prevStep) throws ExceptionMessage {
+    public VertexList getTransVertListNoInter(VertexList origVertexList, int numLoops, Boolean isStepSelected, Boolean prevStep) throws ExceptionMessage {
         return getTranslatedVertexList(origVertexList, false, numLoops, isStepSelected, prevStep);
     }
 
     // get translated vertexList with interleavings
-    public VertexList getTranslatedVertexListWithInterleavings(VertexList origVertexList, int loopsNum, Boolean isStepSelected, Boolean prevStep) throws ExceptionMessage {
+    public VertexList getTransVertListWithInters(VertexList origVertexList, int loopsNum, Boolean isStepSelected, Boolean prevStep) throws ExceptionMessage {
         return getTranslatedVertexList(origVertexList, true, loopsNum, isStepSelected, prevStep);
     }
 

@@ -5,16 +5,16 @@ import java.util.List;
 import java.util.Vector;
 
 /**
- * Stores all files that must be read from disk
- * Future reads will be read from here instead of from disk to prevent unnecessary slowdown.
+ * Stores all files that must be read from disk.
+ * Subsequent reads are from here instead of disk to prevent unnecessary slowdown.
  *
  */
-public class filesCache {
+public class FilesCache {
 
     File[] files;
 
-    public filesCache(String pathToFiles) {
-        files = getFilesFromDir(pathToFiles);
+    public FilesCache(String pathToFiles) {
+        this.files = getFilesFromDir(pathToFiles);
     }
 
     public File[] getFilesFromDir(String pathToFiles) {
@@ -27,4 +27,7 @@ public class filesCache {
         return fileArr;
     }
 
+    public File[] getFiles() {
+        return files;
+    }
 }
