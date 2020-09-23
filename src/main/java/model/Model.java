@@ -1,6 +1,6 @@
 package model;
 
-import controller.types.data.Data;
+import controller.types.Data;
 
 import java.util.Observable;
 

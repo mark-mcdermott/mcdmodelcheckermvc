@@ -1,9 +1,9 @@
-package controller.types.data.selections;
+package controller.types;
 
 /**
  * Which graphs to display
  */
-public enum GraphType {
+public enum DisplayType {
 
     ALL_GRAPHS, // all 3 graphs (xml, translation, interleavings)
     XML_ONLY,   // xml only
