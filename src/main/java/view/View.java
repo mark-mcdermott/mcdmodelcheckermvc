@@ -41,12 +41,14 @@ public class View extends JFrame implements Observer {
 
     public void update(Observable o, Object arg) {
         if (arg == "INITIAL_RUN") {
-            renderAnalyzerInitalRender();
+            // renderAnalyzerInitalRender();
+            renderAnalyzerDefaultState();
         } else if (arg == "ANALY_DEFAULT") {
             renderAnalyzerDefaultState();
         }
     }
 
+    /*
     private void renderAnalyzerInitalRender() {
         analyzerShell(this);
         populateLists();
@@ -56,6 +58,7 @@ public class View extends JFrame implements Observer {
         addAnalyzerListeners();
         repaint();
     }
+    */
 
     private void renderAnalyzerDefaultState() {
         this.getContentPane().removeAll();
@@ -69,38 +72,25 @@ public class View extends JFrame implements Observer {
     }
 
     private void addAnalyzerListeners() {
+        addAnalyzerListListener(components.fileList, components, model);        // file list listener
+        addAnalyzerListListener(components.displayList, components, model);     // display list listener
+    }
 
-        // file list
-        //controller.fileListener(components, model);
-
-        components.fileList.addListSelectionListener(new ListSelectionListener() {
+    // adds a specific listener (handles all of them, just chooses one at a time - depending on params)
+    private void addAnalyzerListListener(JList list, Components components, Model model) {
+        list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (!e.getValueIsAdjusting()) {
-                    String[] selectedFiles = getListSelections(components.fileList);
-                    Integer selectedLoops = model.getLoops();
-                    File[] xmlFileCache = model.getFilesCache();
-                    Integer selectedStep = model.getSelectedStep() == null ? null : Integer.parseInt(model.getSelectedStep());
-                    try {
-                        GraphsContent graphsContent = controller.getGraphsContent(selectedFiles, selectedLoops, xmlFileCache, selectedStep);
-                        Data data = model.getData();
-                        data.setFileSelections(selectedFiles);
-                        data.setGraphsContent(graphsContent);
-                        data.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
-                        model.setData(data);
-                    } catch (IOException ioException) {
-                        ioException.printStackTrace();
-                    } catch (ExceptionMessage exceptionMessage) {
-                        exceptionMessage.printStackTrace();
-                    } catch (ParserConfigurationException parserConfigurationException) {
-                        parserConfigurationException.printStackTrace();
-                    } catch (SAXException saxException) {
-                        saxException.printStackTrace();
-                    }
 
+                    // run through cases, call correct handler method in conroller (cumbersome code, but keeps addAnalyzerListeners() nice and clean)
+                    if (list == components.fileList) {
+                        controller.handleFileListClick(components, model);
+                    } else if (list == components.fileList) {
+                        controller.handleDisplayListClick(components, model);
+                    }
                 }
             }
         });
-
     }
 
     private String[] getListSelections(JList list) {
@@ -137,7 +127,7 @@ public class View extends JFrame implements Observer {
         DrawGraph drawGraph = new DrawGraph(graphOptions3AcrossSpot1); // TODO maybe change the param name
 
         JPanel mainGraphPanel = components.mainGraphPanel;
-        if (appState == INITIAL_RUN || appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
+        if (appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
             // draw one-across graph
             if (type == XML_ONLY) { drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList()); }
             else if (type == TRANS_ONLY) { drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList()); }
