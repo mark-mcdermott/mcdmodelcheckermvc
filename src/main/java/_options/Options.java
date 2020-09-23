@@ -133,6 +133,63 @@ public class Options {
 
     }
 
+    public DirectedGraphOptions getXmlGraphOptions() {
+        DirectedGraphOptions xmlGraphOptions = new DirectedGraphOptions(
+                xmlGraphNodeDiameter,
+                translationGraphLevel,
+                translationGraphNumEdges,
+                translationGraphCanvasWidth,
+                translationGraphCanvasHeight,
+                translationGraphVertexSiblingOffset,
+                translationGraphVertexVertMultiplier,
+                xmlGraphLayoutWidth,
+                xmlGraphLayoutHeight,
+                xmlGraphEdgeXLength,
+                xmlGraphEdgeYLength,
+                xmlGraphScaleFactor,
+                xmlGraphVertexAttractionMultiplier
+        );
+        return xmlGraphOptions;
+    }
+
+    public DirectedGraphOptions getTranslationGraphOptions() {
+        DirectedGraphOptions translationGraphOptions = new DirectedGraphOptions(
+                translationGraphNodeDiameter,
+                translationGraphLevel,
+                translationGraphNumEdges,
+                translationGraphCanvasWidth,
+                translationGraphCanvasHeight,
+                translationGraphVertexSiblingOffset,
+                translationGraphVertexVertMultiplier,
+                translationGraphLayoutWidth,
+                translationGraphLayoutHeight,
+                translationGraphEdgeXLength,
+                translationGraphEdgeYLength,
+                translationGraphScaleFactor,
+                translationGraphVertexAttractionMultiplier
+        );
+        return translationGraphOptions;
+    }
+
+    public DirectedGraphOptions getInterleavingsGraphOptions() {
+        DirectedGraphOptions interleavingsGraphOptions = new DirectedGraphOptions(
+                interleavingsGraphNodeDiameter,
+                translationGraphLevel,
+                translationGraphNumEdges,
+                translationGraphCanvasWidth,
+                translationGraphCanvasHeight,
+                translationGraphVertexSiblingOffset,
+                translationGraphVertexVertMultiplier,
+                translationGraphLayoutWidth,
+                translationGraphLayoutHeight,
+                translationGraphEdgeXLength,
+                translationGraphEdgeYLength,
+                translationGraphScaleFactor,
+                translationGraphVertexAttractionMultiplier
+        );
+        return interleavingsGraphOptions;
+    }
+
     public String getPathToTests() {
         return pathToTests;
     }

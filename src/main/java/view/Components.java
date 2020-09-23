@@ -81,6 +81,7 @@ public class Components {
 
     public void analyzerComponents() {
         analyzerSidebarComponents();
+        analyzerGraphComponents();
     }
 
     // init frame
@@ -313,6 +314,7 @@ public class Components {
         mainGraphPanel.setBackground(Color.white);
         mainPanel.add(mainGraphPanel);
 
+        graphPanel1Title = new JLabel();
         graphPanel1Title.setHorizontalAlignment(SwingConstants.CENTER);
         graphPanel1Title.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
         mainGraphPanel.add(graphPanel1Title);
@@ -321,12 +323,14 @@ public class Components {
         graphPanel1.setBackground(Color.white);
         mainGraphPanel.add(graphPanel1);
 
+        graphPanel2Title = new JLabel();
         graphPanel2Title.setHorizontalAlignment(SwingConstants.CENTER);
         graphPanel2Title.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
         graphPanel2 = new JPanel();
         graphPanel2.setLayout(new BorderLayout());
         graphPanel2.setBackground(Color.white);
 
+        graphPanel3Title = new JLabel();
         graphPanel3Title.setHorizontalAlignment(SwingConstants.CENTER);
         graphPanel3Title.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
         graphPanel3 = new JPanel();

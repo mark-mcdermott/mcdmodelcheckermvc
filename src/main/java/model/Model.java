@@ -1,7 +1,10 @@
 package model;
 
+import controller.types.ctl.Kripke;
 import controller.types.data.*;
-import controller.filesCache.
+import controller.types.graph.LabelHash;
+import controller.types.graph.VertexList;
+import controller.utils.ExceptionMessage;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -32,7 +35,7 @@ public class Model extends Observable {
         return xmlFileCache;
     }
 
-    public void setXmlFileCache(File[] filesCache) {
+    public void setXmlFileCache(File[] xmlFileCache) {
         this.xmlFileCache = xmlFileCache;
     }
 
@@ -52,7 +55,12 @@ public class Model extends Observable {
         getData().setSelections(selections);
     }
 
-    public String[] getSelectedFiles() { return getData().getSelections().getFiles(); }
+    public String[] getSelectedFiles() {
+        if (getData() == null || getData().getSelections() == null || getData().getSelections().getFiles() == null) {
+            new ExceptionMessage("Null in either data, selections of files in getSelectedFiles(), Model.java");
+        }
+        return getData().getSelections().getFiles();
+    }
 
     public void setSelectedFiles(String[] files) {
         getData().getSelections().setFiles(files);
@@ -154,6 +162,32 @@ public class Model extends Observable {
         getData().getListsContent().setLabels(labels);
     }
 
+    public VertexList getXmlVertexList() {
+        return getData().getGraphsContent().getXmlVertList();
+    }
 
+    public VertexList getTranslationVertexList() {
+        return getData().getGraphsContent().getTransVertList();
+    }
+
+    public VertexList getInterleavingsVertexList() {
+        return getData().getGraphsContent().getInterVertList();
+    }
+
+    public Kripke getXmlKripke() {
+        return getData().getGraphsContent().getXmlKripke();
+    }
+
+    public Kripke getTranslationKripke() {
+        return getData().getGraphsContent().getTransKripke();
+    }
+
+    public Kripke getInterleavingsKripke() {
+        return getData().getGraphsContent().getInterKripke();
+    }
+
+    public LabelHash getLabelHash() {
+        return getData().getGraphsContent().getLabelHash();
+    }
 
 }

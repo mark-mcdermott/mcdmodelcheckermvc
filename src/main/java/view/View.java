@@ -1,5 +1,7 @@
 package view;
 
+import _options.DirectedGraphOptions;
+import _options.Options;
 import controller.types.data.ListsContent;
 import controller.types.data.Selections;
 import model.Model;
@@ -15,10 +17,12 @@ public class View extends JFrame implements Observer {
 
     Model model;
     Components components;
+    Options options;
 
     public View(Model model) {
         this.model = model;
         this.components = new Components();
+        this.options = new Options();
     }
 
     public void update(Observable o, Object arg) {
@@ -32,7 +36,15 @@ public class View extends JFrame implements Observer {
         populateLists();
         setSelections();
         // TODO: grayOutInactiveSections(appState)
+        drawGraphs();
         repaint();
+    }
+
+    private void drawGraphs() {
+        DirectedGraphOptions graphOptions = options.getXmlGraphOptions();
+        DrawGraph drawGraph = new DrawGraph(graphOptions);
+        JPanel graphPanel1 = components.graphPanel1;
+        drawGraph.drawGraph(graphPanel1, model.getXmlVertexList());
     }
 
     private void analyzerShell(JFrame frame) {

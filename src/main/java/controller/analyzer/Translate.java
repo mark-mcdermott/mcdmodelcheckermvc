@@ -49,20 +49,22 @@ public class Translate {
     }
 
     // get translated vertexList without interleavings
-    public VertexList getTransVertListNoInter(VertexList origVertexList, int numLoops, Boolean isStepSelected, Boolean prevStep) throws ExceptionMessage {
-        return getTranslatedVertexList(origVertexList, false, numLoops, isStepSelected, prevStep);
+    public VertexList getTransVertListNoInter(VertexList origVertexList, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
+        return getTranslatedVertexList(origVertexList, false, numLoops, isStepSelected, prevStep, selectedStep);
     }
 
     // get translated vertexList with interleavings
-    public VertexList getTransVertListWithInters(VertexList origVertexList, int loopsNum, Boolean isStepSelected, Boolean prevStep) throws ExceptionMessage {
-        return getTranslatedVertexList(origVertexList, true, loopsNum, isStepSelected, prevStep);
+    public VertexList getTransVertListWithInters(VertexList origVertexList, int loopsNum, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
+        return getTranslatedVertexList(origVertexList, true, loopsNum, isStepSelected, prevStep, selectedStep);
     }
 
-    private VertexList getTranslatedVertexList(VertexList origVertexList, Boolean getInterleavings, int loopsNum, Boolean isStepSelected, Boolean prevStep) throws ExceptionMessage {
-        if (prevStep) {
-            targetStep = Integer.parseInt(model.getSelectedStep()) - 1;
+    private VertexList getTranslatedVertexList(VertexList origVertexList, Boolean getInterleavings, int loopsNum, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
+        if (prevStep != null && selectedStep != null) {
+            targetStep = selectedStep - 1;
+        } else if (selectedStep != null) {
+            targetStep = selectedStep;
         } else {
-            targetStep = Integer.parseInt(model.getSelectedStep());
+            targetStep = null;
         }
         numSteps = 0;
         numNodesExpanded = 0;

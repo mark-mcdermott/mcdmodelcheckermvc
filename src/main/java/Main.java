@@ -1,8 +1,12 @@
 import controller.Controller;
+import controller.utils.ExceptionMessage;
 import model.Model;
+import org.xml.sax.SAXException;
 import view.View;
 
 import javax.swing.*;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 
 public class Main {
 
@@ -13,7 +17,17 @@ public class Main {
                 Model model = new Model();
                 View view = new View(model);
                 model.addObserver(view);
-                Controller controller = new Controller(model,view);
+                try {
+                    Controller controller = new Controller(model,view);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (ExceptionMessage exceptionMessage) {
+                    exceptionMessage.printStackTrace();
+                } catch (ParserConfigurationException e) {
+                    e.printStackTrace();
+                } catch (SAXException e) {
+                    e.printStackTrace();
+                }
 
                 view.setVisible(true);
             }

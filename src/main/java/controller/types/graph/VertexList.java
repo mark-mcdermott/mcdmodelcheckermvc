@@ -130,8 +130,10 @@ public class VertexList {
                 ArrayList<Vertex> sourceChildren = sourceVertex.getChildren();
                 for (int j=0; j<sourceChildren.size(); j++) {
                     Vertex sourceChild = sourceChildren.get(j);
-                    int childsIndexInVertexList = sourceChild.getNumber();
-                    targetVertex.addChild(targetList.get(childsIndexInVertexList));
+                    if (sourceChild.getNumber() != null) {
+                        int childsIndexInVertexList = sourceChild.getNumber();
+                        targetVertex.addChild(targetList.get(childsIndexInVertexList));
+                    }
                 }
             }
 
