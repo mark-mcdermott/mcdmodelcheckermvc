@@ -1,4 +1,4 @@
-package controller.types.graph;
+package controller.types.ctl;
 
 import controller.utils.ExceptionMessage;
 

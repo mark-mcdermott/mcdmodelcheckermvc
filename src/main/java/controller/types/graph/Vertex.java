@@ -1,5 +1,6 @@
 package controller.types.graph;
 
+import controller.types.ctl.Label;
 import controller.types.ctl.Relation;
 import controller.utils.ExceptionMessage;
 

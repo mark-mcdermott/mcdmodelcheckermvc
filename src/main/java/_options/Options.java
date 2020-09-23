@@ -2,6 +2,10 @@ package _options;
 
 public class Options {
 
+    // debug options
+    Boolean debug;
+    Integer targetNumNodesExpanded;
+
     // paths
     private String pathToXmlDir;
     private String pathToKrpDir;
@@ -57,6 +61,10 @@ public class Options {
 
 
     public Options() {
+
+        // debug options
+        debug = false;
+        targetNumNodesExpanded = 1;
 
         // set paths
         pathToXmlDir = "src/main/resources/xml/";
@@ -133,5 +141,13 @@ public class Options {
 
     public String getPathToModels() {
         return pathToModels;
+    }
+
+    public Boolean getDebug() {
+        return debug;
+    }
+
+    public Integer getTargetNumNodesExpanded() {
+        return targetNumNodesExpanded;
     }
 }

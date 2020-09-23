@@ -1,5 +1,7 @@
 package controller.types.graph;
 
+import controller.types.ctl.Label;
+
 import java.util.ArrayList;
 
 public class Set {
