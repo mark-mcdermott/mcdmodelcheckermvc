@@ -1,7 +1,7 @@
 grammar CtlCompiler;
 
 @header {
-    package controller.ctlCompiler;
+    package controller.analyzer.ctlCompiler;
 }
 
 formula

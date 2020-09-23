@@ -3,14 +3,17 @@ package _options;
 public class Options {
 
     // debug options
-    Boolean debug;
-    Integer targetNumNodesExpanded;
+    private Boolean debug;
+    private Integer targetNumNodesExpanded;
 
     // paths
     private String pathToXmlDir;
     private String pathToKrpDir;
     private String pathToTests;
     private String pathToModels;
+
+    // model checking settings
+    private int analyzerResultsLineLength;
 
     // graph settings (these are a mess. a refactor would be nice, but is low priority)
     private int graphPanelsWidth;
@@ -71,6 +74,9 @@ public class Options {
         pathToKrpDir = "src/main/resources/krp/";
         pathToTests = "src/main/resources/tests/";
         pathToModels = "src/main/java/controller/content/";
+
+        // model checking settings
+        analyzerResultsLineLength = 25;
 
         // graph settings (these are a mess. a refactor would be nice, but is low priority)
         // graph width/heights
@@ -149,5 +155,9 @@ public class Options {
 
     public Integer getTargetNumNodesExpanded() {
         return targetNumNodesExpanded;
+    }
+
+    public int getAnalyzerResultsLineLength() {
+        return analyzerResultsLineLength;
     }
 }

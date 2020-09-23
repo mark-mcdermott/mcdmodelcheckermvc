@@ -1,15 +1,21 @@
 package controller.analyzer;
 
+import _options.Options;
+import controller.analyzer.ctlCompiler.CtlCompiler;
 import controller.types.ctl.Kripke;
 import controller.types.graph.LabelHash;
 import controller.types.graph.Set;
 import controller.types.graph.Vertex;
 import controller.types.modelChecking.*;
+import controller.analyzer.ctlCompiler.CtlCompiler;
+import controller.utils.ExceptionMessage;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
+import static controller.utils.Utils.getLineNumber;
 
 public class ModelChecker {
 
@@ -53,7 +59,7 @@ public class ModelChecker {
         // resultStr = getResultStr(stateToCheck, doesStateHold, model, labelHash, stopWatchSecs, counterExamplePaths);
 
         // ** eval the model (and get counterexamples) **
-        statesThatHoldAndCounterExamples = new CtlCompilerWithCounterExamples(model, kripke, stateToCheck).getStatesThatHoldAndCounterExamples();
+        statesThatHoldAndCounterExamples = new CtlCompiler(model, kripke, stateToCheck).getStatesThatHoldAndCounterExamples();
         statesThatHold = statesThatHoldAndCounterExamples.getStatesThatHoldForModel();
         statesThatHoldStrArrList = getStatesThatHoldStrArrList(statesThatHold);
         // statesThatHoldForModel = new StatesThatHoldForModel(model, statesThatHoldStrArrList);
@@ -112,7 +118,7 @@ public class ModelChecker {
             else holdsStr = holdsStr + "does not hold";
             return holdsStr;
         } else {
-            new McdException("controller.modelchecker.ModelChecker.java " + getLineNumber() + " getHoldsString has null holds parameter.");
+            new ExceptionMessage("controller.modelchecker.ModelChecker.java " + getLineNumber() + " getHoldsString has null holds parameter.");
         }
         return holdsStr;
     }
@@ -219,7 +225,7 @@ public class ModelChecker {
         String resultsStr = "";
         // String resultsStr = getResultStr(stateToCheck,doesStateHold,model,labelHash,stopWatchSecs,counterExamplePaths);
         // ModelCheckResult modelCheckResult = getModelCheckResult();
-        StatesThatHoldAndCounterExamples statesThatHoldAndCounterExamples = new CtlCompilerWithCounterExamples(model, kripke, stateToCheck).getStatesThatHoldAndCounterExamples();
+        StatesThatHoldAndCounterExamples statesThatHoldAndCounterExamples = new CtlCompiler(model, kripke, stateToCheck).getStatesThatHoldAndCounterExamples();
         Set statesThatHoldForModel = statesThatHoldAndCounterExamples.getStatesThatHoldForModel();
         int numNodesSatisfyModel = statesThatHoldForModel.getNumStates();
         resultsStr = resultsStr + "\nNumber states satisfying model: " + numNodesSatisfyModel;
