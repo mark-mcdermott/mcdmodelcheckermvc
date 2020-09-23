@@ -1,0 +1,15 @@
+<littlejil source="REBEL EM, rebelem.com/covid-19-protected-code-blue/, accessed 7/18/20">
+    <module>
+        <step-declaration id="_0" kind="sequential" name="Covid 19 Code Blue">
+            <step-declaration id="_2" kind="leaf" name="Both teams don personal protective equipment" />
+            <step-declaration id="_4" kind="parallel" name="Personnel go to proper locations">
+                <step-declaration id="_6" kind="leaf" name="Main team of four go to proper locations in the room" />
+                <step-declaration id="_8" kind="leaf" name="Secondary team (of two) stations outside room" />
+            </step-declaration>
+            <step-declaration id="_10" kind="sequential" name="Perform the Code Blue procedure">
+                <step-declaration id="_10" kind="leaf" name="Intubate with endotracheal tube" />
+                <step-declaration id="_10" kind="leaf" name="Connect endotracheal tube to ventilator" />
+            </step-declaration>
+        </step-declaration>
+    </module>
+</littlejil>

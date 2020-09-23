@@ -1,4 +1,4 @@
-package controller.types;
+package controller.types.data;
 
 public class Data {
 
@@ -20,6 +20,10 @@ public class Data {
         return appState;
     }
 
+    public void setAppState(AppState appState) {
+        this.appState = appState;
+    }
+
     public String getStateStr() {
         return appState.toString();
     }
@@ -28,48 +32,16 @@ public class Data {
         return selections;
     }
 
-    public String[] getSelectedFiles() {
-        return getSelections().getFiles();
-    }
-
-    public void setSelectedFiles(String[] files) {
-        getSelections().setFiles(files);
-    }
-
-    public DisplayType getSelectedDisplay() {
-        return getSelections().getDisplay();
-    }
-
-    public void setSelectedDisplay(DisplayType display) {
-        getSelections().getDisplay();
-    }
-
-    public String getSelectedStep() {
-        return getSelections().getStep();
-    }
-
-    public void setSelectedStep(String step) {
-        getSelections().setStep(step);
-    }
-
-    public String getSelectedModel() {
-        return getSelections().getModel();
-    }
-
-    public void setSelectedModel(String model) {
-        getSelections().setModel(model);
-    }
-
-    public Integer getSelectedLoop() {
-        return getSelections().getLoop();
-    }
-
-    public void setSelectedLoop(Integer loop) {
-        getSelections().setLoop(loop);
+    public void setSelections(Selections selections) {
+        this.selections = selections;
     }
 
     public ListsContent getListsContent() {
         return listsContent;
+    }
+
+    public void setListsContent(ListsContent listsContent) {
+        this.listsContent = listsContent;
     }
 
     public String[] getListsContentFiles() {
@@ -130,7 +102,15 @@ public class Data {
         return graphsContent;
     }
 
+    public void setGraphsContent(GraphsContent graphsContent) {
+        this.graphsContent = graphsContent;
+    }
+
     public CheckedModel getCheckedModel() {
         return checkedModel;
+    }
+
+    public void setCheckedModel(CheckedModel checkedModel) {
+        this.checkedModel = checkedModel;
     }
 }

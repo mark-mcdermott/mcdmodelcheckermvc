@@ -1,4 +1,4 @@
-package controller.types;
+package controller.types.data;
 
 /**
  * Which graphs to display

@@ -1,6 +1,6 @@
 package controller.content;
 
-import controller.types.DisplayType;
+import controller.types.data.DisplayType;
 
 public class DisplayTypes {
 
