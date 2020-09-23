@@ -13,6 +13,11 @@ public class GraphsContent {
     private Kripke transKripke;
     private Kripke interKripke;
     private LabelHash labelHash;
+    private Boolean isStepGraph;
+    private VertexList[] stepGraphs;    // only not null if isStepGraph is true.
+                                        // stepGraphs is either null or has two vertexList elements in array -
+                                        // first element is the vertexList for targetStep - 1
+                                        // second element is the vertexList for targetstep
 
     public GraphsContent(VertexList xmlVertList, VertexList transVertList, VertexList interVertList, Kripke xmlKripke, Kripke transKripke, Kripke interKripke, LabelHash labelHash) {
         this.xmlVertList = xmlVertList;
@@ -21,6 +26,7 @@ public class GraphsContent {
         this.xmlKripke = xmlKripke;
         this.transKripke = transKripke;
         this.interKripke = interKripke;
+
         this.labelHash = labelHash;
     }
 

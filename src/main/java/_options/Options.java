@@ -16,11 +16,11 @@ public class Options {
     private int analyzerResultsLineLength;
 
     // graph settings (these are a mess. a refactor would be nice, but is low priority)
-    private int graphPanelsWidth;
+    private int graphPanels3AcrossWidth;
     private int graphPanelsHeight;
-    private int graphLayoutsWidth;
-    private int graphHalfLayoutWidth;
-    private int graphFullLayoutWidth;
+    private int graphLayouts3AcrossWidth;
+    private int graphLayout2AcrossWidth;
+    private int graphayout1AcrossWidth;
     private int graphLayoutsHeight;
 
     private int xmlGraphEdgeXLength;
@@ -80,12 +80,12 @@ public class Options {
 
         // graph settings (these are a mess. a refactor would be nice, but is low priority)
         // graph width/heights
-        graphPanelsWidth = 400;
-        graphPanelsHeight = 600;
-        graphLayoutsWidth = 350;
-        graphHalfLayoutWidth = 675;
-        graphFullLayoutWidth = 1400;
-        graphLayoutsHeight = 550;
+        graphPanelsHeight = 970;
+        graphPanels3AcrossWidth = 500;
+        graphLayouts3AcrossWidth = 465;
+        graphLayout2AcrossWidth = 675;
+        graphayout1AcrossWidth = 1400;
+        graphLayoutsHeight = 920;
 
         // xml graphs settings
         xmlGraphEdgeXLength = 50; // 50 is default i think
@@ -133,8 +133,8 @@ public class Options {
 
     }
 
-    public DirectedGraphOptions getXmlGraphOptions() {
-        DirectedGraphOptions xmlGraphOptions = new DirectedGraphOptions(
+    public DirectedGraphOptions graphOptions3AcrossSpot1() {
+        DirectedGraphOptions graphOptions3AcrossSpot1 = new DirectedGraphOptions(
                 xmlGraphNodeDiameter,
                 translationGraphLevel,
                 translationGraphNumEdges,
@@ -149,11 +149,11 @@ public class Options {
                 xmlGraphScaleFactor,
                 xmlGraphVertexAttractionMultiplier
         );
-        return xmlGraphOptions;
+        return graphOptions3AcrossSpot1;
     }
 
-    public DirectedGraphOptions getTranslationGraphOptions() {
-        DirectedGraphOptions translationGraphOptions = new DirectedGraphOptions(
+    public DirectedGraphOptions graphOptions3AcrossSpot2() {
+        DirectedGraphOptions graphOptions3AcrossSpot2 = new DirectedGraphOptions(
                 translationGraphNodeDiameter,
                 translationGraphLevel,
                 translationGraphNumEdges,
@@ -168,11 +168,11 @@ public class Options {
                 translationGraphScaleFactor,
                 translationGraphVertexAttractionMultiplier
         );
-        return translationGraphOptions;
+        return graphOptions3AcrossSpot2;
     }
 
-    public DirectedGraphOptions getInterleavingsGraphOptions() {
-        DirectedGraphOptions interleavingsGraphOptions = new DirectedGraphOptions(
+    public DirectedGraphOptions graphOptions3AcrossSpot3() {
+        DirectedGraphOptions graphOptions3AcrossSpot3 = new DirectedGraphOptions(
                 interleavingsGraphNodeDiameter,
                 translationGraphLevel,
                 translationGraphNumEdges,
@@ -187,7 +187,26 @@ public class Options {
                 translationGraphScaleFactor,
                 translationGraphVertexAttractionMultiplier
         );
-        return interleavingsGraphOptions;
+        return graphOptions3AcrossSpot3;
+    }
+
+    public DirectedGraphOptions getOptions2Across(Options options) {
+        DirectedGraphOptions getOptions2Across = new DirectedGraphOptions(
+                interleavingsGraphNodeDiameter,
+                translationGraphLevel,
+                translationGraphNumEdges,
+                translationGraphCanvasWidth,
+                translationGraphCanvasHeight,
+                translationGraphVertexSiblingOffset,
+                translationGraphVertexVertMultiplier,
+                translationGraphLayoutWidth,
+                translationGraphLayoutHeight,
+                translationGraphEdgeXLength,
+                translationGraphEdgeYLength,
+                translationGraphScaleFactor,
+                translationGraphVertexAttractionMultiplier
+        );
+        return getOptions2Across;
     }
 
     public String getPathToTests() {
@@ -216,5 +235,29 @@ public class Options {
 
     public int getAnalyzerResultsLineLength() {
         return analyzerResultsLineLength;
+    }
+
+    public int getGraphLayouts3AcrossWidth() {
+        return graphLayouts3AcrossWidth;
+    }
+
+    public int getGraphLayoutsHeight() {
+        return graphLayoutsHeight;
+    }
+
+    public int getGraphPanelsHeight() {
+        return graphPanelsHeight;
+    }
+
+    public int getGraphayout1AcrossWidth() {
+        return graphayout1AcrossWidth;
+    }
+
+    public int getGraphLayout2AcrossWidth() {
+        return graphLayout2AcrossWidth;
+    }
+
+    public int getGraphPanels3AcrossWidth() {
+        return graphPanels3AcrossWidth;
     }
 }
