@@ -3,6 +3,18 @@ package view;
 import _options.DirectedGraphOptions;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
+import edu.uci.ics.jung.algorithms.layout.FRLayout;
+import edu.uci.ics.jung.algorithms.layout.Layout;
+import edu.uci.ics.jung.graph.DirectedGraph;
+import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
+import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ScalingControl;
+import edu.uci.ics.jung.visualization.control.ViewScalingControl;
+import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
+import org.apache.commons.collections15.Transformer;
 
 import javax.swing.*;
 import java.awt.*;
