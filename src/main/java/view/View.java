@@ -51,25 +51,24 @@ public class View extends JFrame implements Observer {
     }
 
     private void renderAnalyzerDefaultState() {
-        this.getContentPane().removeAll();
-        analyzerShell(this);
-        populateLists();
-        setSelections();
-        // TODO: grayOutInactiveSections(appState)
-        drawGraphs(); // TODO change to drawDefaultGraphs()
-        addAnalyzerListeners();
+        initAnalyzer();
+        drawGraphs(ANALY_DEFAULT);
         repaint();
     }
 
     private void renderAnalyzerComparisonState() {
+        initAnalyzer();
+        drawGraphs(ANALY_COMP);
+        repaint();
+    }
+
+    private void initAnalyzer() {
         this.getContentPane().removeAll();
         analyzerShell(this);
         populateLists();
         setSelections();
-        // TODO: grayOutInactiveSections(appState)
-        drawGraphs(); // TODO change to drawComparisonGraphs()
         addAnalyzerListeners();
-        repaint();
+        // TODO: grayOutInactiveSections(appState)
     }
 
     private void addAnalyzerListeners() {
@@ -141,7 +140,7 @@ public class View extends JFrame implements Observer {
 
 
     // TODO maybe break into drawDefaultGraphs() and drawComparisonGraphs();
-    private void drawGraphs() {
+    private void drawGraphs(AppState appState) {
         // set up graph settings
         DirectedGraphOptions graphOptions3AcrossSpot1 = options.graphOptions3AcrossSpot1();
         Boolean isStepGraph = model.getSelectedStep() == null ? false : true;
@@ -149,20 +148,33 @@ public class View extends JFrame implements Observer {
         if (isStepGraph) { selectedStep = model.getSelectedStep(); }
 
         // get necessary vars
-        AppState appState = model.getAppState();
+        // AppState appState = model.getAppState();
         DisplayType type = model.getSelectedDisplay();
         DrawGraph drawGraph = new DrawGraph(graphOptions3AcrossSpot1); // TODO maybe change the param name
         JPanel mainGraphPanel = components.mainGraphPanel;
 
-        // draw graph(s)
-        if (type == XML_ONLY || type == TRANS_ONLY || type == INTER_ONLY) {
-            drawOneAcrossGraph(drawGraph, type);
-        } else if (type == TRANS_COMP || type == INTER_COMP ) {
-            drawTwoAcrossGraphs(drawGraph, type);
-        } else if (type == ALL_GRAPHS) {
+        if (appState == ANALY_DEFAULT) {
+            drawDefaultGraphs(drawGraph, type);
+        } else if (appState == ANALY_COMP) {
+            drawComparisonGraphs(drawGraph, type);
+        }
+
+
+    }
+
+    private void drawDefaultGraphs(DrawGraph drawGraph, DisplayType displayType) {
+        if (displayType == XML_ONLY || displayType == TRANS_ONLY || displayType == INTER_ONLY) {
+            drawOneAcrossGraph(drawGraph, displayType);
+        } else if (displayType == ALL_GRAPHS) {
             drawThreeAcrossGraphs(drawGraph);
         }
     }
+
+    private void drawComparisonGraphs(DrawGraph drawGraph, DisplayType displayType) {
+        drawTwoAcrossGraphs(drawGraph, displayType);
+    }
+
+
 
     private void drawOneAcrossGraph(DrawGraph drawGraph, DisplayType displayType) {
         // setup one-across graph styles
