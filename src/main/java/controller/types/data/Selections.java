@@ -1,5 +1,7 @@
 package controller.types.data;
 
+import controller.types.graph.Vertex;
+
 public class Selections {
 
     private String[] files;
@@ -7,9 +9,9 @@ public class Selections {
     private Integer step;
     private String model;
     private Integer loop;
-    private String state;
+    private Vertex state;
 
-    public Selections(String[] files, DisplayType display, Integer step, String model, Integer loop, String state) {
+    public Selections(String[] files, DisplayType display, Integer step, String model, Integer loop, Vertex state) {
         this.files = files;
         this.display = display;
         this.step = step;
@@ -58,11 +60,11 @@ public class Selections {
         this.loop = loop;
     }
 
-    public String getState() {
+    public Vertex getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(Vertex state) {
         this.state = state;
     }
 

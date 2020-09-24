@@ -7,7 +7,6 @@ import controller.types.graph.VertexList;
 import controller.utils.ExceptionMessage;
 
 import java.io.File;
-import java.nio.file.Files;
 import java.util.Observable;
 
 public class Model extends Observable {
@@ -113,7 +112,7 @@ public class Model extends Observable {
         return getData().getListsContent().getDisplays();
     }
 
-    public String[] getSteps() {
+    public Integer[] getSteps() {
         return getData().getListsContent().getSteps();
     }
 
@@ -141,7 +140,7 @@ public class Model extends Observable {
         getData().getListsContent().setDisplays(displays);
     }
 
-    public void setSteps(String[] steps) {
+    public void setSteps(Integer[] steps) {
         getData().getListsContent().setSteps(steps);
     }
 
@@ -203,6 +202,10 @@ public class Model extends Observable {
 
     public String[] getLabelDisplay() {
         return getData().getGraphsContent().getLabelHash().getLabelDisplayListArr();
+    }
+
+    public String getSelectedState() {
+        return getData().getSelections().getState();
     }
 
 }

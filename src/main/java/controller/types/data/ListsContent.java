@@ -1,16 +1,18 @@
 package controller.types.data;
 
+import controller.types.graph.Vertex;
+
 public class ListsContent {
 
     String[] files;
     String[] displays;
-    String[] steps;
+    Integer[] steps;
     String[] models;
     Integer loops;
-    String[] states;
+    Vertex[] states;
     String[] labels;
 
-    public ListsContent(String[] files, String[] displays, String[] steps, String[] models, Integer loops, String[] states, String[] labels) {
+    public ListsContent(String[] files, String[] displays, Integer[] steps, String[] models, Integer loops, Vertex[] states, String[] labels) {
         this.files = files;
         this.displays = displays;
         this.steps = steps;
@@ -28,7 +30,7 @@ public class ListsContent {
         return displays;
     }
 
-    public String[] getSteps() {
+    public Integer[] getSteps() {
         return steps;
     }
 
@@ -40,7 +42,7 @@ public class ListsContent {
         return loops;
     }
 
-    public String[] getStates() {
+    public Vertex[] getStates() {
         return states;
     }
 
@@ -56,7 +58,7 @@ public class ListsContent {
         this.displays = displays;
     }
 
-    public void setSteps(String[] steps) {
+    public void setSteps(Integer[] steps) {
         this.steps = steps;
     }
 
@@ -68,7 +70,7 @@ public class ListsContent {
         this.loops = loops;
     }
 
-    public void setStates(String[] states) {
+    public void setStates(Vertex[] states) {
         this.states = states;
     }
 

@@ -1,5 +1,7 @@
 package controller.types.data;
 
+import controller.types.graph.Vertex;
+
 public class Data {
 
     AppState appState;
@@ -48,7 +50,7 @@ public class Data {
     public void setLoopSelections(Integer loops) {
         getSelections().setLoop(loops);
     }
-    public void setStateSelections(String state) {
+    public void setStateSelections(Vertex state) {
         getSelections().setState(state);
     }
 
@@ -80,11 +82,11 @@ public class Data {
         getListsContent().setDisplays(displays);
     }
 
-    public String[] getListsContentSteps () {
+    public Integer[] getListsContentSteps () {
         return getListsContent().getSteps();
     }
 
-    public void setListsContentSteps(String[] steps) {
+    public void setListsContentSteps(Integer[] steps) {
         getListsContent().setSteps(steps);
     }
 
@@ -103,11 +105,11 @@ public class Data {
     public void setListsContentLoops(int loops) {
         getListsContent().setLoops(loops);
     }
-    public String[] getListsContentStates() {
+    public Vertex[] getListsContentStates() {
         return getListsContent().getStates();
     }
 
-    public void setListsContentStates(String[] states) {
+    public void setListsContentStates(Vertex[] states) {
         getListsContent().setStates(states);
     }
     public String[] getListsContentLabels() {

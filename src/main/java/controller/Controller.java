@@ -1,20 +1,24 @@
 package controller;
 
 import _options.Options;
+import controller.analyzer.ModelChecker;
 import controller.content.GetGraphs;
 import controller.content.staticContent.DisplayTypes;
 import controller.content.staticContent.Models;
 import controller.content.staticContent.XmlFileOrder;
 import controller.filesCache.FilesCache;
+import controller.types.ctl.Kripke;
 import controller.types.data.*;
+import controller.types.graph.LabelHash;
+import controller.types.graph.Vertex;
+import controller.types.graph.VertexList;
+import controller.types.modelChecking.ModelCheckResult;
 import controller.utils.ExceptionMessage;
 import model.Model;
 import org.xml.sax.SAXException;
 import view.Components;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
@@ -89,7 +93,7 @@ public class Controller {
             data.setDisplaySelections(selectedDisplay);
             if (selectedStep != null) { data.setStepSelections(selectedStep); }
             if (graphsContent.getNumSteps() != null) {
-                String[] steps = strArrFromIntArr(getStepsFromNumSteps(graphsContent.getNumSteps()));
+                Integer[] steps = getStepsFromNumSteps(graphsContent.getNumSteps());
                 data.setListsContentSteps(steps);
             }
             data.setGraphsContent(graphsContent);
@@ -117,14 +121,58 @@ public class Controller {
 
     public void handleModelListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         String selectedModel = getListSelection(components.modelList);
+
         // check model here
+        ModelCheckResult modelCheckResult = runModelChecker(selectedModel, model, model.getLabelHash());
+
         Data data = model.getData();
         data.setAppState(ANALY_RESULTS);
         data.setModelSelections(selectedModel);
+        data.setListsContentStates(model.getInterleavingsKripke().S);
+        data.setStateSelections("s0");
         // set model check result to data here
         model.setData(data);
     }
 
+    String[] getStatesFromKripke(Kripke interKripke) {
+        return getStateStrListFromNumStates(getNumStatesFromInterKripke(interKripke));
+    }
+
+    Integer getNumStatesFromInterKripke(Kripke interKripke) {
+        return interKripke.S.size();
+    }
+
+    String[] getStateStrListFromNumStates(Integer numStates) {
+        String[] stateStrList = new String[numStates];
+        for (Integer i=0; i<numStates; i++) {
+            stateStrList[i] = Integer.toString(i);
+        }
+        return stateStrList;
+    }
+
+    public ModelCheckResult runModelChecker(String selectedModel, Model model, LabelHash labelHash) {
+
+        // get items needed for the model checking from the model
+        Kripke kripke = model.getInterleavingsKripke();
+        int loops = model.getLoops();
+        Vertex stateToCheck = getVertexFromStateName(model.getSelectedState(), model.getInterleavingsVertexList());
+
+        // run the model checker
+        ModelChecker modelChecker = new ModelChecker(selectedModel, kripke, stateToCheck, loops, labelHash);
+        ModelCheckResult modelCheckResult = modelChecker.getModelCheckResult();
+        return modelCheckResult;
+
+    }
+
+    private Vertex getVertexFromStateName(String stateStr, VertexList list) {
+        for (Vertex vertex : list.getList()) {
+            if (vertex.getName().equals(stateStr)) {
+                return vertex;
+            }
+        }
+        new ExceptionMessage("vertex not found in vertexList in getVertexFromStateName(), Controller.java");
+        return null;
+    }
 
     private Integer[] getStepsFromNumSteps(Integer numSteps) {
         Integer[] steps = new Integer[numSteps];
@@ -134,10 +182,10 @@ public class Controller {
         return steps;
     }
 
-    private String[] strArrFromIntArr(Integer[] ints) {
+    private String[] getStateArrFromIntArr(Integer[] ints) {
         String[] strings = new String[ints.length];
         for (int i=0; i<ints.length; i++) {
-            strings[i] = ints[i].toString();
+            strings[i] = "s" + ints[i].toString();
         }
         return strings;
     }
@@ -173,7 +221,7 @@ public class Controller {
     private ListsContent initalListsContent() {
         String[] files = new XmlFileOrder().getFileOrder();
         String[] displays = new DisplayTypes().getDisplayTypes();
-        String[] steps = null;
+        Integer[] steps = null;
         String[] models = new Models().getModels1Var();
         Integer loops = 0;
         String[] states = null;
