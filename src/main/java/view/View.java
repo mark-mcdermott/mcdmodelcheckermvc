@@ -4,6 +4,7 @@ import _options.DirectedGraphOptions;
 import _options.Options;
 import controller.Controller;
 import controller.types.data.*;
+import controller.types.graph.VertexList;
 import controller.utils.ExceptionMessage;
 import model.Model;
 import org.xml.sax.SAXException;
@@ -40,25 +41,12 @@ public class View extends JFrame implements Observer {
     }
 
     public void update(Observable o, Object arg) {
-        if (arg == "INITIAL_RUN") {
-            // renderAnalyzerInitalRender();
+        if (arg == "ANALY_DEFAULT") {
             renderAnalyzerDefaultState();
-        } else if (arg == "ANALY_DEFAULT") {
-            renderAnalyzerDefaultState();
+        } else if (arg == "ANALY_COMP") {
+            renderAnalyzerComparisonState();
         }
     }
-
-    /*
-    private void renderAnalyzerInitalRender() {
-        analyzerShell(this);
-        populateLists();
-        setSelections();
-        // TODO: grayOutInactiveSections(appState)
-        drawGraphs();
-        addAnalyzerListeners();
-        repaint();
-    }
-    */
 
     private void renderAnalyzerDefaultState() {
         this.getContentPane().removeAll();
@@ -66,7 +54,18 @@ public class View extends JFrame implements Observer {
         populateLists();
         setSelections();
         // TODO: grayOutInactiveSections(appState)
-        drawGraphs();
+        drawGraphs(); // TODO change to drawDefaultGraphs()
+        addAnalyzerListeners();
+        repaint();
+    }
+
+    private void renderAnalyzerComparisonState() {
+        this.getContentPane().removeAll();
+        analyzerShell(this);
+        populateLists();
+        setSelections();
+        // TODO: grayOutInactiveSections(appState)
+        drawGraphs(); // TODO change to drawComparisonGraphs()
         addAnalyzerListeners();
         repaint();
     }
@@ -74,6 +73,7 @@ public class View extends JFrame implements Observer {
     private void addAnalyzerListeners() {
         addAnalyzerListListener(components.fileList, components, model);        // file list listener
         addAnalyzerListListener(components.displayList, components, model);     // display list listener
+        addAnalyzerListListener(components.stepList, components, model);        // step list listener
     }
 
     // adds a specific listener (handles all of them, just chooses one at a time - depending on params)
@@ -85,8 +85,20 @@ public class View extends JFrame implements Observer {
                     // run through cases, call correct handler method in conroller (cumbersome code, but keeps addAnalyzerListeners() nice and clean)
                     if (list == components.fileList) {
                         controller.handleFileListClick(components, model);
-                    } else if (list == components.fileList) {
+                    } else if (list == components.displayList) {
                         controller.handleDisplayListClick(components, model);
+                    } else if (list == components.stepList) {
+                        try {
+                            controller.handleStepListClick(components, model);
+                        } catch (SAXException saxException) {
+                            saxException.printStackTrace();
+                        } catch (ParserConfigurationException parserConfigurationException) {
+                            parserConfigurationException.printStackTrace();
+                        } catch (ExceptionMessage exceptionMessage) {
+                            exceptionMessage.printStackTrace();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
                     }
                 }
             }
@@ -113,34 +125,80 @@ public class View extends JFrame implements Observer {
 
 
 
+    // TODO maybe break into drawDefaultGraphs() and drawComparisonGraphs();
     private void drawGraphs() {
+        // set up graph settings
         DirectedGraphOptions graphOptions3AcrossSpot1 = options.graphOptions3AcrossSpot1();
-
-        // get step graph settings
         Boolean isStepGraph = model.getSelectedStep() == null ? false : true;
         Integer selectedStep = null;
-        if (isStepGraph) { selectedStep = Integer.parseInt(model.getSelectedStep()); }
+        if (isStepGraph) { selectedStep = model.getSelectedStep(); }
 
-        // layouts
+        // get necessary vars
         AppState appState = model.getAppState();
         DisplayType type = model.getSelectedDisplay();
         DrawGraph drawGraph = new DrawGraph(graphOptions3AcrossSpot1); // TODO maybe change the param name
-
         JPanel mainGraphPanel = components.mainGraphPanel;
-        if (appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
-            // draw one-across graph
-            if (type == XML_ONLY) { drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList()); }
-            else if (type == TRANS_ONLY) { drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList()); }
-            else if (type == INTER_ONLY) { drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList()); }
-            else if (type == ALL_GRAPHS) {
-                drawThreeAcrossGraphs(drawGraph);
-            }
-        } else if (appState == ANALY_COMP) {
-            // TODO draw 2 two-across graphs
-        }
 
+        // draw graph(s)
+        if (type == XML_ONLY || type == TRANS_ONLY || type == INTER_ONLY) {
+            drawOneAcrossGraph(drawGraph, type);
+        } else if (type == TRANS_COMP || type == INTER_COMP ) {
+
+            // setup two-across graph styles
+            components.mainGraphPanel.remove(components.graphPanel1);
+            components.mainGraphPanel.remove(components.graphPanel2);
+            components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());
+            components.mainGraphPanel.add(components.graphPanel2, new BorderLayout());
+            components.graphPanel1.add(components.graphPanel1Title, PAGE_START);
+            components.graphPanel2.add(components.graphPanel2Title, PAGE_START);
+            components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayout2AcrossWidth(), options.getGraphLayoutsHeight()));
+            components.graphPanel2.setPreferredSize(new Dimension(options.getGraphLayout2AcrossWidth(), options.getGraphLayoutsHeight()));
+
+            VertexList stepGraphSelectedStepMinusOne = model.getStepGraphSelectedStepMinusOne();
+            VertexList stepGraphSelectedStep = model.getStepGraphSelectedStep();
+
+            Integer stepX = stepGraphSelectedStep.getNumTotalSteps();
+            Integer stepXMinus1 = stepX - 1;
+
+            drawGraph.drawGraph(components.graphPanel1, stepGraphSelectedStepMinusOne);
+            drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep);
+
+            if (type == TRANS_COMP) {
+
+
+                components.graphPanel1Title.setText("Translation Step " + stepXMinus1.toString());
+                components.graphPanel2Title.setText("Translation Step " + stepX.toString());
+
+            } else if (type == INTER_COMP) {
+
+                components.graphPanel1Title.setText("Interleavings Step " + stepXMinus1.toString());
+                components.graphPanel2Title.setText("Interleavings Step " + stepX.toString());
+
+            }
+
+        } else if (type == ALL_GRAPHS) {
+            drawThreeAcrossGraphs(drawGraph);
+        }
     }
 
+    private void drawOneAcrossGraph(DrawGraph drawGraph, DisplayType displayType) {
+        // setup one-across graph styles
+        components.mainGraphPanel.remove(components.graphPanel1);
+        components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());
+        components.graphPanel1.add(components.graphPanel1Title, PAGE_START);
+        components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayout1AcrossWidth(), options.getGraphLayoutsHeight()));
+        // add one-across graph and its title
+        if (displayType == XML_ONLY) {
+            drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList());
+            components.graphPanel1Title.setText("XML");
+        } else if (displayType == TRANS_ONLY) {
+            drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList());
+            components.graphPanel1Title.setText("Translation");
+        } else if (displayType == INTER_ONLY) {
+            drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList());
+            components.graphPanel1Title.setText("Interleavings");
+        }
+    }
 
     private void drawThreeAcrossGraphs(DrawGraph drawGraph) {
         // draw three-across graphs
@@ -172,9 +230,13 @@ public class View extends JFrame implements Observer {
     }
 
     private void populateLists() {
+        DisplayType displayType = model.getSelectedDisplay();
         ListsContent listsContent = model.getListsContent();
         components.fileList.setListData(listsContent.getFiles());
         components.displayList.setListData(listsContent.getDisplays());
+        if (displayType == TRANS_COMP || displayType == INTER_COMP) {
+            components.stepList.setListData(listsContent.getSteps());
+        }
         components.modelList.setListData(listsContent.getModels());
         components.loopTextarea.setText(listsContent.getLoops().toString());
     }
@@ -183,7 +245,7 @@ public class View extends JFrame implements Observer {
         Selections selections = model.getSelections();
         components.fileList.setSelectedIndices(getIndicesFromListElems(selections.getFiles(), components.fileList));
         components.displayList.setSelectedIndex(getIndexFromListElem(selections.getDisplay().toString(), components.displayList));
-        if (selections.getStep() != null) { components.stepList.setSelectedIndex(getIndexFromListElem(selections.getStep(), components.stepList)); }
+        if (selections.getStep() != null) { components.stepList.setSelectedIndex(getIndexFromListElem(selections.getStep().toString(), components.stepList)); }
         if (selections.getModel() != null) { components.modelList.setSelectedIndex(getIndexFromListElem(selections.getModel(), components.modelList)); }
         if (selections.getState() != null) { components.stateList.setSelectedIndex(getIndexFromListElem(selections.getState(), components.stateList)); }
     }

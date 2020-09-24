@@ -40,6 +40,13 @@ public class Translate {
         this.targetNumNodesExpanded = options.getTargetNumNodesExpanded();
     }
 
+    public Translate(Model model) {
+        this.model = model;
+        this.options = new Options();
+        this.debug = options.getDebug();
+        this.targetNumNodesExpanded = options.getTargetNumNodesExpanded();
+    }
+
     public Translate(Model model, View view) {
         this.model = model;
         this.view = view;
@@ -59,7 +66,7 @@ public class Translate {
     }
 
     private VertexList getTranslatedVertexList(VertexList origVertexList, Boolean getInterleavings, int loopsNum, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
-        if (prevStep != null && selectedStep != null) {
+        if (prevStep != null && prevStep == true && selectedStep != null) {
             targetStep = selectedStep - 1;
         } else if (selectedStep != null) {
             targetStep = selectedStep;
@@ -95,7 +102,7 @@ public class Translate {
             vertexListToTranslate.setNumTotalSteps(numSteps);
         } else {
             if (model.getSelectedStep() != null) {
-                vertexListToTranslate.setNumTotalSteps(Integer.parseInt(model.getSelectedStep()));
+                vertexListToTranslate.setNumTotalSteps(model.getSelectedStep());
             } else {
                 vertexListToTranslate.setNumTotalSteps(numSteps);
             }

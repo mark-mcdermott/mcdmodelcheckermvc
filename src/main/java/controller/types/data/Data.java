@@ -39,7 +39,7 @@ public class Data {
     public void setDisplaySelections(DisplayType displayType) {
         getSelections().setDisplay(displayType);
     }
-    public void setStepSelections(String step) {
+    public void setStepSelections(Integer step) {
         getSelections().setStep(step);
     }
     public void setModelSelections(String model) {

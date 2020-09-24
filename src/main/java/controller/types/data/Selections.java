@@ -4,12 +4,12 @@ public class Selections {
 
     private String[] files;
     private DisplayType display;
-    private String step;
+    private Integer step;
     private String model;
     private Integer loop;
     private String state;
 
-    public Selections(String[] files, DisplayType display, String step, String model, Integer loop, String state) {
+    public Selections(String[] files, DisplayType display, Integer step, String model, Integer loop, String state) {
         this.files = files;
         this.display = display;
         this.step = step;
@@ -34,11 +34,11 @@ public class Selections {
         this.display = display;
     }
 
-    public String getStep() {
+    public Integer getStep() {
         return step;
     }
 
-    public void setStep(String step) {
+    public void setStep(Integer step) {
         this.step = step;
     }
 

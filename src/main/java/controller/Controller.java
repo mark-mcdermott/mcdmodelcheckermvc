@@ -43,12 +43,14 @@ public class Controller {
     }
 
     // handle listeners clicks
+    // file list click
     public void handleFileListClick(Components components, Model model) {
         String[] selectedFiles = getListSelections(components.fileList);
         try {
             GraphsContent graphsContent = getGraphsContent(selectedFiles, model);
             Data data = model.getData();
             data.setFileSelections(selectedFiles);
+            data.setDisplaySelections(ALL_GRAPHS);
             data.setGraphsContent(graphsContent);
             data.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
             model.setData(data);
@@ -63,18 +65,32 @@ public class Controller {
         }
     }
 
+    // display list click
     public void handleDisplayListClick(Components components, Model model) {
-        DisplayType selectedDisplay = DisplayType.valueOf(getListSelection(components.fileList));
+        DisplayType selectedDisplay = DisplayType.valueOf(getListSelection(components.displayList));
+        Integer selectedStep = null;
         try {
             AppState appState = null;
             if (selectedDisplay == ALL_GRAPHS || selectedDisplay == XML_ONLY || selectedDisplay == TRANS_ONLY || selectedDisplay == INTER_ONLY) {
                 appState = ANALY_DEFAULT;
             } else if (selectedDisplay == TRANS_COMP || selectedDisplay == INTER_COMP) {
                 appState = ANALY_COMP;
+                selectedStep = 2;  // when a COMP display is clicked, selectedStep defaults to step 2
             }
-            GraphsContent graphsContent = getGraphsContent(model);
+
+            String[] selectedFiles = model.getSelectedFiles();
+            int numLoops = model.getLoops();
+            File[] xmlFileCache = model.getFilesCache();
+
+            GraphsContent graphsContent = getGraphsContent(selectedFiles, selectedDisplay, numLoops, xmlFileCache, selectedStep);
+
             Data data = model.getData();
             data.setDisplaySelections(selectedDisplay);
+            if (selectedStep != null) { data.setStepSelections(selectedStep); }
+            if (graphsContent.getNumSteps() != null) {
+                String[] steps = strArrFromIntArr(getStepsFromNumSteps(graphsContent.getNumSteps()));
+                data.setListsContentSteps(steps);
+            }
             data.setGraphsContent(graphsContent);
             data.setAppState(appState);        // when selected file(s) is changed, app goes to default state
             model.setData(data);
@@ -87,9 +103,35 @@ public class Controller {
         } catch (SAXException saxException) {
             saxException.printStackTrace();
         }
-
-
     }
+
+    public void handleStepListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+        Integer selectedStep = Integer.parseInt(getListSelection(components.stepList));
+        GraphsContent graphsContent = getGraphsContent(selectedStep, model);
+        Data data = model.getData();
+        data.setStepSelections(selectedStep);
+        data.setGraphsContent(graphsContent);
+        model.setData(data);
+    }
+
+
+    private Integer[] getStepsFromNumSteps(Integer numSteps) {
+        Integer[] steps = new Integer[numSteps];
+        for (int i=1; i<=numSteps; i++) {
+            steps[i-1] = i;
+        }
+        return steps;
+    }
+
+    private String[] strArrFromIntArr(Integer[] ints) {
+        String[] strings = new String[ints.length];
+        for (int i=0; i<ints.length; i++) {
+            strings[i] = ints[i].toString();
+        }
+        return strings;
+    }
+
+
 
     private String[] getListSelections(JList list) {
         Object[] selectedFilesObj = list.getSelectedValues();
@@ -108,9 +150,9 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        String[] files = {"OneStep.ljx"};
+        String[] files = {"TwoSteps.ljx"};
         DisplayType displayType = ALL_GRAPHS;
-        String step = null;
+        Integer step = null;
         String model = null;
         Integer loop = 0;
         String state = null;
@@ -128,25 +170,45 @@ public class Controller {
         return new ListsContent(files, displays, steps, models, loops, states, labels);
     }
 
-    public GraphsContent getGraphsContent(String[] selectedFiles, int numLoops, File[] xmlFileCache, Integer selectedStep) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
-        return new GetGraphs().getGraphsFromXmlFilenames(selectedFiles, false, numLoops, xmlFileCache, selectedStep);
+    public GraphsContent getGraphsContent(String[] selectedFiles, DisplayType displayType, int numLoops, File[] xmlFileCache, Integer selectedStep) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
+        Boolean isStepSelected = selectedStep == null ? false : true;
+        return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType,isStepSelected, numLoops, xmlFileCache, selectedStep);
     }
 
     public GraphsContent getGraphsContent(String[] selectedFiles, Model model) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         Boolean isStepSelected = model.getSelectedStep() == null ? false : true;
+        DisplayType displayType = model.getSelectedDisplay();
         Integer selectedLoops = model.getLoops();
         File[] xmlFileCache = model.getFilesCache();
-        Integer selectedStep = model.getSelectedStep() == null ? null : Integer.parseInt(model.getSelectedStep());
-        return new GetGraphs().getGraphsFromXmlFilenames(selectedFiles, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
+        Integer selectedStep = model.getSelectedStep() == null ? null : model.getSelectedStep();
+        return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
     }
 
     public GraphsContent getGraphsContent(Model model) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         String[] selectedFiles = model.getSelectedFiles();
+        DisplayType displayType = model.getSelectedDisplay();
         Boolean isStepSelected = model.getSelectedStep() == null ? false : true;
         Integer selectedLoops = model.getLoops();
         File[] xmlFileCache = model.getFilesCache();
-        Integer selectedStep = model.getSelectedStep() == null ? null : Integer.parseInt(model.getSelectedStep());
-        return new GetGraphs().getGraphsFromXmlFilenames(selectedFiles, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
+        Integer selectedStep = model.getSelectedStep() == null ? null : model.getSelectedStep();
+        return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
+    }
+
+    public GraphsContent getGraphsContent(Integer selectedStep, Model model) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
+        String[] selectedFiles = model.getSelectedFiles();
+        DisplayType displayType = model.getSelectedDisplay();
+        Boolean isStepSelected = true;
+        Integer selectedLoops = model.getLoops();
+        File[] xmlFileCache = model.getFilesCache();
+        return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
+    }
+
+    public GraphsContent getGraphsContent(DisplayType displayType, Integer selectedStep, Model model) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
+        String[] selectedFiles = model.getSelectedFiles();
+        Boolean isStepSelected = model.getSelectedStep() == null ? false : true;
+        Integer selectedLoops = model.getLoops();
+        File[] xmlFileCache = model.getFilesCache();
+        return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
     }
 
     private Data getInitalData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
@@ -154,8 +216,8 @@ public class Controller {
         AppState appState = ANALY_DEFAULT;
         Selections selections = initialSelections();
         ListsContent listsContent = initalListsContent();
-        Integer selectedStep = selections.getStep() == null ? null : Integer.parseInt(selections.getStep());
-        GraphsContent graphsContent = getGraphsContent(selections.getFiles(), selections.getLoop(), xmlFileCache, selectedStep);
+        Integer selectedStep = selections.getStep() == null ? null : selections.getStep();
+        GraphsContent graphsContent = getGraphsContent(selections.getFiles(), selections.getDisplay(), selections.getLoop(), xmlFileCache, selectedStep);
         CheckedModel checkedModel = null;
         return new Data(appState, selections, listsContent, graphsContent, checkedModel);
     }

@@ -73,11 +73,11 @@ public class Model extends Observable {
         getData().getSelections().getDisplay();
     }
 
-    public String getSelectedStep() {
+    public Integer getSelectedStep() {
         return getData().getSelections().getStep();
     }
 
-    public void setSelectedStep(String step) {
+    public void setSelectedStep(Integer step) {
         getData().getSelections().setStep(step);
     }
 
@@ -161,6 +161,8 @@ public class Model extends Observable {
         getData().getListsContent().setLabels(labels);
     }
 
+    public GraphsContent getGraphsContent() { return getData().getGraphsContent(); }
+
     public VertexList getXmlVertexList() {
         return getData().getGraphsContent().getXmlVertList();
     }
@@ -187,6 +189,16 @@ public class Model extends Observable {
 
     public LabelHash getLabelHash() {
         return getData().getGraphsContent().getLabelHash();
+    }
+
+    public VertexList[] getStepGraphs() { return getData().getGraphsContent().getStepGraphs(); }
+
+    public VertexList getStepGraphSelectedStepMinusOne() {
+        return getData().getGraphsContent().getStepGraphs()[0];
+    }
+
+    public VertexList getStepGraphSelectedStep() {
+        return getData().getGraphsContent().getStepGraphs()[1];
     }
 
 }

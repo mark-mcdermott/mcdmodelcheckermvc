@@ -2,7 +2,9 @@ package controller.content;
 
 import controller.analyzer.ReadXml;
 import controller.analyzer.Translate;
+import controller.filesCache.FilesCache;
 import controller.types.ctl.Kripke;
+import controller.types.data.DisplayType;
 import controller.types.data.GraphsContent;
 import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
@@ -16,6 +18,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import static controller.types.data.DisplayType.INTER_COMP;
+import static controller.types.data.DisplayType.TRANS_COMP;
+
 public class GetGraphs {
 
     private GraphsContent graphsContent;
@@ -24,14 +29,63 @@ public class GetGraphs {
 
     public GetGraphs() { }
 
+    public GetGraphs(Model model) {
+        this.model = model;
+    }
+
     // public GraphsContent getGraphsFromXmlFilenames(String[] xmlFilenames, Model model) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
-    public GraphsContent getGraphsFromXmlFilenames(String[] xmlFilenames, Boolean isStepSelected, int numLoops, File[] xmlFileCache, Integer selectedStep) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
+    public GraphsContent getGraphsFromXmlFilenames(String[] xmlFilenames, DisplayType displayType, Boolean isStepSelected, int numLoops, File[] xmlFileCache, Integer selectedStep) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
 
         // init vars necessary for getting the vertex lists
+        GraphsContent graphsContent = null;
         LabelHash labelHash = new LabelHash();
         ReadXml readXml = new ReadXml();
-        Translate translate = new Translate();
-        // Boolean isStepSelected = model.getSelectedStep() == null ? false : true;
+        Translate translate = new Translate(model);
+
+        // normal case: get all three completed graphs
+        if (!isStepSelected) {
+            graphsContent = getAllThreeGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash);
+
+        // stepGraph case: get two graphs of same type (tran/inter) but of two steps (selectedStep & selectedStep - 1)
+        } else if (isStepSelected) {
+
+            VertexList xmlVertList;
+            if (xmlFilenames.length > 1) {
+                new ExceptionMessage("Trying to do step comparison of graph with two input files selected. This functionality is not coded as of now.");
+            } else if (xmlFilenames.length == 1) {
+                String xmlFilename = xmlFilenames[0];
+                File xmlFile = getCacheFileFromFilename(xmlFilename, xmlFileCache);
+                xmlVertList = readXml.xmlFileToVertexList(xmlFile, labelHash);
+
+                // DisplayType displayType = model.getSelectedDisplay();
+                if (displayType == TRANS_COMP) {
+
+                    VertexList testTransVertListForTotalNumSteps;
+                    VertexList transVertListSelectedStep;
+                    VertexList transVertListSelectedStepMinusOne;
+
+                    testTransVertListForTotalNumSteps = getTransVertList(xmlVertList, translate, numLoops, false, false, null);
+                    transVertListSelectedStep = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, false, selectedStep);
+                    transVertListSelectedStepMinusOne = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, true, selectedStep);
+                    int numSteps = testTransVertListForTotalNumSteps.getNumTotalSteps();
+                    VertexList[] stepGraphs = new VertexList[2];
+                    stepGraphs[0] = transVertListSelectedStepMinusOne;
+                    stepGraphs[1] = transVertListSelectedStep;
+                    graphsContent = new GraphsContent(xmlVertList, labelHash, numSteps, stepGraphs);
+                    // graphsContent = new GraphsContent(xmlVertList, labelHash, stepGraphs);
+
+                } else if (displayType == INTER_COMP) {
+
+                }
+            }
+
+
+
+        }
+        return graphsContent;
+    }
+
+    private GraphsContent getAllThreeGraphs(String[] xmlFilenames, ReadXml readXml, File[] xmlFileCache, Translate translate, Integer numLoops, Boolean isStepSelected, Integer selectedStep, LabelHash labelHash) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         Boolean prevStep = false;
 
         // get xml, translation & interleavings vertex lists
@@ -41,7 +95,7 @@ public class GetGraphs {
             String xmlFilename = xmlFilenames[0];
             File xmlFile = getCacheFileFromFilename(xmlFilename, xmlFileCache);
             xmlVertList = readXml.xmlFileToVertexList(xmlFile, labelHash);
-        // if multiple xml files are selected, make each xmlVertexList and merge them together with a new root vertex
+            // if multiple xml files are selected, make each xmlVertexList and merge them together with a new root vertex
         } else {
             xmlVertList = getJointVertexListFromXmlFilenames(xmlFilenames, labelHash, xmlFileCache);
         }
@@ -53,7 +107,8 @@ public class GetGraphs {
         Kripke transKripke = new Kripke(transVertList);
         Kripke interKripke = new Kripke(interVertList);
 
-        return new GraphsContent(xmlVertList, transVertList, interVertList, xmlKripke, transKripke, interKripke, labelHash);
+        GraphsContent graphsContent = new GraphsContent(xmlVertList, transVertList, interVertList, xmlKripke, transKripke, interKripke, labelHash);
+        return graphsContent;
     }
 
     private VertexList getJointVertexListFromXmlFilenames(String[] xmlFilenames, LabelHash labelHash, File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {

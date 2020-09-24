@@ -14,6 +14,7 @@ public class GraphsContent {
     private Kripke interKripke;
     private LabelHash labelHash;
     private Boolean isStepGraph;
+    private Integer numSteps;
     private VertexList[] stepGraphs;    // only not null if isStepGraph is true.
                                         // stepGraphs is either null or has two vertexList elements in array -
                                         // first element is the vertexList for targetStep - 1
@@ -26,8 +27,36 @@ public class GraphsContent {
         this.xmlKripke = xmlKripke;
         this.transKripke = transKripke;
         this.interKripke = interKripke;
-
         this.labelHash = labelHash;
+        this.isStepGraph = false;
+        this.numSteps = null;
+        this.stepGraphs = null;
+    }
+
+    public GraphsContent(VertexList xmlVertList, LabelHash labelHash, VertexList[] stepGraphs) {
+        this.xmlVertList = xmlVertList;
+        this.transVertList = transVertList;
+        this.interVertList = interVertList;
+        this.xmlKripke = xmlKripke;
+        this.transKripke = transKripke;
+        this.interKripke = interKripke;
+        this.labelHash = labelHash;
+        this.isStepGraph = true;
+        this.numSteps = null;
+        this.stepGraphs = stepGraphs;
+    }
+
+    public GraphsContent(VertexList xmlVertList, LabelHash labelHash, Integer numSteps, VertexList[] stepGraphs) {
+        this.xmlVertList = xmlVertList;
+        this.transVertList = transVertList;
+        this.interVertList = interVertList;
+        this.xmlKripke = xmlKripke;
+        this.transKripke = transKripke;
+        this.interKripke = interKripke;
+        this.labelHash = labelHash;
+        this.isStepGraph = true;
+        this.numSteps = numSteps;
+        this.stepGraphs = stepGraphs;
     }
 
     public LabelHash getLabelHash() {
@@ -86,4 +115,27 @@ public class GraphsContent {
         this.xmlVertList = xmlVertList;
     }
 
+    public Boolean getIsStepGraph() {
+        return isStepGraph;
+    }
+
+    public VertexList[] getStepGraphs() {
+        return stepGraphs;
+    }
+
+    public VertexList getStepGraphSelectedStepMinusOne() {
+        return stepGraphs[0];
+    }
+
+    public VertexList getStepGraphSelectedStep() {
+        return stepGraphs[1];
+    }
+
+    public Integer getNumSteps() {
+        return numSteps;
+    }
+
+    public Boolean getStepGraph() {
+        return isStepGraph;
+    }
 }

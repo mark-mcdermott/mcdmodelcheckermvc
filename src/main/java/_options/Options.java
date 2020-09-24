@@ -249,7 +249,7 @@ public class Options {
         return graphPanelsHeight;
     }
 
-    public int getGraphayout1AcrossWidth() {
+    public int getGraphLayout1AcrossWidth() {
         return graphayout1AcrossWidth;
     }
 
