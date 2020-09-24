@@ -268,8 +268,16 @@ public class View extends JFrame implements Observer {
         components.modelList.setListData(listsContent.getModels());
         components.loopTextarea.setText(listsContent.getLoops().toString());
         components.labelList.setListData(model.getLabelDisplay());
-        // populate results here
-        // if (model.getCheckedModel() != null) {
+        if (model.getAppState() == ANALY_RESULTS) {
+            components.resultDoesHoldField.setText(model.getDoesHold());
+            components.resultStatesField.setText(model.getStatesThatHold());
+            components.resultCounterExampleField.setText(model.getCounterExample());
+            components.resultTimeField.setText(model.getTime());
+        }
+
+
+
+
     }
 
     private void setSelections() {

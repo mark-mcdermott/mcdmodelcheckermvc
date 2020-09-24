@@ -137,4 +137,19 @@ public class Data {
     public void setCheckedModel(CheckedModel checkedModel) {
         this.checkedModel = checkedModel;
     }
+
+    public void setDoesHold(String doesHold) {
+        getListsContent().setDoesHold(doesHold);
+    }
+
+    public void setStatesThatHold(String statesThatHold) {
+        getListsContent().setStatesThatHold(statesThatHold);
+    }
+    public void setCounterExample(String counterExample) {
+        getListsContent().setCounterExample(counterExample);
+    }
+    public void setTime(String time) {
+        getListsContent().setTime(time);
+    }
+
 }

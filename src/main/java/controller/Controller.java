@@ -134,6 +134,10 @@ public class Controller {
         data.setListsContentStates(vertexArrListToArr(model.getInterleavingsKripke().S));
         data.setStateSelections(data.getListsContentStates()[0]);
         data.setCheckedModel(checkedModel);
+        data.setDoesHold(checkedModel.getResultDoesHold());
+        data.setStatesThatHold(checkedModel.getResultStatesThatHold());
+        data.setCounterExample(checkedModel.getResultCounterExample());
+        data.setCounterExample(checkedModel.getResultTime());
         model.setData(data);
     }
 

@@ -214,4 +214,34 @@ public class Model extends Observable {
         return getData().getCheckedModel();
     }
 
+    public String getDoesHold() {
+        return getData().getListsContent().getDoesHold();
+    }
+
+    public String getStatesThatHold() {
+        return getData().getListsContent().getStatesThatHold();
+    }
+
+    public String getCounterExample() {
+        return getData().getListsContent().getCounterExample();
+    }
+
+    public String getTime() {
+        return getData().getListsContent().getTime();
+    }
+
+    public void setDoesHold(String doesHold) {
+        getData().getListsContent().setDoesHold(doesHold);
+    }
+
+    public void setStatesThatHold(String statesThatHold) {
+        getData().getListsContent().setStatesThatHold(statesThatHold);
+    }
+    public void setCounterExample(String counterExample) {
+        getData().getListsContent().setCounterExample(counterExample);
+    }
+    public void setTime(String time) {
+        getData().getListsContent().setTime(time);
+    }
+
 }

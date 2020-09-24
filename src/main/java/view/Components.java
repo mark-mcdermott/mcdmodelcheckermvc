@@ -327,15 +327,6 @@ public class Components {
         labelScrollpane = new JScrollPane(labelList);
         labelScrollpane.setPreferredSize(new Dimension(150, 37));
         sidebarInner.add(labelScrollpane, labelListStyle);
-        // result label
-        /* resultTitle = new JLabel("Result");
-        resultTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        resultTitle.setFont(titleFont);
-        resultTitleStyle = new GridBagConstraints();
-        resultTitleStyle.gridx = 1;
-        resultTitleStyle.gridy = 16;
-        resultTitleStyle.fill = GridBagConstraints.HORIZONTAL;
-        sidebarInner.add(resultTitle, resultTitleStyle); */
         // result does hold
         resultDoesHoldTitle = new JLabel("Does hold:");
         resultDoesHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
