@@ -15,7 +15,6 @@ public class Components {
     public JPanel sidebarPaddingRight;
     public JTextArea instructionsTextarea;
     public GridBagConstraints instructionsTextareaStyle;
-    public GridBagConstraints getInstructionsTextareaStyle;
     public JLabel fileTitle;
     public GridBagConstraints fileTitleStyle;
     public JLabel displayTitle;
@@ -34,12 +33,24 @@ public class Components {
     public GridBagConstraints resultTitleStyle;
     public JLabel resultDoesHoldTitle;
     public GridBagConstraints resultDoesHoldTitleStyle;
+    public JTextArea resultDoesHoldField;
+    public GridBagConstraints resultDoesHoldFieldStyle;
     public JLabel resultStatesThatHoldTitle;
     public GridBagConstraints resultStatesThatHoldTitleStyle;
+    public JTextArea resultStatesField;
+    public GridBagConstraints resultStatesFieldStyle;
+    public JScrollPane resultStatesScrollpane;
+    public GridBagConstraints resultStatesScrollpaneStyle;
     public JLabel resultCounterExampleTitle;
     public GridBagConstraints resultCounterExampleTitleStyle;
+    public JTextArea resultCounterExampleField;
+    public GridBagConstraints resultCounterExampleFieldStyle;
+    public JScrollPane resultCounterExampleScrollpane;
+    public GridBagConstraints resultCounterExampleScrollpaneStyle;
     public JLabel resultTimeTitle;
     public GridBagConstraints resultTimeTitleStyle;
+    public JTextArea resultTimeField;
+    public GridBagConstraints resultTimeFieldStyle;
     public JList fileList;
     public GridBagConstraints fileListStyle;
     public JList displayList;
@@ -234,7 +245,8 @@ public class Components {
         stepListStyle.gridy = 7;
         stepListStyle.fill = GridBagConstraints.HORIZONTAL;
         stepScrollpane = new JScrollPane(stepList);
-        stepScrollpane.setPreferredSize(new Dimension(150, 67));
+        stepScrollpane.setPreferredSize(new Dimension(150, 30));
+        // stepScrollpane.setPreferredSize(new Dimension(150, 67));
         sidebarInner.add(stepScrollpane, stepListStyle);
         // models label
         modelTitle = new JLabel("Models");
@@ -293,7 +305,8 @@ public class Components {
         stateListStyle.gridx = 1;
         stateListStyle.gridy = 13;
         stateListStyle.fill = GridBagConstraints.HORIZONTAL;
-        stateScrollpane.setPreferredSize(new Dimension(150, 67));
+        stateScrollpane.setPreferredSize(new Dimension(150, 30));
+        // stateScrollpane.setPreferredSize(new Dimension(150, 67));
         sidebarInner.add(stateScrollpane, stateListStyle);
         // labels label
         labelTitle = new JLabel("Labels");
@@ -313,25 +326,32 @@ public class Components {
         labelListStyle.fill = GridBagConstraints.HORIZONTAL;
         labelScrollpane = new JScrollPane(labelList);
         labelScrollpane.setPreferredSize(new Dimension(150, 37));
+        sidebarInner.add(labelScrollpane, labelListStyle);
         // result label
-        /*
-        resultTitle = new JLabel("Result");
+        /* resultTitle = new JLabel("Result");
         resultTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         resultTitle.setFont(titleFont);
         resultTitleStyle = new GridBagConstraints();
         resultTitleStyle.gridx = 1;
         resultTitleStyle.gridy = 16;
         resultTitleStyle.fill = GridBagConstraints.HORIZONTAL;
-        sidebarInner.add(resultTitle, resultTitleStyle);
-        // result does hold label
+        sidebarInner.add(resultTitle, resultTitleStyle); */
+        // result does hold
         resultDoesHoldTitle = new JLabel("Does hold:");
         resultDoesHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         resultDoesHoldTitle.setFont(titleFont);
         resultDoesHoldTitleStyle = new GridBagConstraints();
         resultDoesHoldTitleStyle.gridx = 1;
-        resultDoesHoldTitleStyle.gridy = 17;
+        resultDoesHoldTitleStyle.gridy = 16;
         resultDoesHoldTitleStyle.fill = GridBagConstraints.HORIZONTAL;
         sidebarInner.add(resultDoesHoldTitle, resultDoesHoldTitleStyle);
+        resultDoesHoldField = new JTextArea();
+        resultDoesHoldField.setFont(listFont);
+        resultDoesHoldFieldStyle = new GridBagConstraints();
+        resultDoesHoldFieldStyle.gridx = 1;
+        resultDoesHoldFieldStyle.gridy = 17;
+        resultDoesHoldFieldStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultDoesHoldField, resultDoesHoldFieldStyle);
         // result states that hold label
         resultStatesThatHoldTitle = new JLabel("States that hold:");
         resultStatesThatHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
@@ -340,10 +360,48 @@ public class Components {
         resultStatesThatHoldTitleStyle.gridx = 1;
         resultStatesThatHoldTitleStyle.gridy = 18;
         resultStatesThatHoldTitleStyle.fill = GridBagConstraints.HORIZONTAL;
-        sidebarInner.add(resultDoesHoldTitle, resultStatesThatHoldTitleStyle);
-        sidebarInner.add(resultStatesThatHoldTitle, labelListStyle);
-        */
-
+        sidebarInner.add(resultStatesThatHoldTitle, resultStatesThatHoldTitleStyle);
+        resultStatesField = new JTextArea();
+        resultStatesField.setFont(listFont);
+        resultStatesFieldStyle = new GridBagConstraints();
+        resultStatesFieldStyle.gridx = 1;
+        resultStatesFieldStyle.gridy = 19;
+        resultStatesFieldStyle.fill = GridBagConstraints.HORIZONTAL;
+        resultStatesScrollpane = new JScrollPane(resultStatesField);
+        sidebarInner.add(resultStatesScrollpane, resultStatesFieldStyle);
+        // counter examples label
+        resultCounterExampleTitle = new JLabel("Counterexample:");
+        resultCounterExampleTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultCounterExampleTitle.setFont(titleFont);
+        resultCounterExampleTitleStyle = new GridBagConstraints();
+        resultCounterExampleTitleStyle.gridx = 1;
+        resultCounterExampleTitleStyle.gridy = 20;
+        resultCounterExampleTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultCounterExampleTitle, resultCounterExampleTitleStyle);
+        resultCounterExampleField = new JTextArea();
+        resultCounterExampleField.setFont(listFont);
+        resultCounterExampleFieldStyle = new GridBagConstraints();
+        resultCounterExampleFieldStyle.gridx = 1;
+        resultCounterExampleFieldStyle.gridy = 21;
+        resultCounterExampleFieldStyle.fill = GridBagConstraints.HORIZONTAL;
+        resultCounterExampleScrollpane = new JScrollPane(resultCounterExampleField);
+        sidebarInner.add(resultCounterExampleScrollpane, resultCounterExampleFieldStyle);
+        // time label
+        resultTimeTitle = new JLabel("Time:");
+        resultTimeTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultTimeTitle.setFont(titleFont);
+        resultTimeTitleStyle = new GridBagConstraints();
+        resultTimeTitleStyle.gridx = 1;
+        resultTimeTitleStyle.gridy = 22;
+        resultTimeTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultTimeTitle, resultTimeTitleStyle);
+        resultTimeField = new JTextArea();
+        resultTimeField.setFont(listFont);
+        resultTimeFieldStyle = new GridBagConstraints();
+        resultTimeFieldStyle.gridx = 1;
+        resultTimeFieldStyle.gridy = 23;
+        resultTimeFieldStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultTimeField, resultTimeFieldStyle);
     }
 
     public void analyzerGraphComponents() {
