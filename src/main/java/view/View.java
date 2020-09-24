@@ -44,7 +44,7 @@ public class View extends JFrame implements Observer {
         } else if (arg == "ANALY_COMP") {
             renderAnalyzerComparisonState();
         } else if (arg == "ANALY_RESULTS") {
-            // TODO!
+            renderAnalyzerResultsState();
         }
     }
 
@@ -57,6 +57,12 @@ public class View extends JFrame implements Observer {
     private void renderAnalyzerComparisonState() {
         initAnalyzer();
         drawGraphs(ANALY_COMP);
+        repaint();
+    }
+
+    private void renderAnalyzerResultsState() {
+        initAnalyzer();
+        drawGraphs(ANALY_RESULTS);
         repaint();
     }
 
@@ -151,7 +157,7 @@ public class View extends JFrame implements Observer {
         DrawGraph drawGraph = new DrawGraph(graphOptions3AcrossSpot1); // TODO maybe change the param name
         JPanel mainGraphPanel = components.mainGraphPanel;
 
-        if (appState == ANALY_DEFAULT) {
+        if (appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
             drawDefaultGraphs(drawGraph, type);
         } else if (appState == ANALY_COMP) {
             drawComparisonGraphs(drawGraph, type);
@@ -262,6 +268,8 @@ public class View extends JFrame implements Observer {
         components.modelList.setListData(listsContent.getModels());
         components.loopTextarea.setText(listsContent.getLoops().toString());
         components.labelList.setListData(model.getLabelDisplay());
+        // populate results here
+        // if (model.getCheckedModel() != null) {
     }
 
     private void setSelections() {
@@ -270,7 +278,7 @@ public class View extends JFrame implements Observer {
         components.displayList.setSelectedIndex(getIndexFromListElem(selections.getDisplay().toString(), components.displayList));
         if (selections.getStep() != null) { components.stepList.setSelectedIndex(getIndexFromListElem(selections.getStep().toString(), components.stepList)); }
         if (selections.getModel() != null) { components.modelList.setSelectedIndex(getIndexFromListElem(selections.getModel(), components.modelList)); }
-        if (selections.getState() != null) { components.stateList.setSelectedIndex(getIndexFromListElem(selections.getState(), components.stateList)); }
+        if (selections.getState() != null) { components.stateList.setSelectedIndex(getIndexFromListElem(selections.getState().getName(), components.stateList)); }
     }
 
 }

@@ -7,7 +7,7 @@ import controller.types.graph.Vertex;
 
 import java.util.ArrayList;
 
-public class ModelCheckResult {
+public class CheckedModel {
     private String model;
     private Kripke kripke;
     private Vertex stateToCheck;
@@ -19,8 +19,13 @@ public class ModelCheckResult {
     private String resultStr;
     private LabelHash labelHash;
     private StatesThatHoldForModel statesThatHoldForModel;
+    private String resultDoesHold;
+    private String resultStatesThatHold;
+    private String resultCounterExample;
+    private String resultTime;
 
-    public ModelCheckResult(
+
+    public CheckedModel(
             String model,
             Kripke kripke,
             String stateToCheckStr,
@@ -31,7 +36,11 @@ public class ModelCheckResult {
             float stopWatchTime,
             String resultStr,
             LabelHash labelHash,
-            StatesThatHoldForModel statesThatHoldForModel
+            StatesThatHoldForModel statesThatHoldForModel,
+            String resultDoesHold,
+            String resultStatesThatHold,
+            String resultCounterExample,
+            String resultTime
     ) {
         this.model = model;
         this.kripke = kripke;
@@ -44,6 +53,10 @@ public class ModelCheckResult {
         this.resultStr = resultStr;
         this.labelHash = labelHash;
         this.statesThatHoldForModel = statesThatHoldForModel;
+        this.resultDoesHold = resultDoesHold;
+        this.resultStatesThatHold = resultStatesThatHold;
+        this.resultCounterExample = resultCounterExample;
+        this.resultTime = resultTime;
     }
 
     public Kripke getKripke() {
@@ -124,6 +137,22 @@ public class ModelCheckResult {
 
     public StatesThatHoldForModel getStatesThatHoldForModel() {
         return statesThatHoldForModel;
+    }
+
+    public String getResultCounterExample() {
+        return resultCounterExample;
+    }
+
+    public String getResultDoesHold() {
+        return resultDoesHold;
+    }
+
+    public String getResultStatesThatHold() {
+        return resultStatesThatHold;
+    }
+
+    public String getResultTime() {
+        return resultTime;
     }
 
 }

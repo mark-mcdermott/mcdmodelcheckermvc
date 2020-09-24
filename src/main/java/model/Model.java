@@ -3,7 +3,9 @@ package model;
 import controller.types.ctl.Kripke;
 import controller.types.data.*;
 import controller.types.graph.LabelHash;
+import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
+import controller.types.modelChecking.CheckedModel;
 import controller.utils.ExceptionMessage;
 
 import java.io.File;
@@ -124,7 +126,7 @@ public class Model extends Observable {
         return getData().getListsContent().getLoops();
     }
 
-    public String[] getStates() {
+    public Vertex[] getStates() {
         return getData().getListsContent().getStates();
     }
 
@@ -152,7 +154,7 @@ public class Model extends Observable {
         getData().getListsContent().setLoops(loops);
     }
 
-    public void setStates(String[] states) {
+    public void setStates(Vertex[] states) {
         getData().getListsContent().setStates(states);
     }
 
@@ -204,8 +206,12 @@ public class Model extends Observable {
         return getData().getGraphsContent().getLabelHash().getLabelDisplayListArr();
     }
 
-    public String getSelectedState() {
+    public Vertex getSelectedState() {
         return getData().getSelections().getState();
+    }
+
+    public CheckedModel getCheckedModel() {
+        return getData().getCheckedModel();
     }
 
 }

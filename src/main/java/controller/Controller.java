@@ -12,7 +12,7 @@ import controller.types.data.*;
 import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
-import controller.types.modelChecking.ModelCheckResult;
+import controller.types.modelChecking.CheckedModel;
 import controller.utils.ExceptionMessage;
 import model.Model;
 import org.xml.sax.SAXException;
@@ -22,6 +22,7 @@ import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static controller.types.data.AppState.*;
@@ -123,14 +124,16 @@ public class Controller {
         String selectedModel = getListSelection(components.modelList);
 
         // check model here
-        ModelCheckResult modelCheckResult = runModelChecker(selectedModel, model, model.getLabelHash());
+        Vertex[] states = vertexArrListToArr(model.getInterleavingsKripke().S);
+        Vertex selectedState = states[0];
+        CheckedModel checkedModel = runModelChecker(selectedModel, model, model.getLabelHash(), states, selectedState);
 
         Data data = model.getData();
         data.setAppState(ANALY_RESULTS);
         data.setModelSelections(selectedModel);
-        data.setListsContentStates(model.getInterleavingsKripke().S);
-        data.setStateSelections("s0");
-        // set model check result to data here
+        data.setListsContentStates(vertexArrListToArr(model.getInterleavingsKripke().S));
+        data.setStateSelections(data.getListsContentStates()[0]);
+        data.setCheckedModel(checkedModel);
         model.setData(data);
     }
 
@@ -142,7 +145,14 @@ public class Controller {
         return interKripke.S.size();
     }
 
-    String[] getStateStrListFromNumStates(Integer numStates) {
+    private Vertex[] vertexArrListToArr(ArrayList<Vertex> arrList) {
+        ArrayList<Vertex> statesArrList = model.getInterleavingsKripke().S;
+        Vertex[] statesArr = new Vertex[statesArrList.size()];
+        statesArrList.toArray(statesArr);
+        return statesArr;
+    }
+
+    private String[] getStateStrListFromNumStates(Integer numStates) {
         String[] stateStrList = new String[numStates];
         for (Integer i=0; i<numStates; i++) {
             stateStrList[i] = Integer.toString(i);
@@ -150,17 +160,17 @@ public class Controller {
         return stateStrList;
     }
 
-    public ModelCheckResult runModelChecker(String selectedModel, Model model, LabelHash labelHash) {
+    public CheckedModel runModelChecker(String selectedModel, Model model, LabelHash labelHash, Vertex[] states, Vertex stateToCheck) {
 
         // get items needed for the model checking from the model
         Kripke kripke = model.getInterleavingsKripke();
         int loops = model.getLoops();
-        Vertex stateToCheck = getVertexFromStateName(model.getSelectedState(), model.getInterleavingsVertexList());
+        // Vertex stateToCheck = model.getSelectedState();
 
         // run the model checker
         ModelChecker modelChecker = new ModelChecker(selectedModel, kripke, stateToCheck, loops, labelHash);
-        ModelCheckResult modelCheckResult = modelChecker.getModelCheckResult();
-        return modelCheckResult;
+        CheckedModel checkedModel = modelChecker.getCheckedModel();
+        return checkedModel;
 
     }
 
@@ -214,7 +224,7 @@ public class Controller {
         Integer step = null;
         String model = "⊤";
         Integer loop = 0;
-        String state = null;
+        Vertex state = null;
         return new Selections(files, displayType, step, model, loop, state);
     }
 
@@ -224,7 +234,7 @@ public class Controller {
         Integer[] steps = null;
         String[] models = new Models().getModels1Var();
         Integer loops = 0;
-        String[] states = null;
+        Vertex[] states = null;
         String[] labels = null;
         return new ListsContent(files, displays, steps, models, loops, states, labels);
     }

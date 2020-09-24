@@ -7,7 +7,6 @@ import controller.types.graph.LabelHash;
 import controller.types.graph.Set;
 import controller.types.graph.Vertex;
 import controller.types.modelChecking.*;
-import controller.analyzer.ctlCompiler.CtlCompiler;
 import controller.utils.ExceptionMessage;
 
 import java.time.Duration;
@@ -15,11 +14,13 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import static controller.types.modelChecking.DoesHold.DOES_NOT_HOLD;
+import static controller.types.modelChecking.DoesHold.HOLDS;
 import static controller.utils.Utils.getLineNumber;
 
 public class ModelChecker {
 
-    private ModelCheckResult modelCheckResult;
+    private CheckedModel checkedModel;
 
     public ModelChecker(
             String model,
@@ -64,7 +65,7 @@ public class ModelChecker {
         statesThatHoldStrArrList = getStatesThatHoldStrArrList(statesThatHold);
         // statesThatHoldForModel = new StatesThatHoldForModel(model, statesThatHoldStrArrList);
         statesThatHoldForModel = new StatesThatHoldForModel(model, statesThatHold);
-        Boolean doesStateHold = doesStateHold(statesThatHold, stateToCheck);
+        Boolean doesStateHold = doesHoldBool(statesThatHold, stateToCheck);
         Instant stopWatchEnd = Instant.now();
         Double stopWatchSecs = durationToSecs(stopWatchStart, stopWatchEnd);
         counterExamplePaths = statesThatHoldAndCounterExamples.getCounterExamples();
@@ -72,8 +73,13 @@ public class ModelChecker {
         resultStr = getResultStr(stateToCheck, doesStateHold, statesThatHoldForModel, model, labelHash, stopWatchSecs, counterExamplePaths);
         // resultStr = getResultStrWithNumSatisfyingNodes(stateToCheck, doesStateHold, model, labelHash, stopWatchSecs, counterExamplePaths, kripke);
 
+        // get new results strings
+        String resultDoesHold = getResultDoesHold(statesThatHold, stateToCheck);
+        String resultStatesThatHold = getResultStatesThatHold(statesThatHold);
+        String resultCounterExample = getResultCounterExample(counterExamplePaths);
+        String resultTime = getResultTime(stopWatchTime);
 
-        this.modelCheckResult = new ModelCheckResult(
+        this.checkedModel = new CheckedModel(
                 model,
                 kripke,
                 stateToCheckStr,
@@ -84,8 +90,16 @@ public class ModelChecker {
                 stopWatchTime,
                 resultStr,
                 labelHash,
-                statesThatHoldForModel
+                statesThatHoldForModel,
+                resultDoesHold,
+                resultStatesThatHold,
+                resultCounterExample,
+                resultTime
         );
+    }
+
+    private String getResultTime(float stopWatchTime) {
+        return String.valueOf(stopWatchTime);
     }
 
     private ArrayList<String> getStatesThatHoldStrArrList(Set statesThatHold) {
@@ -96,7 +110,24 @@ public class ModelChecker {
         return statesThatHoldStrArrList;
     }
 
-    private Boolean doesStateHold(Set statesThatHold, Vertex stateToCheck) {
+    private String getResultCounterExample(CounterExamples counterExamples) {
+        return counterExamples.toString();
+    }
+
+    private String getResultStatesThatHold(Set statesThatHold) {
+        return statesThatHold.toString();
+    }
+
+    private String getResultDoesHold(Set statesThatHold, Vertex stateToCheck) {
+        return getDoesHoldFromBool(doesHoldBool(statesThatHold, stateToCheck)).toString();
+    }
+
+    private DoesHold getDoesHoldFromBool(Boolean doesHoldBool) {
+        DoesHold doesHold = doesHoldBool ? HOLDS : DOES_NOT_HOLD;
+        return doesHold;
+    }
+
+    private Boolean doesHoldBool(Set statesThatHold, Vertex stateToCheck) {
         String stateToCheckStr = stateToCheck.getName();
         Boolean holds = false;
         if (statesThatHold == null || statesThatHold.states().size() == 0) {
@@ -232,8 +263,8 @@ public class ModelChecker {
         return resultsStr;
     }
 
-    public ModelCheckResult getCtlResult() {
-        return modelCheckResult;
+    public CheckedModel getCtlResult() {
+        return checkedModel;
     }
 
     // helpers
@@ -280,8 +311,8 @@ public class ModelChecker {
         return holdingStatesStr;
     }
 
-    public ModelCheckResult getModelCheckResult() {
-        return modelCheckResult;
+    public CheckedModel getCheckedModel() {
+        return checkedModel;
     }
 
 }

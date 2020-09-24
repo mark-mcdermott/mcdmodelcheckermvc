@@ -32,6 +32,14 @@ public class Components {
     public GridBagConstraints labelTitleStyle;
     public JLabel resultTitle;
     public GridBagConstraints resultTitleStyle;
+    public JLabel resultDoesHoldTitle;
+    public GridBagConstraints resultDoesHoldTitleStyle;
+    public JLabel resultStatesThatHoldTitle;
+    public GridBagConstraints resultStatesThatHoldTitleStyle;
+    public JLabel resultCounterExampleTitle;
+    public GridBagConstraints resultCounterExampleTitleStyle;
+    public JLabel resultTimeTitle;
+    public GridBagConstraints resultTimeTitleStyle;
     public JList fileList;
     public GridBagConstraints fileListStyle;
     public JList displayList;
@@ -305,7 +313,37 @@ public class Components {
         labelListStyle.fill = GridBagConstraints.HORIZONTAL;
         labelScrollpane = new JScrollPane(labelList);
         labelScrollpane.setPreferredSize(new Dimension(150, 37));
-        sidebarInner.add(labelScrollpane, labelListStyle);
+        // result label
+        /*
+        resultTitle = new JLabel("Result");
+        resultTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultTitle.setFont(titleFont);
+        resultTitleStyle = new GridBagConstraints();
+        resultTitleStyle.gridx = 1;
+        resultTitleStyle.gridy = 16;
+        resultTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultTitle, resultTitleStyle);
+        // result does hold label
+        resultDoesHoldTitle = new JLabel("Does hold:");
+        resultDoesHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultDoesHoldTitle.setFont(titleFont);
+        resultDoesHoldTitleStyle = new GridBagConstraints();
+        resultDoesHoldTitleStyle.gridx = 1;
+        resultDoesHoldTitleStyle.gridy = 17;
+        resultDoesHoldTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultDoesHoldTitle, resultDoesHoldTitleStyle);
+        // result states that hold label
+        resultStatesThatHoldTitle = new JLabel("States that hold:");
+        resultStatesThatHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultStatesThatHoldTitle.setFont(titleFont);
+        resultStatesThatHoldTitleStyle = new GridBagConstraints();
+        resultStatesThatHoldTitleStyle.gridx = 1;
+        resultStatesThatHoldTitleStyle.gridy = 18;
+        resultStatesThatHoldTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultDoesHoldTitle, resultStatesThatHoldTitleStyle);
+        sidebarInner.add(resultStatesThatHoldTitle, labelListStyle);
+        */
+
     }
 
     public void analyzerGraphComponents() {

@@ -1,6 +1,8 @@
 package controller.types.data;
 
 import controller.types.graph.Vertex;
+import controller.types.modelChecking.CheckedModel;
+
 
 public class Data {
 
