@@ -72,10 +72,21 @@ public class GetGraphs {
                     stepGraphs[0] = transVertListSelectedStepMinusOne;
                     stepGraphs[1] = transVertListSelectedStep;
                     graphsContent = new GraphsContent(xmlVertList, labelHash, numSteps, stepGraphs);
-                    // graphsContent = new GraphsContent(xmlVertList, labelHash, stepGraphs);
 
                 } else if (displayType == INTER_COMP) {
 
+                    VertexList testInterVertListForTotalNumSteps;
+                    VertexList interVertListSelectedStep;
+                    VertexList interVertListSelectedStepMinusOne;
+
+                    testInterVertListForTotalNumSteps = getInterVertList(xmlVertList, translate, numLoops, false, false, null);
+                    interVertListSelectedStep = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, false, selectedStep);
+                    interVertListSelectedStepMinusOne = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, true, selectedStep);
+                    int numSteps = testInterVertListForTotalNumSteps.getNumTotalSteps();
+                    VertexList[] stepGraphs = new VertexList[2];
+                    stepGraphs[0] = interVertListSelectedStepMinusOne;
+                    stepGraphs[1] = interVertListSelectedStep;
+                    graphsContent = new GraphsContent(xmlVertList, labelHash, numSteps, stepGraphs);
                 }
             }
 
@@ -162,8 +173,8 @@ public class GetGraphs {
     }
 
     private VertexList getInterVertList(VertexList xmlVertList, Translate translate, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
-        VertexList transVertList = translate.getTransVertListWithInters(xmlVertList, numLoops, isStepSelected, prevStep, null);
-        return transVertList;
+        VertexList interVertList = translate.getTransVertListWithInters(xmlVertList, numLoops, isStepSelected, prevStep, selectedStep);
+        return interVertList;
     }
 
     private File getCacheFileFromFilename(String filename, File[] xmlFileCache) {

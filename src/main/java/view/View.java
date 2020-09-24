@@ -164,16 +164,11 @@ public class View extends JFrame implements Observer {
             drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep);
 
             if (type == TRANS_COMP) {
-
-
                 components.graphPanel1Title.setText("Translation Step " + stepXMinus1.toString());
                 components.graphPanel2Title.setText("Translation Step " + stepX.toString());
-
             } else if (type == INTER_COMP) {
-
                 components.graphPanel1Title.setText("Interleavings Step " + stepXMinus1.toString());
                 components.graphPanel2Title.setText("Interleavings Step " + stepX.toString());
-
             }
 
         } else if (type == ALL_GRAPHS) {
