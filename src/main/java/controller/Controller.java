@@ -51,6 +51,7 @@ public class Controller {
             data.setFileSelections(selectedFiles);
             data.setDisplaySelections(ALL_GRAPHS);
             data.setStepSelections(null);
+            data.setModelSelections("⊤");
             data.setGraphsContent(graphsContent);
             data.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
             model.setData(data);
@@ -107,7 +108,6 @@ public class Controller {
 
     public void handleStepListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         Integer selectedStep = Integer.parseInt(getListSelection(components.stepList));
-
         GraphsContent graphsContent = getGraphsContent(selectedStep, model);
         Data data = model.getData();
         data.setStepSelections(selectedStep);
@@ -117,10 +117,11 @@ public class Controller {
 
     public void handleModelListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         String selectedModel = getListSelection(components.modelList);
-
+        // check model here
         Data data = model.getData();
-        data.setModelSelections(selectedModel);
         data.setAppState(ANALY_RESULTS);
+        data.setModelSelections(selectedModel);
+        // set model check result to data here
         model.setData(data);
     }
 
@@ -163,7 +164,7 @@ public class Controller {
         String[] files = {"TwoSteps.ljx"};
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
-        String model = null;
+        String model = "⊤";
         Integer loop = 0;
         String state = null;
         return new Selections(files, displayType, step, model, loop, state);

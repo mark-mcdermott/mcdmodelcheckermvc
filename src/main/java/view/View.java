@@ -263,6 +263,7 @@ public class View extends JFrame implements Observer {
         }
         components.modelList.setListData(listsContent.getModels());
         components.loopTextarea.setText(listsContent.getLoops().toString());
+        components.labelList.setListData(model.getLabelDisplay());
     }
 
     private void setSelections() {

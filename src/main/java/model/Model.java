@@ -201,4 +201,8 @@ public class Model extends Observable {
         return getData().getGraphsContent().getStepGraphs()[1];
     }
 
+    public String[] getLabelDisplay() {
+        return getData().getGraphsContent().getLabelHash().getLabelDisplayListArr();
+    }
+
 }
