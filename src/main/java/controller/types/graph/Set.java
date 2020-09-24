@@ -141,6 +141,19 @@ public class Set {
         return set;
     }
 
+    public String toString() {
+        String resultStr = "{";
+        for (int i=0; i<states.size(); i++) {
+            Vertex vertex = states.get(i);
+            resultStr = resultStr + vertex.getName();
+            if (i<states.size() - 1) {
+                resultStr = resultStr + ",";
+            }
+        }
+        resultStr = resultStr + "}";
+        return resultStr;
+    }
+
     public int getNumStates() {
         return states.size();
     }

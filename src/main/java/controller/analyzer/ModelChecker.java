@@ -9,6 +9,7 @@ import controller.types.graph.Vertex;
 import controller.types.modelChecking.*;
 import controller.utils.ExceptionMessage;
 
+import java.text.DecimalFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -76,8 +77,8 @@ public class ModelChecker {
         // get new results strings
         String resultDoesHold = getResultDoesHold(statesThatHold, stateToCheck);
         String resultStatesThatHold = getResultStatesThatHold(statesThatHold);
-        String resultCounterExample = getResultCounterExample(counterExamplePaths);
-        String resultTime = getResultTime(stopWatchTime);
+        String resultCounterExample = getResultCounterExamples(counterExamplePaths);
+        String resultTime = getResultTime(stopWatchSecs);
 
         this.checkedModel = new CheckedModel(
                 model,
@@ -98,8 +99,24 @@ public class ModelChecker {
         );
     }
 
-    private String getResultTime(float stopWatchTime) {
-        return String.valueOf(stopWatchTime);
+    private String addCommasToVertexArrList(ArrayList<Vertex> arrList) {
+        int len = arrList.size();
+        String result = "";
+        for (int i=0; i<len; i++) {
+            result += arrList.get(i).getName();
+            if (i<len-1) {
+                result += ",";
+            }
+        }
+        return result;
+    }
+
+
+
+    private String getResultTime(Double stopWatchTime) {
+        // from https://stackoverflow.com/a/14988679, accessed 9/24/20
+        // uses 16 decimal places if necessary, but removes all trailing zeros
+        return new DecimalFormat("0.################").format(stopWatchTime) + " seconds";
     }
 
     private ArrayList<String> getStatesThatHoldStrArrList(Set statesThatHold) {
@@ -110,12 +127,30 @@ public class ModelChecker {
         return statesThatHoldStrArrList;
     }
 
-    private String getResultCounterExample(CounterExamples counterExamples) {
-        return counterExamples.toString();
+    private String getPathStr(ArrayList<Vertex> pathVertices) {
+        return "(" + addCommasToVertexArrList(pathVertices) + ")";
+    }
+
+    private String getResultCounterExamples(CounterExamples counterExamples) {
+        if (counterExamples != null) {
+            ArrayList<CounterExample> cntrExmplList = counterExamples.getCounterExamples();
+            String result = "";
+            int numCntrExmpl = cntrExmplList.size();
+            for (int i = 0; i < numCntrExmpl; i++) {
+                ArrayList cntrExmpl = cntrExmplList.get(i).getCounterExample();
+                result += getPathStr(cntrExmpl);
+                if (i < numCntrExmpl - 1) {
+                    result += "\n";
+                }
+            }
+            return result;
+        } else {
+            return "-";
+        }
     }
 
     private String getResultStatesThatHold(Set statesThatHold) {
-        return statesThatHold.toString();
+        return statesThatHold.toString().equals("{}") ? "No states hold" : statesThatHold.toString();
     }
 
     private String getResultDoesHold(Set statesThatHold, Vertex stateToCheck) {

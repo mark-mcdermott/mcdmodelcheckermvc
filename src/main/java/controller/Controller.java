@@ -137,7 +137,7 @@ public class Controller {
         data.setDoesHold(checkedModel.getResultDoesHold());
         data.setStatesThatHold(checkedModel.getResultStatesThatHold());
         data.setCounterExample(checkedModel.getResultCounterExample());
-        data.setCounterExample(checkedModel.getResultTime());
+        data.setTime(checkedModel.getResultTime());
         model.setData(data);
     }
 
@@ -226,7 +226,8 @@ public class Controller {
         String[] files = {"TwoSteps.ljx"};
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
-        String model = "⊤";
+        // String model = "⊤";
+        String model = null;
         Integer loop = 0;
         Vertex state = null;
         return new Selections(files, displayType, step, model, loop, state);

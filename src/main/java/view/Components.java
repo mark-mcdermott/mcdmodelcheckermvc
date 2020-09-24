@@ -328,7 +328,7 @@ public class Components {
         labelScrollpane.setPreferredSize(new Dimension(150, 37));
         sidebarInner.add(labelScrollpane, labelListStyle);
         // result does hold
-        resultDoesHoldTitle = new JLabel("Does hold:");
+        resultDoesHoldTitle = new JLabel("Does selected state hold:");
         resultDoesHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         resultDoesHoldTitle.setFont(titleFont);
         resultDoesHoldTitleStyle = new GridBagConstraints();
@@ -344,7 +344,7 @@ public class Components {
         resultDoesHoldFieldStyle.fill = GridBagConstraints.HORIZONTAL;
         sidebarInner.add(resultDoesHoldField, resultDoesHoldFieldStyle);
         // result states that hold label
-        resultStatesThatHoldTitle = new JLabel("States that hold:");
+        resultStatesThatHoldTitle = new JLabel("All states in graph that hold for property:");
         resultStatesThatHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         resultStatesThatHoldTitle.setFont(titleFont);
         resultStatesThatHoldTitleStyle = new GridBagConstraints();
@@ -361,7 +361,7 @@ public class Components {
         resultStatesScrollpane = new JScrollPane(resultStatesField);
         sidebarInner.add(resultStatesScrollpane, resultStatesFieldStyle);
         // counter examples label
-        resultCounterExampleTitle = new JLabel("Counterexample:");
+        resultCounterExampleTitle = new JLabel("Counterexample path(s):");
         resultCounterExampleTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         resultCounterExampleTitle.setFont(titleFont);
         resultCounterExampleTitleStyle = new GridBagConstraints();
