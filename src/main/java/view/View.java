@@ -45,6 +45,8 @@ public class View extends JFrame implements Observer {
             renderAnalyzerDefaultState();
         } else if (arg == "ANALY_COMP") {
             renderAnalyzerComparisonState();
+        } else if (arg == "ANALY_RESULTS") {
+            // TODO!
         }
     }
 
@@ -74,6 +76,7 @@ public class View extends JFrame implements Observer {
         addAnalyzerListListener(components.fileList, components, model);        // file list listener
         addAnalyzerListListener(components.displayList, components, model);     // display list listener
         addAnalyzerListListener(components.stepList, components, model);        // step list listener
+        addAnalyzerListListener(components.modelList, components, model);        // model list listener
     }
 
     // adds a specific listener (handles all of them, just chooses one at a time - depending on params)
@@ -90,6 +93,18 @@ public class View extends JFrame implements Observer {
                     } else if (list == components.stepList) {
                         try {
                             controller.handleStepListClick(components, model);
+                        } catch (SAXException saxException) {
+                            saxException.printStackTrace();
+                        } catch (ParserConfigurationException parserConfigurationException) {
+                            parserConfigurationException.printStackTrace();
+                        } catch (ExceptionMessage exceptionMessage) {
+                            exceptionMessage.printStackTrace();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
+                    } else if (list == components.modelList) {
+                        try {
+                            controller.handleModelListClick(components, model);
                         } catch (SAXException saxException) {
                             saxException.printStackTrace();
                         } catch (ParserConfigurationException parserConfigurationException) {
@@ -143,34 +158,7 @@ public class View extends JFrame implements Observer {
         if (type == XML_ONLY || type == TRANS_ONLY || type == INTER_ONLY) {
             drawOneAcrossGraph(drawGraph, type);
         } else if (type == TRANS_COMP || type == INTER_COMP ) {
-
-            // setup two-across graph styles
-            components.mainGraphPanel.remove(components.graphPanel1);
-            components.mainGraphPanel.remove(components.graphPanel2);
-            components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());
-            components.mainGraphPanel.add(components.graphPanel2, new BorderLayout());
-            components.graphPanel1.add(components.graphPanel1Title, PAGE_START);
-            components.graphPanel2.add(components.graphPanel2Title, PAGE_START);
-            components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayout2AcrossWidth(), options.getGraphLayoutsHeight()));
-            components.graphPanel2.setPreferredSize(new Dimension(options.getGraphLayout2AcrossWidth(), options.getGraphLayoutsHeight()));
-
-            VertexList stepGraphSelectedStepMinusOne = model.getStepGraphSelectedStepMinusOne();
-            VertexList stepGraphSelectedStep = model.getStepGraphSelectedStep();
-
-            Integer stepX = stepGraphSelectedStep.getNumTotalSteps();
-            Integer stepXMinus1 = stepX - 1;
-
-            drawGraph.drawGraph(components.graphPanel1, stepGraphSelectedStepMinusOne);
-            drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep);
-
-            if (type == TRANS_COMP) {
-                components.graphPanel1Title.setText("Translation Step " + stepXMinus1.toString());
-                components.graphPanel2Title.setText("Translation Step " + stepX.toString());
-            } else if (type == INTER_COMP) {
-                components.graphPanel1Title.setText("Interleavings Step " + stepXMinus1.toString());
-                components.graphPanel2Title.setText("Interleavings Step " + stepX.toString());
-            }
-
+            drawTwoAcrossGraphs(drawGraph, type);
         } else if (type == ALL_GRAPHS) {
             drawThreeAcrossGraphs(drawGraph);
         }
@@ -192,6 +180,35 @@ public class View extends JFrame implements Observer {
         } else if (displayType == INTER_ONLY) {
             drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList());
             components.graphPanel1Title.setText("Interleavings");
+        }
+    }
+
+    private void drawTwoAcrossGraphs(DrawGraph drawGraph, DisplayType type) {
+        // setup two-across graph styles
+        components.mainGraphPanel.remove(components.graphPanel1);
+        components.mainGraphPanel.remove(components.graphPanel2);
+        components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());
+        components.mainGraphPanel.add(components.graphPanel2, new BorderLayout());
+        components.graphPanel1.add(components.graphPanel1Title, PAGE_START);
+        components.graphPanel2.add(components.graphPanel2Title, PAGE_START);
+        components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayout2AcrossWidth(), options.getGraphLayoutsHeight()));
+        components.graphPanel2.setPreferredSize(new Dimension(options.getGraphLayout2AcrossWidth(), options.getGraphLayoutsHeight()));
+
+        VertexList stepGraphSelectedStepMinusOne = model.getStepGraphSelectedStepMinusOne();
+        VertexList stepGraphSelectedStep = model.getStepGraphSelectedStep();
+
+        Integer stepX = stepGraphSelectedStep.getNumTotalSteps();
+        Integer stepXMinus1 = stepX - 1;
+
+        drawGraph.drawGraph(components.graphPanel1, stepGraphSelectedStepMinusOne);
+        drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep);
+
+        if (type == TRANS_COMP) {
+            components.graphPanel1Title.setText("Translation Step " + stepXMinus1.toString());
+            components.graphPanel2Title.setText("Translation Step " + stepX.toString());
+        } else if (type == INTER_COMP) {
+            components.graphPanel1Title.setText("Interleavings Step " + stepXMinus1.toString());
+            components.graphPanel2Title.setText("Interleavings Step " + stepX.toString());
         }
     }
 

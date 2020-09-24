@@ -20,8 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static controller.types.data.AppState.ANALY_COMP;
-import static controller.types.data.AppState.ANALY_DEFAULT;
+import static controller.types.data.AppState.*;
 import static controller.types.data.DisplayType.*;
 // import static controller.types.data.AppState.INITIAL_RUN;
 
@@ -113,6 +112,15 @@ public class Controller {
         Data data = model.getData();
         data.setStepSelections(selectedStep);
         data.setGraphsContent(graphsContent);
+        model.setData(data);
+    }
+
+    public void handleModelListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+        String selectedModel = getListSelection(components.modelList);
+
+        Data data = model.getData();
+        data.setModelSelections(selectedModel);
+        data.setAppState(ANALY_RESULTS);
         model.setData(data);
     }
 
