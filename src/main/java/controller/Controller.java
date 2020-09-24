@@ -47,10 +47,11 @@ public class Controller {
     public void handleFileListClick(Components components, Model model) {
         String[] selectedFiles = getListSelections(components.fileList);
         try {
-            GraphsContent graphsContent = getGraphsContent(selectedFiles, model);
+            GraphsContent graphsContent = getGraphsContent(selectedFiles, ANALY_DEFAULT, ALL_GRAPHS, model, false);
             Data data = model.getData();
             data.setFileSelections(selectedFiles);
             data.setDisplaySelections(ALL_GRAPHS);
+            data.setStepSelections(null);
             data.setGraphsContent(graphsContent);
             data.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
             model.setData(data);
@@ -107,6 +108,7 @@ public class Controller {
 
     public void handleStepListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         Integer selectedStep = Integer.parseInt(getListSelection(components.stepList));
+
         GraphsContent graphsContent = getGraphsContent(selectedStep, model);
         Data data = model.getData();
         data.setStepSelections(selectedStep);
@@ -178,6 +180,13 @@ public class Controller {
     public GraphsContent getGraphsContent(String[] selectedFiles, Model model) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         Boolean isStepSelected = model.getSelectedStep() == null ? false : true;
         DisplayType displayType = model.getSelectedDisplay();
+        Integer selectedLoops = model.getLoops();
+        File[] xmlFileCache = model.getFilesCache();
+        Integer selectedStep = model.getSelectedStep() == null ? null : model.getSelectedStep();
+        return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
+    }
+
+    public GraphsContent getGraphsContent(String[] selectedFiles, AppState appState, DisplayType displayType, Model model, Boolean isStepSelected) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         Integer selectedLoops = model.getLoops();
         File[] xmlFileCache = model.getFilesCache();
         Integer selectedStep = model.getSelectedStep() == null ? null : model.getSelectedStep();

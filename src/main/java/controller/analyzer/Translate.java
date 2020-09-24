@@ -101,8 +101,8 @@ public class Translate {
         if (!isStepSelected) {
             vertexListToTranslate.setNumTotalSteps(numSteps);
         } else {
-            if (model.getSelectedStep() != null) {
-                vertexListToTranslate.setNumTotalSteps(model.getSelectedStep());
+            if (selectedStep != null) {
+                vertexListToTranslate.setNumTotalSteps(selectedStep);
             } else {
                 vertexListToTranslate.setNumTotalSteps(numSteps);
             }
