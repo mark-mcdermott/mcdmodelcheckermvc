@@ -4,6 +4,7 @@ import _options.DirectedGraphOptions;
 import _options.Options;
 import controller.Controller;
 import controller.types.data.*;
+import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
 import controller.utils.ExceptionMessage;
 import model.Model;
@@ -15,6 +16,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -79,7 +81,8 @@ public class View extends JFrame implements Observer {
         addAnalyzerListListener(components.fileList, components, model);        // file list listener
         addAnalyzerListListener(components.displayList, components, model);     // display list listener
         addAnalyzerListListener(components.stepList, components, model);        // step list listener
-        addAnalyzerListListener(components.modelList, components, model);        // model list listener
+        addAnalyzerListListener(components.modelList, components, model);       // model list listener
+        addAnalyzerListListener(components.stateList, components, model);       // state list listener
     }
 
     // adds a specific listener (handles all of them, just chooses one at a time - depending on params)
@@ -117,6 +120,8 @@ public class View extends JFrame implements Observer {
                         } catch (IOException ioException) {
                             ioException.printStackTrace();
                         }
+                    } else if (list == components.stateList) {
+                        controller.handleStateListClick(components, model);
                     }
                 }
             }
@@ -249,8 +254,11 @@ public class View extends JFrame implements Observer {
 
 
     private void analyzerShell(JFrame frame) {
+
+        String selectedState = model.getSelectedState() == null ? null : model.getSelectedState().getName();
+
         components.sharedComponents(frame);
-        components.analyzerComponents();
+        components.analyzerComponents(selectedState);
     }
 
     private void populateLists() {
@@ -265,15 +273,22 @@ public class View extends JFrame implements Observer {
         components.loopTextarea.setText(listsContent.getLoops().toString());
         components.labelList.setListData(model.getLabelDisplay());
         if (model.getAppState() == ANALY_RESULTS) {
+            components.stateList.setListData(getStateNameArrFromVertices(model.getInterleavingsVertexList().getList()));
             components.resultDoesHoldField.setText(model.getDoesHold());
             components.resultStatesField.setText(model.getStatesThatHold());
             components.resultCounterExampleField.setText(model.getCounterExample());
             components.resultTimeField.setText(model.getTime());
         }
 
+    }
 
-
-
+    private String[] getStateNameArrFromVertices(ArrayList<Vertex> vertices) {
+        int numVertices = vertices.size();
+        String[] states = new String[numVertices];
+        for (int i=0; i<numVertices; i++) {
+            states[i] = vertices.get(i).getName();
+        }
+        return states;
     }
 
     private void setSelections() {

@@ -2,6 +2,7 @@ package controller.types.data;
 
 import controller.types.ctl.Kripke;
 import controller.types.graph.LabelHash;
+import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
 
 public class GraphsContent {
@@ -15,6 +16,8 @@ public class GraphsContent {
     private LabelHash labelHash;
     private Boolean isStepGraph;
     private Integer numSteps;
+    private Integer[] steps;
+    private Vertex[] states;
     private VertexList[] stepGraphs;    // only not null if isStepGraph is true.
                                         // stepGraphs is either null or has two vertexList elements in array -
                                         // first element is the vertexList for targetStep - 1

@@ -98,8 +98,8 @@ public class Components {
         buttonsPanel();
     }
 
-    public void analyzerComponents() {
-        analyzerSidebarComponents();
+    public void analyzerComponents(String selectedState) {
+        analyzerSidebarComponents(selectedState);
         analyzerGraphComponents();
     }
 
@@ -174,7 +174,7 @@ public class Components {
     }
 
     // analyzer components
-    public void analyzerSidebarComponents() {
+    public void analyzerSidebarComponents(String selectedState) {
         instructionsTextarea = new JTextArea("Select your file(s), model and\nnumber of loops below");
         instructionsTextareaStyle = new GridBagConstraints();
         instructionsTextareaStyle.gridx = 1;
@@ -328,7 +328,8 @@ public class Components {
         labelScrollpane.setPreferredSize(new Dimension(150, 37));
         sidebarInner.add(labelScrollpane, labelListStyle);
         // result does hold
-        resultDoesHoldTitle = new JLabel("Does selected state hold:");
+        String doesHoldTitle = selectedState == null ? "Does selected state hold:" : "Does selected state " + selectedState + " hold:";
+        resultDoesHoldTitle = new JLabel(doesHoldTitle);
         resultDoesHoldTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         resultDoesHoldTitle.setFont(titleFont);
         resultDoesHoldTitleStyle = new GridBagConstraints();

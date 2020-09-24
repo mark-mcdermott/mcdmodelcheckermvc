@@ -69,7 +69,8 @@ public class ModelChecker {
         Boolean doesStateHold = doesHoldBool(statesThatHold, stateToCheck);
         Instant stopWatchEnd = Instant.now();
         Double stopWatchSecs = durationToSecs(stopWatchStart, stopWatchEnd);
-        counterExamplePaths = statesThatHoldAndCounterExamples.getCounterExamples();
+        // counterExamplePaths = statesThatHoldAndCounterExamples.getCounterExamples();
+        counterExamplePaths = doesStateHold ? null : statesThatHoldAndCounterExamples.getCounterExamples();
         // System.out.println("to change results string back, ModelChecker:69");
         resultStr = getResultStr(stateToCheck, doesStateHold, statesThatHoldForModel, model, labelHash, stopWatchSecs, counterExamplePaths);
         // resultStr = getResultStrWithNumSatisfyingNodes(stateToCheck, doesStateHold, model, labelHash, stopWatchSecs, counterExamplePaths, kripke);

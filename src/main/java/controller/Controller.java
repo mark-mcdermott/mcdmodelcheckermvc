@@ -124,21 +124,52 @@ public class Controller {
         String selectedModel = getListSelection(components.modelList);
 
         // check model here
-        Vertex[] states = vertexArrListToArr(model.getInterleavingsKripke().S);
+        String selectedFiles[] = model.getSelectedFiles();
+        GraphsContent graphsContent = getGraphsContent(selectedFiles, ANALY_DEFAULT, ALL_GRAPHS, model, false);
+        Kripke interKripke = graphsContent.getInterKripke();
+        Vertex[] states = vertexArrListToArr(interKripke.S);
         Vertex selectedState = states[0];
-        CheckedModel checkedModel = runModelChecker(selectedModel, model, model.getLabelHash(), states, selectedState);
-
+        int loops = model.getLoops();
+        CheckedModel checkedModel = runModelChecker(selectedModel, interKripke, loops, model.getLabelHash(), states, selectedState);
         Data data = model.getData();
         data.setAppState(ANALY_RESULTS);
+        data.setDisplaySelections(ALL_GRAPHS);
         data.setModelSelections(selectedModel);
-        data.setListsContentStates(vertexArrListToArr(model.getInterleavingsKripke().S));
+        // data.setListsContentStates(vertexArrListToArr(model.getInterleavingsKripke().S));
+        data.setListsContentStates(vertexArrListToArr(interKripke.S));
         data.setStateSelections(data.getListsContentStates()[0]);
+        data.setGraphsContent(graphsContent);
         data.setCheckedModel(checkedModel);
         data.setDoesHold(checkedModel.getResultDoesHold());
         data.setStatesThatHold(checkedModel.getResultStatesThatHold());
         data.setCounterExample(checkedModel.getResultCounterExample());
         data.setTime(checkedModel.getResultTime());
         model.setData(data);
+    }
+
+    public void handleStateListClick(Components components, Model model) {
+        String selectedStateStr = getListSelection(components.stateList);
+        VertexList interVertList = model.getInterleavingsVertexList();
+        Vertex selectedState = getVertexFromStateName(selectedStateStr, interVertList);
+
+        String selectedModel = model.getSelectedModel();
+        Kripke interKripke = model.getInterleavingsKripke();
+        int loops = model.getLoops();
+        Vertex[] states = model.getListsContent().getStates();
+        CheckedModel checkedModel = runModelChecker(selectedModel, interKripke, loops, model.getLabelHash(), states, selectedState);
+
+        if (selectedState == null) {
+            new ExceptionMessage("selectedState is null in handleStateListClick(), Controller.java");
+        } else {
+            Data data = model.getData();
+            data.setStateSelections(selectedState);
+            data.setCheckedModel(checkedModel);
+            data.setDoesHold(checkedModel.getResultDoesHold());
+            data.setStatesThatHold(checkedModel.getResultStatesThatHold());
+            data.setCounterExample(checkedModel.getResultCounterExample());
+            data.setTime((checkedModel.getResultTime()));
+            model.setData(data);
+        }
     }
 
     String[] getStatesFromKripke(Kripke interKripke) {
@@ -150,9 +181,9 @@ public class Controller {
     }
 
     private Vertex[] vertexArrListToArr(ArrayList<Vertex> arrList) {
-        ArrayList<Vertex> statesArrList = model.getInterleavingsKripke().S;
-        Vertex[] statesArr = new Vertex[statesArrList.size()];
-        statesArrList.toArray(statesArr);
+        // ArrayList<Vertex> statesArrList = model.getInterleavingsKripke().S;
+        Vertex[] statesArr = new Vertex[arrList.size()];
+        arrList.toArray(statesArr);
         return statesArr;
     }
 
@@ -164,15 +195,15 @@ public class Controller {
         return stateStrList;
     }
 
-    public CheckedModel runModelChecker(String selectedModel, Model model, LabelHash labelHash, Vertex[] states, Vertex stateToCheck) {
+    public CheckedModel runModelChecker(String selectedModel, Kripke interKripke, int numLoops, LabelHash labelHash, Vertex[] states, Vertex stateToCheck) {
 
         // get items needed for the model checking from the model
-        Kripke kripke = model.getInterleavingsKripke();
+        // Kripke kripke = model.getInterleavingsKripke();
         int loops = model.getLoops();
         // Vertex stateToCheck = model.getSelectedState();
 
         // run the model checker
-        ModelChecker modelChecker = new ModelChecker(selectedModel, kripke, stateToCheck, loops, labelHash);
+        ModelChecker modelChecker = new ModelChecker(selectedModel, interKripke, stateToCheck, loops, labelHash);
         CheckedModel checkedModel = modelChecker.getCheckedModel();
         return checkedModel;
 
