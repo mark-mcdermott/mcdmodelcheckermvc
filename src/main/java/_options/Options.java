@@ -133,7 +133,7 @@ public class Options {
 
     }
 
-    public DirectedGraphOptions graphOptions3AcrossSpot1() {
+    public DirectedGraphOptions graphOptions() {
         DirectedGraphOptions graphOptions3AcrossSpot1 = new DirectedGraphOptions(
                 xmlGraphNodeDiameter,
                 translationGraphLevel,

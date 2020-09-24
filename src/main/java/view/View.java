@@ -140,13 +140,9 @@ public class View extends JFrame implements Observer {
         return list.getModel().getElementAt(index).toString();
     }
 
-
-
-
-    // TODO maybe break into drawDefaultGraphs() and drawComparisonGraphs();
     private void drawGraphs(AppState appState) {
         // set up graph settings
-        DirectedGraphOptions graphOptions3AcrossSpot1 = options.graphOptions3AcrossSpot1();
+        DirectedGraphOptions graphOptions = options.graphOptions();
         Boolean isStepGraph = model.getSelectedStep() == null ? false : true;
         Integer selectedStep = null;
         if (isStepGraph) { selectedStep = model.getSelectedStep(); }
@@ -154,7 +150,7 @@ public class View extends JFrame implements Observer {
         // get necessary vars
         // AppState appState = model.getAppState();
         DisplayType type = model.getSelectedDisplay();
-        DrawGraph drawGraph = new DrawGraph(graphOptions3AcrossSpot1); // TODO maybe change the param name
+        DrawGraph drawGraph = new DrawGraph(graphOptions);
         JPanel mainGraphPanel = components.mainGraphPanel;
 
         if (appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
