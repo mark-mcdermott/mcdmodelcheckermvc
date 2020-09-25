@@ -546,6 +546,7 @@ public class Components {
         layoutSettings.anchor = GridBagConstraints.NONE;
         columnStyle = new GridBagConstraints();
         columnStyle.fill = GridBagConstraints.HORIZONTAL;
+        testsPanel = new JPanel();
         testsPanel.setLayout(new GridBagLayout());
         sidebarPanel = new JPanel(new GridBagLayout());
         col1 = new JPanel(new BorderLayout());

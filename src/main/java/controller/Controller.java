@@ -48,15 +48,14 @@ public class Controller {
 
     // handle listeners clicks
 
-    public void handleAnalyzerButtonClick() {
+    public void handleAnalyzerButtonClick() throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         setInitialData();
-        Data data = model.getData();
-        data.setAppState(ANALY_DEFAULT);
-        model.setData(data);
     }
 
     public void handleTesterButtonClick() {
-        // TODO
+        Data data = model.getData();
+        data.setAppState(TESTER);
+        model.setData(data);
     }
 
     // analyzer file list click

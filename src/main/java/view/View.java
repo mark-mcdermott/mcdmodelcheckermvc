@@ -49,6 +49,8 @@ public class View extends JFrame implements Observer {
             renderAnalyzerComparisonState();
         } else if (arg == "ANALY_RESULTS") {
             renderAnalyzerResultsState();
+        } else if (arg == "TESTER") {
+            renderTesterState();
         }
     }
 
@@ -70,6 +72,11 @@ public class View extends JFrame implements Observer {
         repaint();
     }
 
+    private void renderTesterState() {
+        initTester();
+        repaint();
+    }
+
     private void initAnalyzer() {
         this.getContentPane().removeAll();
         analyzerShell(this);
@@ -80,20 +87,34 @@ public class View extends JFrame implements Observer {
         // TODO: grayOutInactiveSections(appState)
     }
 
+    private void initTester() {
+        this.getContentPane().removeAll();
+        components.sharedComponents(this);
+        components.testerComponents();
+    }
+
 
     private void addButtonListeners() {
 
         components.analyzerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.handleAnalyzerButtonClick();
+                try {
+                    controller.handleAnalyzerButtonClick();
+                } catch (SAXException saxException) {
+                    saxException.printStackTrace();
+                } catch (ParserConfigurationException parserConfigurationException) {
+                    parserConfigurationException.printStackTrace();
+                } catch (ExceptionMessage exceptionMessage) {
+                    exceptionMessage.printStackTrace();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
         components.testerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-//                Data data = model.getData();
-//                data.setAppState(TESTER);
-//                model.setData(data);
+                controller.handleTesterButtonClick();
             }
         });
 
