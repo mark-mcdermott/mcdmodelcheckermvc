@@ -42,13 +42,25 @@ public class Controller {
     }
 
     public void setInitialData() throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
-        Data initialData = getInitalData(model.getFilesCache());
+        Data initialData = getInitalAnalyzerData(model.getFilesCache());
         model.setData(initialData);
     }
 
     // handle listeners clicks
-    // file list click
-    public void handleFileListClick(Components components, Model model) {
+
+    public void handleAnalyzerButtonClick() {
+        setInitialData();
+        Data data = model.getData();
+        data.setAppState(ANALY_DEFAULT);
+        model.setData(data);
+    }
+
+    public void handleTesterButtonClick() {
+        // TODO
+    }
+
+    // analyzer file list click
+    public void handleAnalyzerFileListClick(Components components, Model model) {
         String[] selectedFiles = getListSelections(components.fileList);
         try {
             GraphsContent graphsContent = getGraphsContent(selectedFiles, ANALY_DEFAULT, ALL_GRAPHS, model, false);
@@ -71,7 +83,7 @@ public class Controller {
         }
     }
 
-    // display list click
+    // analyzer display list click
     public void handleDisplayListClick(Components components, Model model) {
         DisplayType selectedDisplay = DisplayType.valueOf(getListSelection(components.displayList));
         Integer selectedStep = null;
@@ -111,6 +123,7 @@ public class Controller {
         }
     }
 
+    // analyzer step list click
     public void handleStepListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         Integer selectedStep = Integer.parseInt(getListSelection(components.stepList));
         GraphsContent graphsContent = getGraphsContent(selectedStep, model);
@@ -120,6 +133,7 @@ public class Controller {
         model.setData(data);
     }
 
+    // analyzer model list click
     public void handleModelListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         String selectedModel = getListSelection(components.modelList);
 
@@ -147,6 +161,7 @@ public class Controller {
         model.setData(data);
     }
 
+    // analyzer state list click
     public void handleStateListClick(Components components, Model model) {
         String selectedStateStr = getListSelection(components.stateList);
         VertexList interVertList = model.getInterleavingsVertexList();
@@ -170,6 +185,11 @@ public class Controller {
             data.setTime((checkedModel.getResultTime()));
             model.setData(data);
         }
+    }
+
+    // TODO
+    public void handleTesterFileListClick(Components components, Model model) {
+        // String[] selectedFiles = getListSelections(components.fileList);
     }
 
     String[] getStatesFromKripke(Kripke interKripke) {
@@ -323,7 +343,7 @@ public class Controller {
         return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
     }
 
-    private Data getInitalData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
+    private Data getInitalAnalyzerData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         // AppState appState = INITIAL_RUN;
         AppState appState = ANALY_DEFAULT;
         Selections selections = initialSelections();

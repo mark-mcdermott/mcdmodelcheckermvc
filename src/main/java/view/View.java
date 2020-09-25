@@ -15,6 +15,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -73,9 +75,30 @@ public class View extends JFrame implements Observer {
         analyzerShell(this);
         populateLists();
         setSelections();
+        addButtonListeners();
         addAnalyzerListeners();
         // TODO: grayOutInactiveSections(appState)
     }
+
+
+    private void addButtonListeners() {
+
+        components.analyzerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                controller.handleAnalyzerButtonClick();
+            }
+        });
+
+        components.testerButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+//                Data data = model.getData();
+//                data.setAppState(TESTER);
+//                model.setData(data);
+            }
+        });
+
+    }
+
 
     private void addAnalyzerListeners() {
         addAnalyzerListListener(components.fileList, components, model);        // file list listener
@@ -83,6 +106,10 @@ public class View extends JFrame implements Observer {
         addAnalyzerListListener(components.stepList, components, model);        // step list listener
         addAnalyzerListListener(components.modelList, components, model);       // model list listener
         addAnalyzerListListener(components.stateList, components, model);       // state list listener
+    }
+
+    private void addTesterListeners() {
+
     }
 
     // adds a specific listener (handles all of them, just chooses one at a time - depending on params)
@@ -93,7 +120,7 @@ public class View extends JFrame implements Observer {
 
                     // run through cases, call correct handler method in conroller (cumbersome code, but keeps addAnalyzerListeners() nice and clean)
                     if (list == components.fileList) {
-                        controller.handleFileListClick(components, model);
+                        controller.handleAnalyzerFileListClick(components, model);
                     } else if (list == components.displayList) {
                         controller.handleDisplayListClick(components, model);
                     } else if (list == components.stepList) {
@@ -122,6 +149,21 @@ public class View extends JFrame implements Observer {
                         }
                     } else if (list == components.stateList) {
                         controller.handleStateListClick(components, model);
+                    }
+                }
+            }
+        });
+    }
+
+    // adds tester listeners
+    private void addTesterListListener(JList list, Components components, Model model) {
+        list.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+
+                    // i think there's only one case on the tester - files
+                    if (list == components.fileList) {
+                        controller.handleTesterFileListClick(components, model);
                     }
                 }
             }

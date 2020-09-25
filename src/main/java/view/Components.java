@@ -1,13 +1,19 @@
 package view;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 public class Components {
 
+    // shared vars
     public JPanel mainPanel;
     public JPanel buttonsPanel;
     public GridBagConstraints buttonsPanelStyle;
+    public JButton analyzerButton;
+    public JButton testerButton;
+
+    // analyzer vars
     public JPanel sidebarWrapper;
     public JPanel sidebar;
     public JPanel sidebarInner;
@@ -90,6 +96,113 @@ public class Components {
     public JPanel graphPanel3;
     public GridBagConstraints graphPanel3Style;
 
+    // tester vars
+    public GridBagConstraints columnStyle;
+    public JPanel sidebarPanel;
+    public JPanel col1;
+    public JPanel col1Inner;
+    public JPanel col1LeftPadding;
+    public JLabel testerFileLabel;
+    public JList testerFileList;
+    public GridBagConstraints testerFileLabelStyle;
+    public GridBagConstraints testerFileListStyle;
+    public JTextArea allResultsTextarea;
+    public Border allResultsBorder;
+    public JLabel individualResultLabel;
+    public String actualLabelArr[];
+    public JList actualLabelList;
+    public String xmlActualArr[];
+    public JList testsXmlActualList;
+    public JPanel col1RightPadding;
+    public String expectedLabelArr[];
+    public JList expectedLabelList;
+    public String xmlExpectedArr[];
+    public JList testsXmlExpectedList;
+    public JPanel testsPanel;
+    public JPanel testerSpacerRight;
+    public JPanel testerSpacerBottom0;
+    public JPanel testerSpacerBottom1;
+    public JPanel testerSpacerBottom2;
+    public JPanel testerSpacerBottom3;
+    public Border individualResultBorder;
+    public JTextArea individualResultTextarea;
+    public JLabel allResultsLabel;
+    public String testsXmlExpectedTextAreaText;
+    public String testsXmlActualTextAreaText;
+    public String testsTranslationExpectedTextAreaText;
+    public String testsTranslationActualTextAreaText;
+    public String testsInterleavingsExpectedTextAreaText;
+    public String testsInterleavingsActualTextAreaText;
+    public String testsModelCheckingExpectedTextAreaText;
+    public String testsModelCheckingActualTextAreaText;
+    public JPanel testsXmlPanel;
+    public JLabel testsXmlTitle;
+    public GridBagConstraints xmlPanelGridPosition;
+    public JLabel testsXmlExpectedLabel;
+    public JScrollPane testsXmlExpectedScrollPane;
+    public JScrollPane testsXmlActualScrollPane;
+    public JTextArea testsXmlExpectedTextArea;
+    public JTextArea  testsXmlActualTextArea;
+    public JScrollPane testsTranslationExpectedScrollPane;
+    public JScrollPane testsTranslationActualScrollPane;
+    public JTextArea testsTranslationExpectedTextArea;
+    public JTextArea testsTranslationActualTextArea;
+    public JScrollPane testsInterleavingsExpectedScrollPane;
+    public JScrollPane testsInterleavingsActualScrollPane;
+    public JTextArea testsInterleavingsExpectedTextArea;
+    public JTextArea testsInterleavingsActualTextArea;
+    public JLabel testsXmlActualLabel;
+    public JSplitPane testsXmlExpectedSplitPane;
+    public JSplitPane testsXmlActualSplitPane;
+    public GridBagConstraints translationPanelGridPosition;
+    public JPanel testsTranslationPanel;
+    public JLabel testsTranslationTitle;
+    public JLabel testsTranslationExpectedLabel;
+    public JLabel testsTranslationActualLabel;
+    public JSplitPane testsTranslationExpectedSplitPane;
+    public JSplitPane testsTranslationActualSplitPane;
+    public JList testsTranslationExpectedList;
+    public JList testsTranslationActualList;
+    public String[] testsTranslationExpectedArr;
+    public String[] testsTranslationActualArr;
+    public GridBagConstraints interleavingsPanelGridPosition;
+    public JPanel testsInterleavingsPanel;
+    public JLabel testsInterleavingsTitle;
+    public JLabel testsInterleavingsExpectedLabel;
+    public JLabel testsInterleavingsActualLabel;
+    public JSplitPane testsInterleavingsExpectedSplitPane;
+    public JSplitPane testsInterleavingsActualSplitPane;
+    public JList testsInterleavingsExpectedList;
+    public JList testsInterleavingsActualList;
+    public String[] testsInterleavingsExpectedArr;
+    public String[] testsInterleavingsActualArr;
+    public GridBagConstraints modelCheckingPanelGridPosition;
+    public JPanel testsModelCheckingPanel;
+    public JLabel testsModelCheckingTitle;
+    public JLabel testsModelCheckingExpectedLabel;
+    public JLabel testsModelCheckingActualLabel;
+    public JSplitPane testsModelCheckingExpectedSplitPane;
+    public JSplitPane testsModelCheckingActualSplitPane;
+    public JList testsModelCheckingExpectedList;
+    public JList testsModelCheckingActualList;
+    public String[] testsModelCheckingExpectedArr;
+    public String[] testsModelCheckingActualArr;
+    public GridBagConstraints col1InnerStyle;
+    public GridBagConstraints individualResultLabelStyle;
+    public GridBagConstraints individualResultStyle;
+    public GridBagConstraints aggregateResultLabel;
+    public GridBagConstraints aggregateResultStyle;
+    public GridBagConstraints layoutSettings;
+    public GridBagConstraints testerSpacerRightStyle;
+    public GridBagConstraints testerSpacerBottom0Style;
+    public GridBagConstraints testerSpacerBottom1Style;
+    public GridBagConstraints testerSpacerBottom2Style;
+    public GridBagConstraints testerSpacerBottom3Style;
+    public JScrollPane testsModelCheckingExpectedScrollPane;
+    public JTextArea testsModelCheckingExpectedTextArea;
+    public JScrollPane testsModelCheckingActualScrollPane;
+    public JTextArea testsModelCheckingActualTextArea;
+
     public void sharedComponents(JFrame frame) {
         initFrame(frame);
         initStyles();
@@ -162,12 +275,12 @@ public class Components {
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(7, 10, 6, 10));
         sidebarInner.add(buttonsPanel, buttonsPanelStyle);
 
-        JButton analyzerButton = new JButton();
+        analyzerButton = new JButton();
         GridBagConstraints analyzerButtonStyle = new GridBagConstraints();
         analyzerButton.setText("Analyzer");
         buttonsPanel.add(analyzerButton);
 
-        JButton testerButton = new JButton();
+        testerButton = new JButton();
         GridBagConstraints testerButtonStyle = new GridBagConstraints();
         testerButton.setText("Tests");
         buttonsPanel.add(testerButton);
@@ -427,6 +540,226 @@ public class Components {
     }
 
     // tester components
+    public void testerComponents() {
+        // structural elements
+        layoutSettings = new GridBagConstraints();
+        layoutSettings.anchor = GridBagConstraints.NONE;
+        columnStyle = new GridBagConstraints();
+        columnStyle.fill = GridBagConstraints.HORIZONTAL;
+        testsPanel.setLayout(new GridBagLayout());
+        sidebarPanel = new JPanel(new GridBagLayout());
+        col1 = new JPanel(new BorderLayout());
+        col1Inner = new JPanel(new GridBagLayout());
+        col1LeftPadding = new JPanel();
+        col1InnerStyle = new GridBagConstraints();
+        col1InnerStyle.gridx = 0;
+        col1InnerStyle.gridy = 0;
+        col1InnerStyle.anchor = GridBagConstraints.NORTH;
+        col1InnerStyle.weighty = 1;
+        // buttons panel
+        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(7, 10, 6, 10));
+        buttonsPanelStyle.gridx = 1;
+        buttonsPanelStyle.gridy = 0;
+        // file list
+        testerFileList = new JList();
+        testerFileLabelStyle = new GridBagConstraints();
+        testerFileListStyle = new GridBagConstraints();
+        testerFileLabelStyle.fill = GridBagConstraints.HORIZONTAL;
+        testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
+        testerFileLabelStyle.gridx = 1;
+        testerFileLabelStyle.gridy = 1;
+        testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        testerFileLabel.setFont(titleFont);
+        fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        fileList.setFont(listFont);
+        fileList.setSelectionBackground(selectedListItemColor);
+        fileListStyle.gridx = 1;
+        fileListStyle.gridy = 2;
+        // individual test area
+        individualResultLabel = new JLabel("Individual Test");
+        individualResultTextarea = new JTextArea();
+        individualResultLabelStyle = new GridBagConstraints();
+        individualResultStyle = new GridBagConstraints();
+        individualResultLabelStyle.fill = GridBagConstraints.HORIZONTAL;
+        individualResultStyle.fill = GridBagConstraints.HORIZONTAL;
+        individualResultLabelStyle.gridx = 1;
+        individualResultLabelStyle.gridy = 3;
+        individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        individualResultLabel.setFont(titleFont);
+        individualResultStyle.gridx = 1;
+        individualResultStyle.gridy = 4;
+        individualResultTextarea.setFont(titleFont);
+        individualResultTextarea.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        individualResultBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
+        individualResultTextarea.setBorder(BorderFactory.createCompoundBorder(individualResultBorder, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        // all result area
+        aggregateResultLabel = new GridBagConstraints();
+        aggregateResultStyle = new GridBagConstraints();
+        aggregateResultLabel.fill = GridBagConstraints.HORIZONTAL;
+        aggregateResultStyle.fill = GridBagConstraints.HORIZONTAL;
+        aggregateResultLabel.gridx = 1;
+        aggregateResultLabel.gridy = 5;
+        allResultsLabel.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
+        allResultsLabel.setFont(titleFont);
+        aggregateResultStyle.gridx = 1;
+        aggregateResultStyle.gridy = 6;
+        allResultsLabel = new JLabel("Aggregate Test");
+        allResultsTextarea = new JTextArea();
+        allResultsTextarea.setFont(titleFont);
+        allResultsBorder = BorderFactory.createLineBorder(Color.BLACK, 3);
+        allResultsTextarea.setBorder(BorderFactory.createCompoundBorder(allResultsBorder, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        // col right padding
+        col1RightPadding = new JPanel();
+        columnStyle.gridx = 2;
+        columnStyle.gridy = 0;
+        // tests panel
+        testsPanel = new JPanel();
+        testsPanel.setBackground(Color.white);
+        testsPanel.setPreferredSize(new Dimension(500, 800));
+        // xml tests
+        testsXmlPanel.setLayout(new BorderLayout());
+        testsXmlPanel = new JPanel();
+        testsXmlTitle = new JLabel();
+        testsXmlExpectedLabel = new JLabel();
+        testsXmlExpectedList = new JList();
+        testsXmlExpectedScrollPane = new JScrollPane();
+        testsXmlActualScrollPane = new JScrollPane();
+        testsXmlExpectedTextArea = new JTextArea();
+        testsXmlActualTextArea = new JTextArea();
+        testsXmlExpectedTextAreaText = new String();
+        testsXmlActualTextAreaText = new String();
+        testsXmlActualLabel = new JLabel();
+        testsXmlActualList = new JList();
+        xmlPanelGridPosition = new GridBagConstraints();
+        xmlPanelGridPosition.gridx = 0;
+        xmlPanelGridPosition.gridy = 0;
+        xmlPanelGridPosition.fill = GridBagConstraints.HORIZONTAL;
+        testsXmlPanel.setPreferredSize(new Dimension(350, 700));
+        testsXmlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
+        testsXmlTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 10, 0));
+        testsXmlExpectedTextArea.setFont(titleFont);
+        testsXmlExpectedTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsXmlExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsXmlActualTextArea.setFont(titleFont);
+        testsXmlActualTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsXmlActualScrollPane.setPreferredSize(new Dimension(163, 700));
+        // translation tests
+        testsTranslationExpectedScrollPane = new JScrollPane();
+        testsTranslationActualScrollPane = new JScrollPane();
+        testsTranslationExpectedTextArea = new JTextArea();
+        testsTranslationActualTextArea = new JTextArea();
+        testsTranslationExpectedTextAreaText = new String();
+        testsTranslationActualTextAreaText = new String();
+        testsTranslationPanel = new JPanel();
+        testsTranslationPanel.setLayout(new BorderLayout());
+        testsTranslationTitle = new JLabel();
+        testsTranslationExpectedLabel = new JLabel();
+        testsTranslationExpectedList = new JList();
+        testsTranslationActualLabel = new JLabel();
+        testsTranslationActualList = new JList();
+        translationPanelGridPosition = new GridBagConstraints();
+        translationPanelGridPosition.gridx = 1;
+        translationPanelGridPosition.gridy = 0;
+        translationPanelGridPosition.fill = GridBagConstraints.HORIZONTAL;
+        testsTranslationPanel.setPreferredSize(new Dimension(350, 700));
+        testsTranslationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
+        testsTranslationTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 10, 0));
+        testsTranslationExpectedTextArea.setFont(titleFont);
+        testsTranslationExpectedTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsTranslationExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsTranslationActualTextArea.setFont(titleFont);
+        testsTranslationActualTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsTranslationActualScrollPane.setPreferredSize(new Dimension(163, 700));
+        // interleavings tests
+        testsInterleavingsExpectedScrollPane = new JScrollPane();
+        testsInterleavingsActualScrollPane = new JScrollPane();
+        testsInterleavingsExpectedTextArea = new JTextArea();
+        testsInterleavingsActualTextArea = new JTextArea();
+        testsInterleavingsExpectedTextAreaText = new String();
+        testsInterleavingsActualTextAreaText = new String();
+        testsInterleavingsPanel = new JPanel();
+        testsInterleavingsPanel.setLayout(new BorderLayout());
+        testsInterleavingsTitle = new JLabel();
+        testsInterleavingsExpectedLabel = new JLabel();
+        testsInterleavingsExpectedList = new JList();
+        testsInterleavingsActualLabel = new JLabel();
+        testsInterleavingsActualList = new JList();
+        interleavingsPanelGridPosition = new GridBagConstraints();
+        interleavingsPanelGridPosition.gridx = 2;
+        interleavingsPanelGridPosition.gridy = 0;
+        interleavingsPanelGridPosition.fill = GridBagConstraints.HORIZONTAL;
+        testsInterleavingsPanel.setPreferredSize(new Dimension(350, 700));
+        testsInterleavingsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
+        testsInterleavingsTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 10, 0));
+        testsInterleavingsExpectedTextArea.setFont(titleFont);
+        testsInterleavingsExpectedTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsInterleavingsExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsInterleavingsActualTextArea.setFont(titleFont);
+        testsInterleavingsActualTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsInterleavingsActualScrollPane.setPreferredSize(new Dimension(163, 700));
+        // model checking tests
+        testsModelCheckingExpectedTextAreaText = new String();
+        testsModelCheckingActualTextAreaText = new String();
+        testsModelCheckingPanel = new JPanel();
+        testsModelCheckingPanel.setLayout(new BorderLayout());
+        testsModelCheckingTitle = new JLabel();
+        testsModelCheckingExpectedLabel = new JLabel();
+        testsModelCheckingExpectedList = new JList();
+        testsModelCheckingExpectedScrollPane = new JScrollPane();
+        testsModelCheckingExpectedTextArea = new JTextArea();
+        testsModelCheckingExpectedSplitPane = new JSplitPane();
+        testsModelCheckingActualScrollPane = new JScrollPane();
+        testsModelCheckingActualLabel = new JLabel();
+        testsModelCheckingActualList = new JList();
+        testsModelCheckingActualTextArea = new JTextArea();
+        modelCheckingPanelGridPosition = new GridBagConstraints();
+        modelCheckingPanelGridPosition.gridx = 3;
+        modelCheckingPanelGridPosition.gridy = 0;
+        modelCheckingPanelGridPosition.fill = GridBagConstraints.HORIZONTAL;
+        testsModelCheckingPanel.setPreferredSize(new Dimension(350, 700));
+        testsModelCheckingPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
+        testsModelCheckingTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 10, 0));
+        testsModelCheckingExpectedLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
+        testsModelCheckingExpectedLabel.setFont(titleFont);
+        testsModelCheckingExpectedList.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsModelCheckingExpectedList.setFont(titleFont);
+        testsModelCheckingActualLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
+        testsModelCheckingActualLabel.setFont(titleFont);
+        testsModelCheckingActualList.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsModelCheckingActualList.setFont(titleFont);
+        testsModelCheckingExpectedTextArea.setFont(titleFont);
+        testsModelCheckingExpectedTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsModelCheckingExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsModelCheckingActualTextArea.setFont(titleFont);
+        testsModelCheckingActualTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
+        testsModelCheckingActualScrollPane.setPreferredSize(new Dimension(163, 700));
+        // spacers
+        testerSpacerRight = new JPanel();
+        testerSpacerBottom0 = new JPanel();
+        testerSpacerBottom1 = new JPanel();
+        testerSpacerBottom2 = new JPanel();
+        testerSpacerBottom3 = new JPanel();
+        testerSpacerRightStyle = new GridBagConstraints();
+        testerSpacerBottom0Style = new GridBagConstraints();
+        testerSpacerBottom1Style = new GridBagConstraints();
+        testerSpacerBottom2Style = new GridBagConstraints();
+        testerSpacerBottom3Style = new GridBagConstraints();
+        testerSpacerRightStyle.gridx = 4;
+        testerSpacerRightStyle.gridy = 0;
+        testerSpacerRightStyle.weightx = 1;
+        testerSpacerBottom0Style.gridx = 0;
+        testerSpacerBottom0Style.gridy = 1;
+        testerSpacerBottom0Style.weighty = 1;
+        testerSpacerBottom1Style.gridx = 1;
+        testerSpacerBottom1Style.gridy = 1;
+        testerSpacerBottom1Style.weighty = 1;
+        testerSpacerBottom2Style.gridx = 2;
+        testerSpacerBottom2Style.gridy = 1;
+        testerSpacerBottom2Style.weighty = 1;
+        testerSpacerBottom3Style.gridx = 3;
+        testerSpacerBottom3Style.gridy = 1;
+        testerSpacerBottom3Style.weighty = 1;
+    }
 
 
 

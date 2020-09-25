@@ -62,6 +62,15 @@ public class Options {
     private float translationGraphScaleFactor;
     private float interleavingsGraphScaleFactor;
 
+    // tester page vars
+    private int testerExpectedActualPanelWidth;
+    private int testerExpectedActualPanelHeight;
+    private int testerExpectedActualTextAreaWidth;
+    private int testerExpectedActualTextAreaHeight;
+    private int testerKripkeLinesToSkip;
+    private int testerModelCheckingLinesToSkip;
+    private int testerLineLength;
+
 
     public Options() {
 
@@ -130,6 +139,14 @@ public class Options {
         interleavingsGraphLayoutHeight = 875;
         interleavingsGraphScaleFactor = 0.75f; // shrinks graphs to 75% size to fix in containing box
         interleavingsGraphVertexAttractionMultiplier = .99;
+
+        // tester page misc
+        testerKripkeLinesToSkip = 2; // based on the stucture of the tests. if the structure of the tests were changed, this would have to change.
+        testerModelCheckingLinesToSkip = 2;
+        testerLineLength = 18; // line length for expected & actual results for xml, translations & interleavings
+        // testerExpectedActualPanelWidth = 350;
+        // testerExpectedActualPanelHeight = 700;
+        // testerExpectedActualTextAreaWidth = 163;
 
     }
 
