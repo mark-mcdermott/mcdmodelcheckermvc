@@ -89,9 +89,11 @@ public class View extends JFrame implements Observer {
 
     private void initTester() {
         this.getContentPane().removeAll();
-        components.sharedComponents(this);
-        components.testerComponents();
-        testerContent();
+        analyzerShell(this);
+        // getInitialTesterData
+        // components.sharedComponents(this);
+        // components.testerComponents();
+        // testerContent();
     }
 
 

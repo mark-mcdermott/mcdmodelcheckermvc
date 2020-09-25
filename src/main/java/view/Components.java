@@ -541,6 +541,14 @@ public class Components {
 
     // tester components
     public void testerComponents() {
+
+        JPanel testJPanel = new JPanel();
+        testJPanel.setPreferredSize(new Dimension(100,100));
+        JLabel testJLabel = new JLabel("test");
+        testJPanel.add(testJLabel);
+        mainPanel.add(testJPanel);
+
+        /*
         // structural elements
         layoutSettings = new GridBagConstraints();
         layoutSettings.anchor = GridBagConstraints.NONE;
@@ -549,6 +557,7 @@ public class Components {
         testsPanel = new JPanel();
         testsPanel.setLayout(new GridBagLayout());
         sidebarPanel = new JPanel(new GridBagLayout());
+        mainPanel.add(sidebarPanel, BorderLayout.WEST);
         col1 = new JPanel(new BorderLayout());
         col1Inner = new JPanel(new GridBagLayout());
         col1LeftPadding = new JPanel();
@@ -557,6 +566,7 @@ public class Components {
         col1InnerStyle.gridy = 0;
         col1InnerStyle.anchor = GridBagConstraints.NORTH;
         col1InnerStyle.weighty = 1;
+        col1Inner.add(col1LeftPadding, col1InnerStyle);
         // buttons panel
         buttonsPanel.setBorder(BorderFactory.createEmptyBorder(7, 10, 6, 10));
         buttonsPanelStyle.gridx = 1;
@@ -577,6 +587,7 @@ public class Components {
         fileList.setSelectionBackground(selectedListItemColor);
         fileListStyle.gridx = 1;
         fileListStyle.gridy = 2;
+        col1Inner.add(testerFileLabel, testerFileLabelStyle);
         // individual test area
         individualResultLabel = new JLabel("Individual Test");
         individualResultTextarea = new JTextArea();
@@ -762,6 +773,7 @@ public class Components {
         testerSpacerBottom3Style.gridx = 3;
         testerSpacerBottom3Style.gridy = 1;
         testerSpacerBottom3Style.weighty = 1;
+        */
     }
 
 
