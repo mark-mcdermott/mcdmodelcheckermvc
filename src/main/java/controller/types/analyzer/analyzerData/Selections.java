@@ -1,4 +1,4 @@
-package controller.types.data;
+package controller.types.analyzer.analyzerData;
 
 import controller.types.graph.Vertex;
 

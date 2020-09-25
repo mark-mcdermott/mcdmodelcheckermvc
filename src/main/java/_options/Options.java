@@ -277,4 +277,12 @@ public class Options {
     public int getGraphPanels3AcrossWidth() {
         return graphPanels3AcrossWidth;
     }
+
+    public int getTesterKripkeLinesToSkip() {
+        return testerKripkeLinesToSkip;
+    }
+
+    public int getTesterModelCheckingLinesToSkip() {
+        return testerModelCheckingLinesToSkip;
+    }
 }

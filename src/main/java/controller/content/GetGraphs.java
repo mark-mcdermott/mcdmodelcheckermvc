@@ -2,10 +2,9 @@ package controller.content;
 
 import controller.analyzer.ReadXml;
 import controller.analyzer.Translate;
-import controller.filesCache.FilesCache;
 import controller.types.ctl.Kripke;
-import controller.types.data.DisplayType;
-import controller.types.data.GraphsContent;
+import controller.types.analyzer.analyzerData.DisplayType;
+import controller.types.analyzer.analyzerData.GraphsContent;
 import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
@@ -15,11 +14,10 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import static controller.types.data.DisplayType.INTER_COMP;
-import static controller.types.data.DisplayType.TRANS_COMP;
+import static controller.types.analyzer.analyzerData.DisplayType.INTER_COMP;
+import static controller.types.analyzer.analyzerData.DisplayType.TRANS_COMP;
 
 public class GetGraphs {
 

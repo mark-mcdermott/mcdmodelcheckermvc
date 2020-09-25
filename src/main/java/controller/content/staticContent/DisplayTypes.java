@@ -1,6 +1,6 @@
 package controller.content.staticContent;
 
-import controller.types.data.DisplayType;
+import controller.types.analyzer.analyzerData.DisplayType;
 
 public class DisplayTypes {
 

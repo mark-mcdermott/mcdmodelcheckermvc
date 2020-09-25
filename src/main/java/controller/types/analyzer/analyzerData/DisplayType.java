@@ -1,4 +1,4 @@
-package controller.types.data;
+package controller.types.analyzer.analyzerData;
 
 /**
  * Which graphs to display

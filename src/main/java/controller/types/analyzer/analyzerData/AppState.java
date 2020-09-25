@@ -1,4 +1,4 @@
-package controller.types.data;
+package controller.types.analyzer.analyzerData;
 
 public enum AppState {
 

@@ -3,7 +3,7 @@ package view;
 import _options.DirectedGraphOptions;
 import _options.Options;
 import controller.Controller;
-import controller.types.data.*;
+import controller.types.analyzer.analyzerData.*;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
 import controller.utils.ExceptionMessage;
@@ -22,8 +22,8 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-import static controller.types.data.AppState.*;
-import static controller.types.data.DisplayType.*;
+import static controller.types.analyzer.analyzerData.AppState.*;
+import static controller.types.analyzer.analyzerData.DisplayType.*;
 import static controller.utils.Utils.getIndexFromListElem;
 import static controller.utils.Utils.getIndicesFromListElems;
 import static java.awt.BorderLayout.PAGE_START;
@@ -91,6 +91,7 @@ public class View extends JFrame implements Observer {
         this.getContentPane().removeAll();
         components.sharedComponents(this);
         components.testerComponents();
+        testerContent();
     }
 
 
@@ -361,6 +362,10 @@ public class View extends JFrame implements Observer {
         if (selections.getStep() != null) { components.stepList.setSelectedIndex(getIndexFromListElem(selections.getStep().toString(), components.stepList)); }
         if (selections.getModel() != null) { components.modelList.setSelectedIndex(getIndexFromListElem(selections.getModel(), components.modelList)); }
         if (selections.getState() != null) { components.stateList.setSelectedIndex(getIndexFromListElem(selections.getState().getName(), components.stateList)); }
+    }
+
+    private void testerContent() {
+
     }
 
 }

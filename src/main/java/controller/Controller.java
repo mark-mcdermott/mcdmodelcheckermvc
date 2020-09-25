@@ -8,7 +8,7 @@ import controller.content.staticContent.Models;
 import controller.content.staticContent.XmlFileOrder;
 import controller.filesCache.FilesCache;
 import controller.types.ctl.Kripke;
-import controller.types.data.*;
+import controller.types.analyzer.analyzerData.*;
 import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static controller.types.data.AppState.*;
-import static controller.types.data.DisplayType.*;
+import static controller.types.analyzer.analyzerData.AppState.*;
+import static controller.types.analyzer.analyzerData.DisplayType.*;
 // import static controller.types.data.AppState.INITIAL_RUN;
 
 
@@ -42,8 +42,8 @@ public class Controller {
     }
 
     public void setInitialData() throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
-        Data initialData = getInitalAnalyzerData(model.getFilesCache());
-        model.setData(initialData);
+        AnalyzerData initialAnalyzerData = getInitalAnalyzerData(model.getFilesCache());
+        model.setAnalyzerData(initialAnalyzerData);
     }
 
     // handle listeners clicks
@@ -53,9 +53,9 @@ public class Controller {
     }
 
     public void handleTesterButtonClick() {
-        Data data = model.getData();
-        data.setAppState(TESTER);
-        model.setData(data);
+        AnalyzerData analyzerData = model.getAnalyzerData();
+        analyzerData.setAppState(TESTER);
+        model.setAnalyzerData(analyzerData);
     }
 
     // analyzer file list click
@@ -63,14 +63,14 @@ public class Controller {
         String[] selectedFiles = getListSelections(components.fileList);
         try {
             GraphsContent graphsContent = getGraphsContent(selectedFiles, ANALY_DEFAULT, ALL_GRAPHS, model, false);
-            Data data = model.getData();
-            data.setFileSelections(selectedFiles);
-            data.setDisplaySelections(ALL_GRAPHS);
-            data.setStepSelections(null);
-            data.setModelSelections("⊤");
-            data.setGraphsContent(graphsContent);
-            data.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
-            model.setData(data);
+            AnalyzerData analyzerData = model.getAnalyzerData();
+            analyzerData.setFileSelections(selectedFiles);
+            analyzerData.setDisplaySelections(ALL_GRAPHS);
+            analyzerData.setStepSelections(null);
+            analyzerData.setModelSelections("⊤");
+            analyzerData.setGraphsContent(graphsContent);
+            analyzerData.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
+            model.setAnalyzerData(analyzerData);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         } catch (ExceptionMessage exceptionMessage) {
@@ -101,16 +101,16 @@ public class Controller {
 
             GraphsContent graphsContent = getGraphsContent(selectedFiles, selectedDisplay, numLoops, xmlFileCache, selectedStep);
 
-            Data data = model.getData();
-            data.setDisplaySelections(selectedDisplay);
-            if (selectedStep != null) { data.setStepSelections(selectedStep); }
+            AnalyzerData analyzerData = model.getAnalyzerData();
+            analyzerData.setDisplaySelections(selectedDisplay);
+            if (selectedStep != null) { analyzerData.setStepSelections(selectedStep); }
             if (graphsContent.getNumSteps() != null) {
                 Integer[] steps = getStepsFromNumSteps(graphsContent.getNumSteps());
-                data.setListsContentSteps(steps);
+                analyzerData.setListsContentSteps(steps);
             }
-            data.setGraphsContent(graphsContent);
-            data.setAppState(appState);        // when selected file(s) is changed, app goes to default state
-            model.setData(data);
+            analyzerData.setGraphsContent(graphsContent);
+            analyzerData.setAppState(appState);        // when selected file(s) is changed, app goes to default state
+            model.setAnalyzerData(analyzerData);
         } catch (IOException ioException) {
             ioException.printStackTrace();
         } catch (ExceptionMessage exceptionMessage) {
@@ -126,10 +126,10 @@ public class Controller {
     public void handleStepListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         Integer selectedStep = Integer.parseInt(getListSelection(components.stepList));
         GraphsContent graphsContent = getGraphsContent(selectedStep, model);
-        Data data = model.getData();
-        data.setStepSelections(selectedStep);
-        data.setGraphsContent(graphsContent);
-        model.setData(data);
+        AnalyzerData analyzerData = model.getAnalyzerData();
+        analyzerData.setStepSelections(selectedStep);
+        analyzerData.setGraphsContent(graphsContent);
+        model.setAnalyzerData(analyzerData);
     }
 
     // analyzer model list click
@@ -144,20 +144,20 @@ public class Controller {
         Vertex selectedState = states[0];
         int loops = model.getLoops();
         CheckedModel checkedModel = runModelChecker(selectedModel, interKripke, loops, model.getLabelHash(), states, selectedState);
-        Data data = model.getData();
-        data.setAppState(ANALY_RESULTS);
-        data.setDisplaySelections(ALL_GRAPHS);
-        data.setModelSelections(selectedModel);
+        AnalyzerData analyzerData = model.getAnalyzerData();
+        analyzerData.setAppState(ANALY_RESULTS);
+        analyzerData.setDisplaySelections(ALL_GRAPHS);
+        analyzerData.setModelSelections(selectedModel);
         // data.setListsContentStates(vertexArrListToArr(model.getInterleavingsKripke().S));
-        data.setListsContentStates(vertexArrListToArr(interKripke.S));
-        data.setStateSelections(data.getListsContentStates()[0]);
-        data.setGraphsContent(graphsContent);
-        data.setCheckedModel(checkedModel);
-        data.setDoesHold(checkedModel.getResultDoesHold());
-        data.setStatesThatHold(checkedModel.getResultStatesThatHold());
-        data.setCounterExample(checkedModel.getResultCounterExample());
-        data.setTime(checkedModel.getResultTime());
-        model.setData(data);
+        analyzerData.setListsContentStates(vertexArrListToArr(interKripke.S));
+        analyzerData.setStateSelections(analyzerData.getListsContentStates()[0]);
+        analyzerData.setGraphsContent(graphsContent);
+        analyzerData.setCheckedModel(checkedModel);
+        analyzerData.setDoesHold(checkedModel.getResultDoesHold());
+        analyzerData.setStatesThatHold(checkedModel.getResultStatesThatHold());
+        analyzerData.setCounterExample(checkedModel.getResultCounterExample());
+        analyzerData.setTime(checkedModel.getResultTime());
+        model.setAnalyzerData(analyzerData);
     }
 
     // analyzer state list click
@@ -175,14 +175,14 @@ public class Controller {
         if (selectedState == null) {
             new ExceptionMessage("selectedState is null in handleStateListClick(), Controller.java");
         } else {
-            Data data = model.getData();
-            data.setStateSelections(selectedState);
-            data.setCheckedModel(checkedModel);
-            data.setDoesHold(checkedModel.getResultDoesHold());
-            data.setStatesThatHold(checkedModel.getResultStatesThatHold());
-            data.setCounterExample(checkedModel.getResultCounterExample());
-            data.setTime((checkedModel.getResultTime()));
-            model.setData(data);
+            AnalyzerData analyzerData = model.getAnalyzerData();
+            analyzerData.setStateSelections(selectedState);
+            analyzerData.setCheckedModel(checkedModel);
+            analyzerData.setDoesHold(checkedModel.getResultDoesHold());
+            analyzerData.setStatesThatHold(checkedModel.getResultStatesThatHold());
+            analyzerData.setCounterExample(checkedModel.getResultCounterExample());
+            analyzerData.setTime((checkedModel.getResultTime()));
+            model.setAnalyzerData(analyzerData);
         }
     }
 
@@ -342,7 +342,7 @@ public class Controller {
         return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
     }
 
-    private Data getInitalAnalyzerData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
+    private AnalyzerData getInitalAnalyzerData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         // AppState appState = INITIAL_RUN;
         AppState appState = ANALY_DEFAULT;
         Selections selections = initialSelections();
@@ -350,7 +350,7 @@ public class Controller {
         Integer selectedStep = selections.getStep() == null ? null : selections.getStep();
         GraphsContent graphsContent = getGraphsContent(selections.getFiles(), selections.getDisplay(), selections.getLoop(), xmlFileCache, selectedStep);
         CheckedModel checkedModel = null;
-        return new Data(appState, selections, listsContent, graphsContent, checkedModel);
+        return new AnalyzerData(appState, selections, listsContent, graphsContent, checkedModel);
     }
 
 

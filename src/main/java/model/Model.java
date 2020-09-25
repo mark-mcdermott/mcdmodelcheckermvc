@@ -1,7 +1,7 @@
 package model;
 
 import controller.types.ctl.Kripke;
-import controller.types.data.*;
+import controller.types.analyzer.analyzerData.*;
 import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
@@ -13,22 +13,22 @@ import java.util.Observable;
 
 public class Model extends Observable {
 
-    Data data;
+    AnalyzerData analyzerData;
     File[] xmlFileCache;
 
     public Model() { }
 
     // setter that notifies observers (view) of the changes (so view can update with the new data)
-    public void setData(Data data) {
-        this.data = data;
+    public void setAnalyzerData(AnalyzerData analyzerData) {
+        this.analyzerData = analyzerData;
         this.setChanged();
-        this.notifyObservers(data.getStateStr()); // send new app state to view
+        this.notifyObservers(analyzerData.getStateStr()); // send new app state to view
     }
 
     // generic getters/setters
 
-    public Data getData() {
-        return data;
+    public AnalyzerData getAnalyzerData() {
+        return analyzerData;
     }
 
     public File[] getFilesCache() {
@@ -40,208 +40,208 @@ public class Model extends Observable {
     }
 
     public AppState getAppState() {
-        return getData().getAppState();
+        return getAnalyzerData().getAppState();
     }
 
     public void setAppState(AppState appState) {
-        getData().setAppState(appState);
+        getAnalyzerData().setAppState(appState);
     }
 
     public Selections getSelections() {
-        return getData().getSelections();
+        return getAnalyzerData().getSelections();
     }
 
     public void setSelections(Selections selections) {
-        getData().setSelections(selections);
+        getAnalyzerData().setSelections(selections);
     }
 
     public String[] getSelectedFiles() {
-        if (getData() == null || getData().getSelections() == null || getData().getSelections().getFiles() == null) {
+        if (getAnalyzerData() == null || getAnalyzerData().getSelections() == null || getAnalyzerData().getSelections().getFiles() == null) {
             new ExceptionMessage("Null in either data, selections of files in getSelectedFiles(), Model.java");
         }
-        return getData().getSelections().getFiles();
+        return getAnalyzerData().getSelections().getFiles();
     }
 
     public void setSelectedFiles(String[] files) {
-        getData().getSelections().setFiles(files);
+        getAnalyzerData().getSelections().setFiles(files);
     }
 
     public DisplayType getSelectedDisplay() {
-        return getData().getSelections().getDisplay();
+        return getAnalyzerData().getSelections().getDisplay();
     }
 
     public void setSelectedDisplay(DisplayType display) {
-        getData().getSelections().getDisplay();
+        getAnalyzerData().getSelections().getDisplay();
     }
 
     public Integer getSelectedStep() {
-        return getData().getSelections().getStep();
+        return getAnalyzerData().getSelections().getStep();
     }
 
     public void setSelectedStep(Integer step) {
-        getData().getSelections().setStep(step);
+        getAnalyzerData().getSelections().setStep(step);
     }
 
     public String getSelectedModel() {
-        return getData().getSelections().getModel();
+        return getAnalyzerData().getSelections().getModel();
     }
 
     public void setSelectedModel(String model) {
-        getData().getSelections().setModel(model);
+        getAnalyzerData().getSelections().setModel(model);
     }
 
     public Integer getSelectedLoop() {
-        return getData().getSelections().getLoop();
+        return getAnalyzerData().getSelections().getLoop();
     }
 
     public void setSelectedLoop(Integer loop) {
-        getData().getSelections().setLoop(loop);
+        getAnalyzerData().getSelections().setLoop(loop);
     }
 
     public ListsContent getListsContent() {
-        return getData().getListsContent();
+        return getAnalyzerData().getListsContent();
     }
 
     public void setListsContent(ListsContent listsContent) {
-        getData().setListsContent(listsContent);
+        getAnalyzerData().setListsContent(listsContent);
     }
 
     public String[] getFiles() {
-        return getData().getListsContent().getFiles();
+        return getAnalyzerData().getListsContent().getFiles();
     }
 
     public String[] getDisplays() {
-        return getData().getListsContent().getDisplays();
+        return getAnalyzerData().getListsContent().getDisplays();
     }
 
     public Integer[] getSteps() {
-        return getData().getListsContent().getSteps();
+        return getAnalyzerData().getListsContent().getSteps();
     }
 
     public String[] getModels() {
-        return getData().getListsContent().getModels();
+        return getAnalyzerData().getListsContent().getModels();
     }
 
     public Integer getLoops() {
-        return getData().getListsContent().getLoops();
+        return getAnalyzerData().getListsContent().getLoops();
     }
 
     public Vertex[] getStates() {
-        return getData().getListsContent().getStates();
+        return getAnalyzerData().getListsContent().getStates();
     }
 
     public String[] getLabels() {
-        return getData().getListsContent().getLabels();
+        return getAnalyzerData().getListsContent().getLabels();
     }
 
     public void setFiles(String[] files) {
-        getData().getListsContent().setFiles(files);
+        getAnalyzerData().getListsContent().setFiles(files);
     }
 
     public void setDisplays(String[] displays) {
-        getData().getListsContent().setDisplays(displays);
+        getAnalyzerData().getListsContent().setDisplays(displays);
     }
 
     public void setSteps(Integer[] steps) {
-        getData().getListsContent().setSteps(steps);
+        getAnalyzerData().getListsContent().setSteps(steps);
     }
 
     public void setModels(String[] models) {
-        getData().getListsContent().setModels(models);
+        getAnalyzerData().getListsContent().setModels(models);
     }
 
     public void setLoops(Integer loops) {
-        getData().getListsContent().setLoops(loops);
+        getAnalyzerData().getListsContent().setLoops(loops);
     }
 
     public void setStates(Vertex[] states) {
-        getData().getListsContent().setStates(states);
+        getAnalyzerData().getListsContent().setStates(states);
     }
 
     public void setLabels(String[] labels) {
-        getData().getListsContent().setLabels(labels);
+        getAnalyzerData().getListsContent().setLabels(labels);
     }
 
-    public GraphsContent getGraphsContent() { return getData().getGraphsContent(); }
+    public GraphsContent getGraphsContent() { return getAnalyzerData().getGraphsContent(); }
 
     public VertexList getXmlVertexList() {
-        return getData().getGraphsContent().getXmlVertList();
+        return getAnalyzerData().getGraphsContent().getXmlVertList();
     }
 
     public VertexList getTranslationVertexList() {
-        return getData().getGraphsContent().getTransVertList();
+        return getAnalyzerData().getGraphsContent().getTransVertList();
     }
 
     public VertexList getInterleavingsVertexList() {
-        return getData().getGraphsContent().getInterVertList();
+        return getAnalyzerData().getGraphsContent().getInterVertList();
     }
 
     public Kripke getXmlKripke() {
-        return getData().getGraphsContent().getXmlKripke();
+        return getAnalyzerData().getGraphsContent().getXmlKripke();
     }
 
     public Kripke getTranslationKripke() {
-        return getData().getGraphsContent().getTransKripke();
+        return getAnalyzerData().getGraphsContent().getTransKripke();
     }
 
     public Kripke getInterleavingsKripke() {
-        return getData().getGraphsContent().getInterKripke();
+        return getAnalyzerData().getGraphsContent().getInterKripke();
     }
 
     public LabelHash getLabelHash() {
-        return getData().getGraphsContent().getLabelHash();
+        return getAnalyzerData().getGraphsContent().getLabelHash();
     }
 
-    public VertexList[] getStepGraphs() { return getData().getGraphsContent().getStepGraphs(); }
+    public VertexList[] getStepGraphs() { return getAnalyzerData().getGraphsContent().getStepGraphs(); }
 
     public VertexList getStepGraphSelectedStepMinusOne() {
-        return getData().getGraphsContent().getStepGraphs()[0];
+        return getAnalyzerData().getGraphsContent().getStepGraphs()[0];
     }
 
     public VertexList getStepGraphSelectedStep() {
-        return getData().getGraphsContent().getStepGraphs()[1];
+        return getAnalyzerData().getGraphsContent().getStepGraphs()[1];
     }
 
     public String[] getLabelDisplay() {
-        return getData().getGraphsContent().getLabelHash().getLabelDisplayListArr();
+        return getAnalyzerData().getGraphsContent().getLabelHash().getLabelDisplayListArr();
     }
 
     public Vertex getSelectedState() {
-        return getData().getSelections().getState();
+        return getAnalyzerData().getSelections().getState();
     }
 
     public CheckedModel getCheckedModel() {
-        return getData().getCheckedModel();
+        return getAnalyzerData().getCheckedModel();
     }
 
     public String getDoesHold() {
-        return getData().getListsContent().getDoesHold();
+        return getAnalyzerData().getListsContent().getDoesHold();
     }
 
     public String getStatesThatHold() {
-        return getData().getListsContent().getStatesThatHold();
+        return getAnalyzerData().getListsContent().getStatesThatHold();
     }
 
     public String getCounterExample() {
-        return getData().getListsContent().getCounterExample();
+        return getAnalyzerData().getListsContent().getCounterExample();
     }
 
     public String getTime() {
-        return getData().getListsContent().getTime();
+        return getAnalyzerData().getListsContent().getTime();
     }
 
     public void setDoesHold(String doesHold) {
-        getData().getListsContent().setDoesHold(doesHold);
+        getAnalyzerData().getListsContent().setDoesHold(doesHold);
     }
 
     public void setStatesThatHold(String statesThatHold) {
-        getData().getListsContent().setStatesThatHold(statesThatHold);
+        getAnalyzerData().getListsContent().setStatesThatHold(statesThatHold);
     }
     public void setCounterExample(String counterExample) {
-        getData().getListsContent().setCounterExample(counterExample);
+        getAnalyzerData().getListsContent().setCounterExample(counterExample);
     }
     public void setTime(String time) {
-        getData().getListsContent().setTime(time);
+        getAnalyzerData().getListsContent().setTime(time);
     }
 
 }

@@ -569,6 +569,7 @@ public class Components {
         testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
         testerFileLabelStyle.gridx = 1;
         testerFileLabelStyle.gridy = 1;
+        testerFileLabel = new JLabel();
         testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         testerFileLabel.setFont(titleFont);
         fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
@@ -600,6 +601,7 @@ public class Components {
         aggregateResultStyle.fill = GridBagConstraints.HORIZONTAL;
         aggregateResultLabel.gridx = 1;
         aggregateResultLabel.gridy = 5;
+        allResultsLabel = new JLabel();
         allResultsLabel.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
         allResultsLabel.setFont(titleFont);
         aggregateResultStyle.gridx = 1;
@@ -618,8 +620,8 @@ public class Components {
         testsPanel.setBackground(Color.white);
         testsPanel.setPreferredSize(new Dimension(500, 800));
         // xml tests
-        testsXmlPanel.setLayout(new BorderLayout());
         testsXmlPanel = new JPanel();
+        testsXmlPanel.setLayout(new BorderLayout());
         testsXmlTitle = new JLabel();
         testsXmlExpectedLabel = new JLabel();
         testsXmlExpectedList = new JList();

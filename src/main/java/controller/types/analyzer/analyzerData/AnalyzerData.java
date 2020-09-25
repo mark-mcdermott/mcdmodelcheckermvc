@@ -1,10 +1,10 @@
-package controller.types.data;
+package controller.types.analyzer.analyzerData;
 
 import controller.types.graph.Vertex;
 import controller.types.modelChecking.CheckedModel;
 
 
-public class Data {
+public class AnalyzerData {
 
     AppState appState;
     Selections selections;
@@ -12,7 +12,7 @@ public class Data {
     GraphsContent graphsContent;
     CheckedModel checkedModel;
 
-    public Data(AppState appState, Selections selections, ListsContent listsContent, GraphsContent graphsContent, CheckedModel checkedModel) {
+    public AnalyzerData(AppState appState, Selections selections, ListsContent listsContent, GraphsContent graphsContent, CheckedModel checkedModel) {
         this.appState = appState;
         this.selections = selections;
         this.listsContent = listsContent;
