@@ -39,10 +39,12 @@ public class FileSelectResult {
     private int numProperties;
     private String[] modelList;
 
-    public FileSelectResult(String[] selectedXmlFiles, DisplayType selectedDisplayGraph, Integer selectedStep, Model model, View view, Options options, Boolean isStepSelected, Boolean prevStep) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException, ExceptionMessage, SAXException {
+    // public FileSelectResult(String[] selectedXmlFiles, DisplayType selectedDisplayGraph, Integer selectedStep, Model model, View view, Options options, Boolean isStepSelected, Boolean prevStep) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException, ExceptionMessage, SAXException {
+    public FileSelectResult(String[] selectedXmlFiles, DisplayType selectedDisplayGraph, Integer selectedStep, Model model, Options options, Boolean isStepSelected, Boolean prevStep) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException, ExceptionMessage, SAXException {
         ReadXml readXml = new ReadXml();
         ReadKrp readKrp = new ReadKrp();
-        Translate translate = new Translate(model, view);
+        // Translate translate = new Translate(model, view);
+        Translate translate = new Translate(model);
         ListHelper listHelper = new ListHelper();
         int numLoops = model.getLoops();
         // System.out.println(numLoops);

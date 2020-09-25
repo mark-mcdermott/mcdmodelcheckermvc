@@ -6,6 +6,7 @@ import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
 import controller.types.modelChecking.CheckedModel;
+import controller.types.tester.testerData.TesterData;
 import controller.utils.ExceptionMessage;
 
 import java.io.File;
@@ -13,7 +14,10 @@ import java.util.Observable;
 
 public class Model extends Observable {
 
+    // TODO i want to pull appState out of analyzerData and put it on the top level vars here
+
     AnalyzerData analyzerData;
+    TesterData testerData;
     File[] xmlFileCache;
 
     public Model() { }
@@ -23,6 +27,12 @@ public class Model extends Observable {
         this.analyzerData = analyzerData;
         this.setChanged();
         this.notifyObservers(analyzerData.getStateStr()); // send new app state to view
+    }
+
+    public void setTesterData(TesterData testerData) {
+        this.testerData = testerData;
+        this.setChanged();
+        this.notifyObservers();
     }
 
     // generic getters/setters

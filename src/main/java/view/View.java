@@ -89,11 +89,10 @@ public class View extends JFrame implements Observer {
 
     private void initTester() {
         this.getContentPane().removeAll();
-        analyzerShell(this);
-        // getInitialTesterData
-        // components.sharedComponents(this);
-        // components.testerComponents();
-        // testerContent();
+        components.sharedComponents(this);
+        components.testerComponents();
+        testerContent(); // don't set model here, do that earlier in controller - here just get from the model
+
     }
 
 
@@ -117,7 +116,17 @@ public class View extends JFrame implements Observer {
 
         components.testerButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                controller.handleTesterButtonClick();
+                try {
+                    controller.handleTesterButtonClick();
+                } catch (SAXException saxException) {
+                    saxException.printStackTrace();
+                } catch (ParserConfigurationException parserConfigurationException) {
+                    parserConfigurationException.printStackTrace();
+                } catch (ExceptionMessage exceptionMessage) {
+                    exceptionMessage.printStackTrace();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
 
@@ -324,6 +333,8 @@ public class View extends JFrame implements Observer {
         String selectedState = model.getSelectedState() == null ? null : model.getSelectedState().getName();
 
         components.sharedComponents(frame);
+        components.analyzerSidebarContainer();
+        components.buttonsPanel();
         components.analyzerComponents(selectedState);
     }
 
@@ -367,6 +378,7 @@ public class View extends JFrame implements Observer {
     }
 
     private void testerContent() {
+        // String[] files =
 
     }
 

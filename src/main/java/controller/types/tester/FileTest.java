@@ -28,14 +28,16 @@ public class FileTest {
 
     public FileTest() { }
 
-    public FileTest(String testFile, String testPath, Model model, View view, Options options) throws IOException, ExceptionMessage, SAXException, ParserConfigurationException {
+    // public FileTest(String testFile, String testPath, Model model, View view, Options options) throws IOException, ExceptionMessage, SAXException, ParserConfigurationException {
+    public FileTest(String testFile, String testPath, Model model, Options options) throws IOException, ExceptionMessage, SAXException, ParserConfigurationException {
         this.testFile = testFile;
         this.testPath = testPath;
         this.testFilePath = testPath + testFile;
         // System.out.println(testFile); // TODO: For Testing!
         this.testResult = new TestResult();
         getExpectedResults(this.testResult, this.testFilePath, options);
-        getActualResults(this.testResult, testFile, model, view, options);
+        // getActualResults(this.testResult, testFile, model, view, options);
+        getActualResults(this.testResult, testFile, model, options);
         this.testResult.setPassFailResults();
     }
 
@@ -51,10 +53,12 @@ public class FileTest {
         reader.close();
     }
 
-    void getActualResults(TestResult testResultWithoutActualResults, String testFile, Model model, View view, Options options) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+    // void getActualResults(TestResult testResultWithoutActualResults, String testFile, Model model, View view, Options options) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+    void getActualResults(TestResult testResultWithoutActualResults, String testFile, Model model, Options options) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         ListHelper listHelper = new ListHelper();
         String[] singleTestFileArr = new String[] {testFile};
-        FileSelectResult actualResults = new FileSelectResult(singleTestFileArr, null, null, model, view, options, false, false);
+        // FileSelectResult actualResults = new FileSelectResult(singleTestFileArr, null, null, model, view, options, false, false);
+        FileSelectResult actualResults = new FileSelectResult(singleTestFileArr, null, null, model, options, false, false);
         int numProps = actualResults.getNumProperties();
         Kripke kripke = actualResults.getInterleavingsKripke();
         ArrayList<Vertex> states = actualResults.getInterleavingsVertexList().getList();

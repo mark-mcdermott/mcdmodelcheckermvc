@@ -13,10 +13,14 @@ import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
 import controller.types.modelChecking.CheckedModel;
+import controller.types.tester.FileTest;
+import controller.types.tester.FileTestSet;
 import controller.utils.ExceptionMessage;
+import controller.utils.ListHelper;
 import model.Model;
 import org.xml.sax.SAXException;
 import view.Components;
+import view.View;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -52,10 +56,37 @@ public class Controller {
         setInitialData();
     }
 
-    public void handleTesterButtonClick() {
-        AnalyzerData analyzerData = model.getAnalyzerData();
-        analyzerData.setAppState(TESTER);
-        model.setAnalyzerData(analyzerData);
+    public void handleTesterButtonClick() throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+
+        // get inital tester page data & set it to model
+        String[] files = new XmlFileOrder().getFileOrder();
+        String selectedFile = files[0];
+        String testDirPath = options.getPathToTests();
+        FileTest fileTest = getFileTest(selectedFile, testDirPath, model, options);
+        FileTestSet fileTestSet = getFileTestsSet(model, options, files);
+        // TesterData testerData = new TesterData(selectedFile, testDirPath, fileTest, fileTestSet);
+        // model.setTesterData(testerData);
+        // model.setAppState(TESTER);
+
+    }
+
+    // get file test helper
+    FileTest getFileTest(String xmlFile, String xmlPath, Model model, Options options) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException {
+        return new FileTest(xmlFile, xmlPath, model, options);
+    }
+
+    FileTestSet getFileTestsSet(Model model, Options options, String[] fileList) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException {
+        ListHelper listHelper = new ListHelper();
+        ArrayList<FileTest> fileTestsArrList = new ArrayList<>();
+        ArrayList<String> xmlFiles = listHelper.stringArrToArrList(fileList);
+        String xmlPath = options.getPathToTests();
+        for (String xmlFile : xmlFiles) {
+            // FileTest fileTest = new FileTest(xmlFile, xmlPath, model, view, options);
+            FileTest fileTest = new FileTest(xmlFile, xmlPath, model, options);
+            fileTestsArrList.add(fileTest);
+        }
+        FileTestSet fileTestSet = new FileTestSet(fileTestsArrList);
+        return fileTestSet;
     }
 
     // analyzer file list click
@@ -343,8 +374,8 @@ public class Controller {
     }
 
     private AnalyzerData getInitalAnalyzerData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
-        // AppState appState = INITIAL_RUN;
-        AppState appState = ANALY_DEFAULT;
+        // AppState appState = ANALY_DEFAULT; // TODO: uncomment this, just debugging something
+        AppState appState = TESTER;
         Selections selections = initialSelections();
         ListsContent listsContent = initalListsContent();
         Integer selectedStep = selections.getStep() == null ? null : selections.getStep();

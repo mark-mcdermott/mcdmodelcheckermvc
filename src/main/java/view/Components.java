@@ -207,8 +207,6 @@ public class Components {
         initFrame(frame);
         initStyles();
         mainPanel(frame);
-        analyzerSidebarContainer();
-        buttonsPanel();
     }
 
     public void analyzerComponents(String selectedState) {
@@ -539,38 +537,35 @@ public class Components {
         graphPanel3.setBackground(Color.white);
     }
 
-    // tester components
     public void testerComponents() {
-
-        JPanel testJPanel = new JPanel();
-        testJPanel.setPreferredSize(new Dimension(100,100));
-        JLabel testJLabel = new JLabel("test");
-        testJPanel.add(testJLabel);
-        mainPanel.add(testJPanel);
-
-        /*
-        // structural elements
-        layoutSettings = new GridBagConstraints();
-        layoutSettings.anchor = GridBagConstraints.NONE;
+        // sidebar
+        sidebarPanel = new JPanel(new GridBagLayout());
+        // column1
+        col1 = new JPanel(new BorderLayout());
         columnStyle = new GridBagConstraints();
         columnStyle.fill = GridBagConstraints.HORIZONTAL;
-        testsPanel = new JPanel();
-        testsPanel.setLayout(new GridBagLayout());
-        sidebarPanel = new JPanel(new GridBagLayout());
-        mainPanel.add(sidebarPanel, BorderLayout.WEST);
-        col1 = new JPanel(new BorderLayout());
+        // col1Inner
         col1Inner = new JPanel(new GridBagLayout());
-        col1LeftPadding = new JPanel();
         col1InnerStyle = new GridBagConstraints();
         col1InnerStyle.gridx = 0;
         col1InnerStyle.gridy = 0;
         col1InnerStyle.anchor = GridBagConstraints.NORTH;
         col1InnerStyle.weighty = 1;
-        col1Inner.add(col1LeftPadding, col1InnerStyle);
+        col1.add(col1Inner, BorderLayout.NORTH);
+        sidebarPanel.add(col1, col1InnerStyle);
+        mainPanel.add(sidebarPanel, BorderLayout.WEST);
+        // col1LeftPadding (is this necessary? it's never getting assigned a width...)
+        col1LeftPadding = new JPanel();
+        col1Inner.add(col1LeftPadding,col1InnerStyle);
         // buttons panel
-        buttonsPanel.setBorder(BorderFactory.createEmptyBorder(7, 10, 6, 10));
-        buttonsPanelStyle.gridx = 1;
-        buttonsPanelStyle.gridy = 0;
+        buttonsPanel = new JPanel();
+        buttonsPanelStyle = new GridBagConstraints();
+        buttonsPanelStyle = new GridBagConstraints();
+        analyzerButton = new JButton("Analyzer");
+        testerButton = new JButton("Tester");
+        buttonsPanel.add(analyzerButton);
+        buttonsPanel.add(testerButton);
+        col1Inner.add(buttonsPanel, buttonsPanelStyle);
         // file list
         testerFileList = new JList();
         testerFileLabelStyle = new GridBagConstraints();
@@ -579,32 +574,48 @@ public class Components {
         testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
         testerFileLabelStyle.gridx = 1;
         testerFileLabelStyle.gridy = 1;
-        testerFileLabel = new JLabel();
+        testerFileLabel = new JLabel("Files");
         testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         testerFileLabel.setFont(titleFont);
+        fileList = new JList();
         fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         fileList.setFont(listFont);
         fileList.setSelectionBackground(selectedListItemColor);
+        fileListStyle = new GridBagConstraints();
         fileListStyle.gridx = 1;
         fileListStyle.gridy = 2;
         col1Inner.add(testerFileLabel, testerFileLabelStyle);
         // individual test area
         individualResultLabel = new JLabel("Individual Test");
+        individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        individualResultLabel.setFont(titleFont);
+        individualResultLabelStyle = new GridBagConstraints();
+        individualResultLabelStyle.gridx = 1;
+        individualResultLabelStyle.gridy = 3;
+        col1Inner.add(individualResultLabel, individualResultLabelStyle);
+
+        /*
         individualResultTextarea = new JTextArea();
         individualResultLabelStyle = new GridBagConstraints();
         individualResultStyle = new GridBagConstraints();
         individualResultLabelStyle.fill = GridBagConstraints.HORIZONTAL;
         individualResultStyle.fill = GridBagConstraints.HORIZONTAL;
-        individualResultLabelStyle.gridx = 1;
-        individualResultLabelStyle.gridy = 3;
-        individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        individualResultLabel.setFont(titleFont);
         individualResultStyle.gridx = 1;
         individualResultStyle.gridy = 4;
         individualResultTextarea.setFont(titleFont);
         individualResultTextarea.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         individualResultBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
         individualResultTextarea.setBorder(BorderFactory.createCompoundBorder(individualResultBorder, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+
+         */
+
+    }
+
+    // tester components
+    public void testerComponentsOld() {
+
+        /*
+
         // all result area
         aggregateResultLabel = new GridBagConstraints();
         aggregateResultStyle = new GridBagConstraints();
