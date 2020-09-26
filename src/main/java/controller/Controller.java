@@ -15,12 +15,13 @@ import controller.types.graph.VertexList;
 import controller.types.modelChecking.CheckedModel;
 import controller.types.tester.FileTest;
 import controller.types.tester.FileTestSet;
+import controller.types.tester.testerData.TesterData;
+import controller.types.tester.testerData.TesterMisc;
 import controller.utils.ExceptionMessage;
 import controller.utils.ListHelper;
 import model.Model;
 import org.xml.sax.SAXException;
 import view.Components;
-import view.View;
 
 import javax.swing.*;
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,8 +47,25 @@ public class Controller {
     }
 
     public void setInitialData() throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
-        AnalyzerData initialAnalyzerData = getInitalAnalyzerData(model.getFilesCache());
-        model.setAnalyzerData(initialAnalyzerData);
+        AppState appState = ANALY_DEFAULT;
+        AnalyzerData initialAnalyzerData = getInitialAnalyzerData(model.getFilesCache());
+        // setNonCalculationInitialTesterDataToModel(model);
+        TesterData initialTesterData = getInitialTesterData(initialAnalyzerData.getListsContent());
+        model.setData(appState, initialAnalyzerData, initialTesterData);
+        // maybe set initial tester data here?  TODO
+        // model.setAnalyzerData(initialAnalyzerData);
+    }
+
+    // from https://stackoverflow.com/a/1846349, accessed 9/25/20
+    public String[] getFileStringsListFromDir(final File folder) {
+        File[] dirFiles = folder.listFiles();
+        int numFiles = dirFiles.length;
+        String[] fileList = new String[numFiles];
+        for (int i=0; i<dirFiles.length; i++) {
+            File file = dirFiles[i];
+            fileList[i] = file.getName();
+        }
+        return fileList;
     }
 
     // handle listeners clicks
@@ -60,11 +78,13 @@ public class Controller {
 
         // get inital tester page data & set it to model
         String[] files = new XmlFileOrder().getFileOrder();
+        AppState appState = TESTER;
         String selectedFile = files[0];
         String testDirPath = options.getPathToTests();
-        FileTest fileTest = getFileTest(selectedFile, testDirPath, model, options);
+        FileTest fileTestSelectedFile = getFileTest(selectedFile, testDirPath, model, options);
         FileTestSet fileTestSet = getFileTestsSet(model, options, files);
-        // TesterData testerData = new TesterData(selectedFile, testDirPath, fileTest, fileTestSet);
+        TesterData testerData = new TesterData(selectedFile, model.getAllTestFiles(),fileTestSet, fileTestSelectedFile);
+        model.setData(appState, testerData);
         // model.setTesterData(testerData);
         // model.setAppState(TESTER);
 
@@ -81,9 +101,13 @@ public class Controller {
         ArrayList<String> xmlFiles = listHelper.stringArrToArrList(fileList);
         String xmlPath = options.getPathToTests();
         for (String xmlFile : xmlFiles) {
-            // FileTest fileTest = new FileTest(xmlFile, xmlPath, model, view, options);
-            FileTest fileTest = new FileTest(xmlFile, xmlPath, model, options);
-            fileTestsArrList.add(fileTest);
+
+            // check if file exists (https://stackoverflow.com/a/1816676, accessed 9/25/20)
+            File f = new File(xmlPath + xmlFile);
+            if(f.exists() && !f.isDirectory()) {
+                FileTest fileTest = new FileTest(xmlFile, xmlPath, model, options);
+                fileTestsArrList.add(fileTest);
+            }
         }
         FileTestSet fileTestSet = new FileTestSet(fileTestsArrList);
         return fileTestSet;
@@ -100,7 +124,7 @@ public class Controller {
             analyzerData.setStepSelections(null);
             analyzerData.setModelSelections("⊤");
             analyzerData.setGraphsContent(graphsContent);
-            analyzerData.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
+            model.setAppState(ANALY_DEFAULT);        // when selected file(s) is changed, app goes to default state
             model.setAnalyzerData(analyzerData);
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -140,7 +164,7 @@ public class Controller {
                 analyzerData.setListsContentSteps(steps);
             }
             analyzerData.setGraphsContent(graphsContent);
-            analyzerData.setAppState(appState);        // when selected file(s) is changed, app goes to default state
+            model.setAppState(appState);        // when selected file(s) is changed, app goes to default state
             model.setAnalyzerData(analyzerData);
         } catch (IOException ioException) {
             ioException.printStackTrace();
@@ -176,7 +200,7 @@ public class Controller {
         int loops = model.getLoops();
         CheckedModel checkedModel = runModelChecker(selectedModel, interKripke, loops, model.getLabelHash(), states, selectedState);
         AnalyzerData analyzerData = model.getAnalyzerData();
-        analyzerData.setAppState(ANALY_RESULTS);
+        model.setAppState(ANALY_RESULTS);
         analyzerData.setDisplaySelections(ALL_GRAPHS);
         analyzerData.setModelSelections(selectedModel);
         // data.setListsContentStates(vertexArrListToArr(model.getInterleavingsKripke().S));
@@ -304,7 +328,7 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        String[] files = {"TwoSteps.ljx"};
+        String[] files = {"OneStep.ljx"};
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";
@@ -373,15 +397,46 @@ public class Controller {
         return new GetGraphs(model).getGraphsFromXmlFilenames(selectedFiles, displayType, isStepSelected, selectedLoops, xmlFileCache, selectedStep);
     }
 
-    private AnalyzerData getInitalAnalyzerData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
-        // AppState appState = ANALY_DEFAULT; // TODO: uncomment this, just debugging something
-        AppState appState = TESTER;
+    private AnalyzerData getInitialAnalyzerData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         Selections selections = initialSelections();
         ListsContent listsContent = initalListsContent();
+        AnalyzerData initialAnalyzerData = new AnalyzerData(selections, listsContent, null, null);
+        model.setInitialAnalyzerDataWithoutNotifyingObservers(initialAnalyzerData);
         Integer selectedStep = selections.getStep() == null ? null : selections.getStep();
         GraphsContent graphsContent = getGraphsContent(selections.getFiles(), selections.getDisplay(), selections.getLoop(), xmlFileCache, selectedStep);
         CheckedModel checkedModel = null;
-        return new AnalyzerData(appState, selections, listsContent, graphsContent, checkedModel);
+        return new AnalyzerData(selections, listsContent, graphsContent, checkedModel);
+    }
+
+    private TesterData getInitialTesterData(ListsContent initialAnalyzerListContent) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+        // setNonCalculationInitialTesterDataToModel();
+
+        // maybe abstract this stuff out to setCalculationInitalDataToModel()
+        String pathToTestFiles = options.getPathToTests();
+        String[] allFiles = getFileStringsListFromDir(new File(pathToTestFiles));
+        String selectedFile = allFiles[0];
+        FileTest fileTestSelectedFile = new FileTest(selectedFile, pathToTestFiles, model, options);
+        FileTestSet fileTestSet = fileTestSetFromTestsPath(pathToTestFiles,allFiles);
+        TesterData testerData = new TesterData(selectedFile, allFiles, fileTestSet, fileTestSelectedFile);
+        return testerData;
+    }
+
+    private void setNonCalculationInitialTesterDataToModel(Model model) {
+        int numLoops = 0;
+        // String[] models = content
+        TesterMisc testerMisc = new TesterMisc(0);
+        TesterData testerData = new TesterData(testerMisc);
+        model.setTesterData(testerData);
+    }
+
+    private FileTestSet fileTestSetFromTestsPath(String pathToTestFiles, String[] allFiles) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+        ArrayList<FileTest> fileTestSetArr = new ArrayList<>();
+        for (String thisFile : allFiles) {
+            FileTest fileTestThisFile = new FileTest(thisFile, pathToTestFiles, model, options);
+            fileTestSetArr.add(fileTestThisFile);
+        }
+        FileTestSet fileTestSet = new FileTestSet(fileTestSetArr);
+        return fileTestSet;
     }
 
 

@@ -7,6 +7,7 @@ import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
 import controller.types.modelChecking.CheckedModel;
 import controller.types.tester.testerData.TesterData;
+import controller.types.tester.testerData.TesterMisc;
 import controller.utils.ExceptionMessage;
 
 import java.io.File;
@@ -14,8 +15,8 @@ import java.util.Observable;
 
 public class Model extends Observable {
 
-    // TODO i want to pull appState out of analyzerData and put it on the top level vars here
-
+    // TODO pull appState out of analyzerData and put it on the top level vars here
+    AppState appState;
     AnalyzerData analyzerData;
     TesterData testerData;
     File[] xmlFileCache;
@@ -26,7 +27,7 @@ public class Model extends Observable {
     public void setAnalyzerData(AnalyzerData analyzerData) {
         this.analyzerData = analyzerData;
         this.setChanged();
-        this.notifyObservers(analyzerData.getStateStr()); // send new app state to view
+        this.notifyObservers(appState.toString()); // send new app state to view
     }
 
     public void setTesterData(TesterData testerData) {
@@ -35,11 +36,43 @@ public class Model extends Observable {
         this.notifyObservers();
     }
 
+    public void setTesterDataDontNotifyObservers(TesterData testerData) {
+        this.testerData = testerData;
+    }
+
+    public void setData(AppState appState, AnalyzerData analyzerData) {
+        this.appState = appState;
+        this.analyzerData = analyzerData;
+        this.setChanged();
+        this.notifyObservers(appState.toString());
+    }
+
+    public void setData(AppState appState, AnalyzerData analyzerData, TesterData testerData) {
+        this.appState = appState;
+        this.analyzerData = analyzerData;
+        this.testerData = testerData;
+        this.setChanged();
+        this.notifyObservers(appState.toString());
+    }
+
+    public void setData(AppState appState, TesterData testerData) {
+        this.appState = appState;
+        this.analyzerData = analyzerData;
+        this.setChanged();
+        this.notifyObservers(appState.toString());
+    }
+
+    public void setInitialAnalyzerDataWithoutNotifyingObservers(AnalyzerData analyzerData) {
+        this.analyzerData = analyzerData;
+    }
+
     // generic getters/setters
 
     public AnalyzerData getAnalyzerData() {
         return analyzerData;
     }
+
+    public TesterData getTesterData() { return testerData; }
 
     public File[] getFilesCache() {
         return xmlFileCache;
@@ -49,12 +82,12 @@ public class Model extends Observable {
         this.xmlFileCache = xmlFileCache;
     }
 
-    public AppState getAppState() {
-        return getAnalyzerData().getAppState();
-    }
+    // public AppState getAppState() { return getAnalyzerData().getAppState(); }
+    public AppState getAppState() { return this.appState; }
+
 
     public void setAppState(AppState appState) {
-        getAnalyzerData().setAppState(appState);
+        this.appState = appState;
     }
 
     public Selections getSelections() {
@@ -134,6 +167,10 @@ public class Model extends Observable {
 
     public Integer getLoops() {
         return getAnalyzerData().getListsContent().getLoops();
+    }
+
+    public Integer getTesterMiscLoops() {
+        return getTesterMisc().getNumLoops();
     }
 
     public Vertex[] getStates() {
@@ -252,6 +289,19 @@ public class Model extends Observable {
     }
     public void setTime(String time) {
         getAnalyzerData().getListsContent().setTime(time);
+    }
+
+    public String[] getAllTestFiles() {
+        return getTesterData().getAllFiles();
+    }
+
+    public TesterMisc getTesterMisc() {
+        return getTesterData().getTesterMisc();
+    }
+
+    public void setTesterMisc(TesterMisc testerMisc) {
+        getTesterData().setTesterMisc(testerMisc);
+        // note: this does not notify observers & thus doesn't trigger page refresh
     }
 
 }

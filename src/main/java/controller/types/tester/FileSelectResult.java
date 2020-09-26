@@ -39,15 +39,13 @@ public class FileSelectResult {
     private int numProperties;
     private String[] modelList;
 
-    // public FileSelectResult(String[] selectedXmlFiles, DisplayType selectedDisplayGraph, Integer selectedStep, Model model, View view, Options options, Boolean isStepSelected, Boolean prevStep) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException, ExceptionMessage, SAXException {
+
     public FileSelectResult(String[] selectedXmlFiles, DisplayType selectedDisplayGraph, Integer selectedStep, Model model, Options options, Boolean isStepSelected, Boolean prevStep) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException, ExceptionMessage, SAXException {
         ReadXml readXml = new ReadXml();
         ReadKrp readKrp = new ReadKrp();
-        // Translate translate = new Translate(model, view);
         Translate translate = new Translate(model);
         ListHelper listHelper = new ListHelper();
         int numLoops = model.getLoops();
-        // System.out.println(numLoops);
 
         this.selectedFiles = listHelper.stringArrToArrList(selectedXmlFiles);
         this.selectedDisplayGraph = selectedDisplayGraph;
@@ -74,29 +72,51 @@ public class FileSelectResult {
             this.interleavingsSteps = interleavingsVertexList.getNumTotalSteps();
         }
 
-        // this.interleavingsVertexList = translate.getTranslatedVertexListWithInterleavings(xmlVertexList);
         this.interleavingsKripke = new Kripke(interleavingsVertexList);
-        // System.out.println(selectedFiles.toString());
-        // System.out.println(interleavingsKripke.toString());
-        // System.out.println();
         this.stateDisplayList = listHelper.vertexListToStateArrList(interleavingsVertexList);
         this.labelDisplayList = labelHash.getLabelDisplayOutput();
         this.numProperties = labelHash.getNumProperties();
         this.modelList = model.getListsContent().getModels();
 
-        /*
-        System.out.println("-- " + selectedFiles.toString() + " --");
-        System.out.println("xml");
-        System.out.println(xmlKripke.toString());
-        System.out.println();
-        System.out.println("translation");
-        System.out.println(translationKripke.toString());
-        System.out.println();
-        System.out.println("interleavings");
-        System.out.println(interleavingsKripke.toString());
-        System.out.println();
-        System.out.println();
-        */
+    }
+
+    public FileSelectResult(String[] selectedXmlFiles, DisplayType selectedDisplayGraph, Integer selectedStep, Model model, Options options, Boolean isStepSelected, Boolean prevStep, int numLoops) throws SAXException, ExceptionMessage, ParserConfigurationException, IOException, ExceptionMessage, SAXException {
+        ReadXml readXml = new ReadXml();
+        ReadKrp readKrp = new ReadKrp();
+        Translate translate = new Translate(model);
+        ListHelper listHelper = new ListHelper();
+        // int numLoops = model.getLoops();
+
+        this.selectedFiles = listHelper.stringArrToArrList(selectedXmlFiles);
+        this.selectedDisplayGraph = selectedDisplayGraph;
+        this.labelHash = new LabelHash();
+        this.selectedStep = selectedStep; // this selectedStep argument could just be a boolean i think - the actual number isn't used. instead it's pulled from the model state i think.
+        if (selectedStep == null) {
+            isStepSelected = false;
+        }
+
+        if (this.selectedFiles.get(0).endsWith(".ljx")) {
+            this.xmlVertexList = readXml.convertXmlToVertexList(selectedXmlFiles, labelHash);
+            this.translationVertexList = translate.getTransVertListNoInter(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep);
+            this.xmlKripke = new Kripke(xmlVertexList);
+            this.translationKripke = new Kripke(translationVertexList);
+            this.interleavingsVertexList = translate.getTransVertListWithInters(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep);
+        }
+        if (this.selectedFiles.get(0).endsWith(".krp")) {
+            this.krpVertexList = readKrp.convertKrpToVertexList(selectedFiles.get(0), labelHash);
+            this.interleavingsVertexList = this.krpVertexList;
+        }
+
+        if (selectedStep == null) {
+            this.translationsSteps = translationVertexList.getNumTotalSteps();
+            this.interleavingsSteps = interleavingsVertexList.getNumTotalSteps();
+        }
+
+        this.interleavingsKripke = new Kripke(interleavingsVertexList);
+        this.stateDisplayList = listHelper.vertexListToStateArrList(interleavingsVertexList);
+        this.labelDisplayList = labelHash.getLabelDisplayOutput();
+        this.numProperties = labelHash.getNumProperties();
+        this.modelList = model.getListsContent().getModels();
 
     }
 

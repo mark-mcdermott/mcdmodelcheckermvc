@@ -558,41 +558,41 @@ public class Components {
         col1LeftPadding = new JPanel();
         col1Inner.add(col1LeftPadding,col1InnerStyle);
         // buttons panel
-        buttonsPanel = new JPanel();
-        buttonsPanelStyle = new GridBagConstraints();
-        buttonsPanelStyle = new GridBagConstraints();
-        analyzerButton = new JButton("Analyzer");
-        testerButton = new JButton("Tester");
-        buttonsPanel.add(analyzerButton);
-        buttonsPanel.add(testerButton);
-        col1Inner.add(buttonsPanel, buttonsPanelStyle);
-        // file list
-        testerFileList = new JList();
-        testerFileLabelStyle = new GridBagConstraints();
-        testerFileListStyle = new GridBagConstraints();
-        testerFileLabelStyle.fill = GridBagConstraints.HORIZONTAL;
-        testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
-        testerFileLabelStyle.gridx = 1;
-        testerFileLabelStyle.gridy = 1;
-        testerFileLabel = new JLabel("Files");
-        testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        testerFileLabel.setFont(titleFont);
-        fileList = new JList();
-        fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        fileList.setFont(listFont);
-        fileList.setSelectionBackground(selectedListItemColor);
-        fileListStyle = new GridBagConstraints();
-        fileListStyle.gridx = 1;
-        fileListStyle.gridy = 2;
-        col1Inner.add(testerFileLabel, testerFileLabelStyle);
+//        buttonsPanel = new JPanel();
+//        buttonsPanelStyle = new GridBagConstraints();
+//        buttonsPanelStyle = new GridBagConstraints();
+//        analyzerButton = new JButton("Analyzer");
+//        testerButton = new JButton("Tester");
+//        buttonsPanel.add(analyzerButton);
+//        buttonsPanel.add(testerButton);
+//        col1Inner.add(buttonsPanel, buttonsPanelStyle);
+//        // file list
+//        testerFileList = new JList();
+//        testerFileLabelStyle = new GridBagConstraints();
+//        testerFileListStyle = new GridBagConstraints();
+//        testerFileLabelStyle.fill = GridBagConstraints.HORIZONTAL;
+//        testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
+//        testerFileLabelStyle.gridx = 1;
+//        testerFileLabelStyle.gridy = 1;
+//        testerFileLabel = new JLabel("Files");
+//        testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+//        testerFileLabel.setFont(titleFont);
+//        fileList = new JList();
+//        fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+//        fileList.setFont(listFont);
+//        fileList.setSelectionBackground(selectedListItemColor);
+//        fileListStyle = new GridBagConstraints();
+//        fileListStyle.gridx = 1;
+//        fileListStyle.gridy = 2;
+//        col1Inner.add(testerFileLabel, testerFileLabelStyle);
         // individual test area
-        individualResultLabel = new JLabel("Individual Test");
-        individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        individualResultLabel.setFont(titleFont);
-        individualResultLabelStyle = new GridBagConstraints();
-        individualResultLabelStyle.gridx = 1;
-        individualResultLabelStyle.gridy = 3;
-        col1Inner.add(individualResultLabel, individualResultLabelStyle);
+//        individualResultLabel = new JLabel("Individual Test");
+//        individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+//        individualResultLabel.setFont(titleFont);
+//        individualResultLabelStyle = new GridBagConstraints();
+//        individualResultLabelStyle.gridx = 1;
+//        individualResultLabelStyle.gridy = 3;
+//        col1Inner.add(individualResultLabel, individualResultLabelStyle);
 
         /*
         individualResultTextarea = new JTextArea();

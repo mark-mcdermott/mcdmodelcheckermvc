@@ -41,6 +41,21 @@ public class FileTest {
         this.testResult.setPassFailResults();
     }
 
+
+
+    // initial FileTest (sends in details/defaults not yet in the model, like numLoops)
+    public FileTest(String testFile, String testPath, Model model, Options options, int numLoops) throws IOException, ExceptionMessage, SAXException, ParserConfigurationException {
+        this.testFile = testFile;
+        this.testPath = testPath;
+        this.testFilePath = testPath + testFile;
+        // System.out.println(testFile); // TODO: For Testing!
+        this.testResult = new TestResult();
+        getExpectedResults(this.testResult, this.testFilePath, options);
+        // getActualResults(this.testResult, testFile, model, view, options);
+        getActualResults(this.testResult, testFile, model, options);
+        this.testResult.setPassFailResults();
+    }
+
     // line by line file read strategy/code from https://www.journaldev.com/709/java-read-file-line-by-line
     void getExpectedResults(TestResult blankTestResult, String testFilePath, Options options) throws IOException {
         BufferedReader reader;
@@ -59,6 +74,29 @@ public class FileTest {
         String[] singleTestFileArr = new String[] {testFile};
         // FileSelectResult actualResults = new FileSelectResult(singleTestFileArr, null, null, model, view, options, false, false);
         FileSelectResult actualResults = new FileSelectResult(singleTestFileArr, null, null, model, options, false, false);
+        int numProps = actualResults.getNumProperties();
+        Kripke kripke = actualResults.getInterleavingsKripke();
+        ArrayList<Vertex> states = actualResults.getInterleavingsVertexList().getList();
+        Vertex initialState = states.get(0);
+        ArrayList<String> modelList = listHelper.stringArrToArrList(model.getModels());
+        LabelHash labelHash = actualResults.getLabelHash();
+        int loops = 0; // TODO: add loop variations to the tests
+        String[] allStatesThatHoldForAllModelsStrArr = getAllStatesThatHoldForAllModelsStrArr(modelList, kripke, loops, labelHash);
+
+        if (testFile.contains(".ljx")) {
+            testResultWithoutActualResults.setXmlActual(actualResults.getXmlKripke().toMultiLineString());
+            testResultWithoutActualResults.setTranslationActual(actualResults.getTranslationKripke().toMultiLineString());
+        }
+        testResultWithoutActualResults.setInterleavingsActual(actualResults.getInterleavingsKripke().toMultiLineString());
+        testResultWithoutActualResults.setModelCheckingActual(allStatesThatHoldForAllModelsStrArr);
+    }
+
+    // void getActualResults(TestResult testResultWithoutActualResults, String testFile, Model model, View view, Options options) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+    void getActualResults(TestResult testResultWithoutActualResults, String testFile, Model model, Options options, int numLoops) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+        ListHelper listHelper = new ListHelper();
+        String[] singleTestFileArr = new String[] {testFile};
+        // FileSelectResult actualResults = new FileSelectResult(singleTestFileArr, null, null, model, view, options, false, false);
+        FileSelectResult actualResults = new FileSelectResult(singleTestFileArr, null, null, model, options, false, false, numLoops);
         int numProps = actualResults.getNumProperties();
         Kripke kripke = actualResults.getInterleavingsKripke();
         ArrayList<Vertex> states = actualResults.getInterleavingsVertexList().getList();

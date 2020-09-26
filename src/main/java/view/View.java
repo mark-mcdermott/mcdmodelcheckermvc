@@ -89,9 +89,9 @@ public class View extends JFrame implements Observer {
 
     private void initTester() {
         this.getContentPane().removeAll();
-        components.sharedComponents(this);
+        // components.sharedComponents(this);
         components.testerComponents();
-        testerContent(); // don't set model here, do that earlier in controller - here just get from the model
+        // testerContent(); // don't set model here, do that earlier in controller - here just get from the model
 
     }
 

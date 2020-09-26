@@ -6,31 +6,23 @@ import controller.types.modelChecking.CheckedModel;
 
 public class AnalyzerData {
 
-    AppState appState;
+    // AppState appState;
     Selections selections;
     ListsContent listsContent;
     GraphsContent graphsContent;
     CheckedModel checkedModel;
 
-    public AnalyzerData(AppState appState, Selections selections, ListsContent listsContent, GraphsContent graphsContent, CheckedModel checkedModel) {
-        this.appState = appState;
+    public AnalyzerData(Selections selections, ListsContent listsContent, GraphsContent graphsContent, CheckedModel checkedModel) {
+        // this.appState = appState;
         this.selections = selections;
         this.listsContent = listsContent;
         this.graphsContent = graphsContent;
         this.checkedModel = checkedModel;
     }
 
-    public AppState getAppState() {
-        return appState;
-    }
-
-    public void setAppState(AppState appState) {
-        this.appState = appState;
-    }
-
-    public String getStateStr() {
-        return appState.toString();
-    }
+    // public AppState getAppState() { return appState; }
+    // public void setAppState(AppState appState) { this.appState = appState; }
+    // public String getStateStr() { return appState.toString(); }
 
     public Selections getSelections() {
         return selections;
