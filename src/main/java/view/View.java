@@ -94,7 +94,7 @@ public class View extends JFrame implements Observer {
         String[] fileListArr = model.getFiles();
         components.testerFileList.setListData(fileListArr);
         components.individualResultTextarea.setText(selectedFilePassFail);
-        // components.allResultsTextarea.setText(allResultsStr);
+        components.aggregateResultTextarea.setText(allResultsStr);
 
     }
 
