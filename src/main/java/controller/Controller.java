@@ -47,13 +47,10 @@ public class Controller {
     }
 
     public void setInitialData() throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
-        AppState appState = ANALY_DEFAULT;
+        AppState appState = TESTER; // ANALY_DEFAULT;
         AnalyzerData initialAnalyzerData = getInitialAnalyzerData(model.getFilesCache());
-        // setNonCalculationInitialTesterDataToModel(model);
         TesterData initialTesterData = getInitialTesterData(initialAnalyzerData.getListsContent());
         model.setData(appState, initialAnalyzerData, initialTesterData);
-        // maybe set initial tester data here?  TODO
-        // model.setAnalyzerData(initialAnalyzerData);
     }
 
     // from https://stackoverflow.com/a/1846349, accessed 9/25/20

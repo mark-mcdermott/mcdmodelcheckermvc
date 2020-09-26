@@ -6,6 +6,9 @@ import controller.Controller;
 import controller.types.analyzer.analyzerData.*;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexList;
+import controller.types.tester.FileTest;
+import controller.types.tester.FileTestSet;
+import controller.types.tester.TestResult;
 import controller.utils.ExceptionMessage;
 import model.Model;
 import org.xml.sax.SAXException;
@@ -74,7 +77,32 @@ public class View extends JFrame implements Observer {
 
     private void renderTesterState() {
         initTester();
+        testerContent();
         repaint();
+    }
+
+    private void testerContent() {
+
+        // pull the results out of the model
+        FileTest selectedFileTest = model.getTesterData().getSelectedFileTest();
+        FileTestSet fileTestSet = model.getTesterData().getFileTestsSet();
+        TestResult selectedFileTestResult = selectedFileTest.getTestResult();
+        String selectedFilePassFail = selectedFileTestResult.getTestResultStr();
+        String allResultsStr = fileTestSet.getPassFailStr();
+
+        // populate sidebar content
+        String[] fileListArr = model.getFiles();
+        components.testerFileList.setListData(fileListArr);
+        components.individualResultTextarea.setText(selectedFilePassFail);
+        // components.allResultsTextarea.setText(allResultsStr);
+
+    }
+
+    private void initTester() {
+        this.getContentPane().removeAll();
+        components.sharedComponents(this);
+        components.testerSidebar();
+        components.testerComponents();
     }
 
     private void initAnalyzer() {
@@ -86,15 +114,6 @@ public class View extends JFrame implements Observer {
         addAnalyzerListeners();
         // TODO: grayOutInactiveSections(appState)
     }
-
-    private void initTester() {
-        this.getContentPane().removeAll();
-        // components.sharedComponents(this);
-        components.testerComponents();
-        // testerContent(); // don't set model here, do that earlier in controller - here just get from the model
-
-    }
-
 
     private void addButtonListeners() {
 
@@ -375,11 +394,6 @@ public class View extends JFrame implements Observer {
         if (selections.getStep() != null) { components.stepList.setSelectedIndex(getIndexFromListElem(selections.getStep().toString(), components.stepList)); }
         if (selections.getModel() != null) { components.modelList.setSelectedIndex(getIndexFromListElem(selections.getModel(), components.modelList)); }
         if (selections.getState() != null) { components.stateList.setSelectedIndex(getIndexFromListElem(selections.getState().getName(), components.stateList)); }
-    }
-
-    private void testerContent() {
-        // String[] files =
-
     }
 
 }

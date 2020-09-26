@@ -537,7 +537,7 @@ public class Components {
         graphPanel3.setBackground(Color.white);
     }
 
-    public void testerComponents() {
+    public void testerSidebar() {
         // sidebar
         sidebarPanel = new JPanel(new GridBagLayout());
         // column1
@@ -557,44 +557,46 @@ public class Components {
         // col1LeftPadding (is this necessary? it's never getting assigned a width...)
         col1LeftPadding = new JPanel();
         col1Inner.add(col1LeftPadding,col1InnerStyle);
-        // buttons panel
-//        buttonsPanel = new JPanel();
-//        buttonsPanelStyle = new GridBagConstraints();
-//        buttonsPanelStyle = new GridBagConstraints();
-//        analyzerButton = new JButton("Analyzer");
-//        testerButton = new JButton("Tester");
-//        buttonsPanel.add(analyzerButton);
-//        buttonsPanel.add(testerButton);
-//        col1Inner.add(buttonsPanel, buttonsPanelStyle);
-//        // file list
-//        testerFileList = new JList();
-//        testerFileLabelStyle = new GridBagConstraints();
-//        testerFileListStyle = new GridBagConstraints();
-//        testerFileLabelStyle.fill = GridBagConstraints.HORIZONTAL;
-//        testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
-//        testerFileLabelStyle.gridx = 1;
-//        testerFileLabelStyle.gridy = 1;
-//        testerFileLabel = new JLabel("Files");
-//        testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-//        testerFileLabel.setFont(titleFont);
-//        fileList = new JList();
-//        fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-//        fileList.setFont(listFont);
-//        fileList.setSelectionBackground(selectedListItemColor);
-//        fileListStyle = new GridBagConstraints();
-//        fileListStyle.gridx = 1;
-//        fileListStyle.gridy = 2;
-//        col1Inner.add(testerFileLabel, testerFileLabelStyle);
-        // individual test area
-//        individualResultLabel = new JLabel("Individual Test");
-//        individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-//        individualResultLabel.setFont(titleFont);
-//        individualResultLabelStyle = new GridBagConstraints();
-//        individualResultLabelStyle.gridx = 1;
-//        individualResultLabelStyle.gridy = 3;
-//        col1Inner.add(individualResultLabel, individualResultLabelStyle);
+    }
 
-        /*
+    public void testerComponents() {
+
+        // buttons panel
+        buttonsPanel = new JPanel();
+        buttonsPanelStyle = new GridBagConstraints();
+        buttonsPanelStyle = new GridBagConstraints();
+        analyzerButton = new JButton("Analyzer");
+        testerButton = new JButton("Tester");
+        buttonsPanel.add(analyzerButton);
+        buttonsPanel.add(testerButton);
+        col1Inner.add(buttonsPanel, buttonsPanelStyle);
+        // file list
+        testerFileList = new JList();
+        testerFileLabelStyle = new GridBagConstraints();
+        testerFileListStyle = new GridBagConstraints();
+        testerFileLabelStyle.fill = GridBagConstraints.HORIZONTAL;
+        testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
+        testerFileLabelStyle.gridx = 1;
+        testerFileLabelStyle.gridy = 1;
+        testerFileLabel = new JLabel("Files");
+        testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        testerFileLabel.setFont(titleFont);
+        fileList = new JList();
+        fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        fileList.setFont(listFont);
+        fileList.setSelectionBackground(selectedListItemColor);
+        fileListStyle = new GridBagConstraints();
+        fileListStyle.gridx = 1;
+        fileListStyle.gridy = 2;
+        col1Inner.add(testerFileLabel, testerFileLabelStyle);
+        // individual test area
+        individualResultLabel = new JLabel("Individual Test");
+        individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        individualResultLabel.setFont(titleFont);
+        individualResultLabelStyle = new GridBagConstraints();
+        individualResultLabelStyle.gridx = 1;
+        individualResultLabelStyle.gridy = 3;
+        col1Inner.add(individualResultLabel, individualResultLabelStyle);
         individualResultTextarea = new JTextArea();
         individualResultLabelStyle = new GridBagConstraints();
         individualResultStyle = new GridBagConstraints();
@@ -606,16 +608,7 @@ public class Components {
         individualResultTextarea.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         individualResultBorder = BorderFactory.createLineBorder(Color.BLACK, 2);
         individualResultTextarea.setBorder(BorderFactory.createCompoundBorder(individualResultBorder, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-
-         */
-
-    }
-
-    // tester components
-    public void testerComponentsOld() {
-
-        /*
-
+        col1Inner.add(individualResultTextarea, individualResultStyle);
         // all result area
         aggregateResultLabel = new GridBagConstraints();
         aggregateResultStyle = new GridBagConstraints();
@@ -623,16 +616,23 @@ public class Components {
         aggregateResultStyle.fill = GridBagConstraints.HORIZONTAL;
         aggregateResultLabel.gridx = 1;
         aggregateResultLabel.gridy = 5;
-        allResultsLabel = new JLabel();
+        allResultsLabel = new JLabel("Aggregate Test");
         allResultsLabel.setBorder(BorderFactory.createEmptyBorder(20, 5, 5, 5));
         allResultsLabel.setFont(titleFont);
         aggregateResultStyle.gridx = 1;
         aggregateResultStyle.gridy = 6;
-        allResultsLabel = new JLabel("Aggregate Test");
         allResultsTextarea = new JTextArea();
         allResultsTextarea.setFont(titleFont);
         allResultsBorder = BorderFactory.createLineBorder(Color.BLACK, 3);
         allResultsTextarea.setBorder(BorderFactory.createCompoundBorder(allResultsBorder, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+        col1Inner.add(allResultsLabel, aggregateResultLabel);
+        col1Inner.add(allResultsTextarea, aggregateResultStyle);
+    }
+
+    // tester components
+    public void testerComponentsOld() {
+
+        /*
         // col right padding
         col1RightPadding = new JPanel();
         columnStyle.gridx = 2;
