@@ -571,24 +571,24 @@ public class Components {
         buttonsPanel.add(testerButton);
         col1Inner.add(buttonsPanel, buttonsPanelStyle);
         // file list
-        testerFileList = new JList();
-        testerFileLabelStyle = new GridBagConstraints();
-        testerFileListStyle = new GridBagConstraints();
-        testerFileLabelStyle.fill = GridBagConstraints.HORIZONTAL;
-        testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
-        testerFileLabelStyle.gridx = 1;
-        testerFileLabelStyle.gridy = 1;
         testerFileLabel = new JLabel("Files");
         testerFileLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         testerFileLabel.setFont(titleFont);
-        fileList = new JList();
-        fileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-        fileList.setFont(listFont);
-        fileList.setSelectionBackground(selectedListItemColor);
-        fileListStyle = new GridBagConstraints();
-        fileListStyle.gridx = 1;
-        fileListStyle.gridy = 2;
+        testerFileLabelStyle = new GridBagConstraints();
+        testerFileLabelStyle.fill = GridBagConstraints.HORIZONTAL;
+        testerFileLabelStyle.gridx = 1;
+        testerFileLabelStyle.gridy = 1;
         col1Inner.add(testerFileLabel, testerFileLabelStyle);
+        testerFileList = new JList();
+        testerFileList.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        testerFileList.setFont(listFont);
+        testerFileList.setSelectionBackground(selectedListItemColor);
+        testerFileListStyle = new GridBagConstraints();
+        testerFileListStyle.fill = GridBagConstraints.HORIZONTAL;
+        testerFileListStyle = new GridBagConstraints();
+        testerFileListStyle.gridx = 1;
+        testerFileListStyle.gridy = 2;
+        col1Inner.add(testerFileList, testerFileListStyle);
         // individual test area
         individualResultLabel = new JLabel("Individual Test");
         individualResultLabel.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
