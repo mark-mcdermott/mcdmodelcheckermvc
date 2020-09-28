@@ -73,7 +73,6 @@ public class Controller {
     }
 
     public void handleTesterButtonClick() throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
-
         // get inital tester page data & set it to model
         String[] files = new XmlFileOrder().getFileOrder();
         AppState appState = TESTER;
@@ -83,9 +82,6 @@ public class Controller {
         FileTestSet fileTestSet = getFileTestsSet(model, options, files);
         TesterData testerData = new TesterData(selectedFile, model.getAllTestFiles(),fileTestSet, fileTestSelectedFile);
         model.setData(appState, testerData);
-        // model.setTesterData(testerData);
-        // model.setAppState(TESTER);
-
     }
 
     // get file test helper
@@ -239,9 +235,23 @@ public class Controller {
         }
     }
 
-    // TODO
-    public void handleTesterFileListClick(Components components, Model model) {
-        // String[] selectedFiles = getListSelections(components.fileList);
+    public void handleTesterFileListClick(Components components, Model model) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+
+        // get newly selected file
+        String selectedFile = getListSelection(components.testerFileList);
+
+        // get other elements from model necessary to run the tester
+        String[] files = model.getAllTestFiles();
+        String testDirPath = options.getPathToTests();
+
+        // rerun the tester on newly selected file
+        FileTest fileTestSelectedFile = getFileTest(selectedFile, testDirPath, model, options);
+        FileTestSet fileTestSet = getFileTestsSet(model, options, files);
+
+        // set new test results to the model
+        TesterData testerData = new TesterData(selectedFile, model.getAllTestFiles(),fileTestSet, fileTestSelectedFile);
+        model.setData(TESTER, testerData);
+
     }
 
     String[] getStatesFromKripke(Kripke interKripke) {
@@ -407,9 +417,6 @@ public class Controller {
     }
 
     private TesterData getInitialTesterData(ListsContent initialAnalyzerListContent) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
-        // setNonCalculationInitialTesterDataToModel();
-
-        // maybe abstract this stuff out to setCalculationInitalDataToModel()
         String pathToTestFiles = options.getPathToTests();
         String[] allFiles = getFileStringsListFromDir(new File(pathToTestFiles));
         String selectedFile = allFiles[0];

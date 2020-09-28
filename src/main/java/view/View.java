@@ -78,7 +78,28 @@ public class View extends JFrame implements Observer {
     private void renderTesterState() {
         initTester();
         testerContent();
+        testerListeners(model);
         repaint();
+    }
+
+    private void testerListeners(Model model) {
+        components.testerFileList.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    try {
+                        controller.handleTesterFileListClick(components, model);
+                    } catch (SAXException saxException) {
+                        saxException.printStackTrace();
+                    } catch (ParserConfigurationException parserConfigurationException) {
+                        parserConfigurationException.printStackTrace();
+                    } catch (ExceptionMessage exceptionMessage) {
+                        exceptionMessage.printStackTrace();
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     private void initTester() {
@@ -94,6 +115,7 @@ public class View extends JFrame implements Observer {
     private void testerContent() {
 
         // pull the results out of the model
+        String selectedFile = model.getTesterSelectedFile();
         FileTest selectedFileTest = model.getTesterData().getSelectedFileTest();
         FileTestSet fileTestSet = model.getTesterData().getFileTestsSet();
         TestResult selectedFileTestResult = selectedFileTest.getTestResult();
@@ -103,6 +125,7 @@ public class View extends JFrame implements Observer {
         // populate sidebar content
         String[] fileListArr = model.getFiles();
         components.testerFileList.setListData(fileListArr);
+        setTesterSelection(selectedFile);
         components.individualResultTextarea.setText(selectedFilePassFail);
         components.aggregateResultTextarea.setText(allResultsStr);
 
@@ -178,7 +201,7 @@ public class View extends JFrame implements Observer {
         this.getContentPane().removeAll();
         analyzerShell(this);
         populateLists();
-        setSelections();
+        setAnalyzerSelections();
         addButtonListeners();
         addAnalyzerListeners();
         // TODO: grayOutInactiveSections(appState)
@@ -284,7 +307,17 @@ public class View extends JFrame implements Observer {
 
                     // i think there's only one case on the tester - files
                     if (list == components.fileList) {
-                        controller.handleTesterFileListClick(components, model);
+                        try {
+                            controller.handleTesterFileListClick(components, model);
+                        } catch (SAXException saxException) {
+                            saxException.printStackTrace();
+                        } catch (ParserConfigurationException parserConfigurationException) {
+                            parserConfigurationException.printStackTrace();
+                        } catch (ExceptionMessage exceptionMessage) {
+                            exceptionMessage.printStackTrace();
+                        } catch (IOException ioException) {
+                            ioException.printStackTrace();
+                        }
                     }
                 }
             }
@@ -456,7 +489,12 @@ public class View extends JFrame implements Observer {
         return states;
     }
 
-    private void setSelections() {
+    private void setTesterSelection(String selectedFile) {
+        JList testerFileList = components.testerFileList;
+        testerFileList.setSelectedIndex(getIndexFromListElem(selectedFile, testerFileList));
+    }
+
+    private void setAnalyzerSelections() {
         Selections selections = model.getSelections();
         components.fileList.setSelectedIndices(getIndicesFromListElems(selections.getFiles(), components.fileList));
         components.displayList.setSelectedIndex(getIndexFromListElem(selections.getDisplay().toString(), components.displayList));

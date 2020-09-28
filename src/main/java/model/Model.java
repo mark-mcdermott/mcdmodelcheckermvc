@@ -57,7 +57,7 @@ public class Model extends Observable {
 
     public void setData(AppState appState, TesterData testerData) {
         this.appState = appState;
-        this.analyzerData = analyzerData;
+        this.testerData = testerData;
         this.setChanged();
         this.notifyObservers(appState.toString());
     }
@@ -73,6 +73,10 @@ public class Model extends Observable {
     }
 
     public TesterData getTesterData() { return testerData; }
+
+    public String getTesterSelectedFile() {
+        return getTesterData().getSelectedFile();
+    }
 
     public File[] getFilesCache() {
         return xmlFileCache;
