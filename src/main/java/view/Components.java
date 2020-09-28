@@ -702,7 +702,7 @@ public class Components {
         testsTranslationActualTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
         testsTranslationActualScrollPane = new JScrollPane();
         testsTranslationActualScrollPane.setPreferredSize(new Dimension(163, 700));
-        testsTranslationActualScrollPane.setViewportView(testsTranslationExpectedTextArea);
+        testsTranslationActualScrollPane.setViewportView(testsTranslationActualTextArea);
         testsTranslationPanel.add(testsTranslationActualScrollPane, BorderLayout.EAST);
         // interleavings tests
         testsInterleavingsPanel = new JPanel();
