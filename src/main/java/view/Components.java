@@ -725,7 +725,7 @@ public class Components {
         testsInterleavingsExpectedTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
         testsInterleavingsExpectedScrollPane = new JScrollPane();
         testsInterleavingsExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
-        testsInterleavingsExpectedScrollPane.setViewportView(testsXmlExpectedTextArea);
+        testsInterleavingsExpectedScrollPane.setViewportView(testsInterleavingsExpectedTextArea);
         testsInterleavingsPanel.add(testsInterleavingsExpectedScrollPane, BorderLayout.WEST);
         testsInterleavingsActualLabel = new JLabel();
         testsInterleavingsActualList = new JList();
