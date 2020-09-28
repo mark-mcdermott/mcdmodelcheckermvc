@@ -106,6 +106,72 @@ public class View extends JFrame implements Observer {
         components.individualResultTextarea.setText(selectedFilePassFail);
         components.aggregateResultTextarea.setText(allResultsStr);
 
+        // main panel
+
+        // get expected/actual lists for xml, translation and interleavings
+        String[] xmlExpectedKripkeStrArr = selectedFileTestResult.getXmlExpected();
+        String[] xmlActualKripkeStrArr = selectedFileTestResult.getXmlActual();
+        String[] translationExpectedKripkeStrArr = selectedFileTestResult.getTranslationExpected();
+        String[] translationActualKripkeStrArr = selectedFileTestResult.getTranslationActual();
+        String[] interleavingsExpectedKripkeStrArr = selectedFileTestResult.getInterleavingsExpected();
+        String[] interleavingsActualKripkeStrArr = selectedFileTestResult.getInterleavingsActual();
+        String[] modelCheckingExpectedResultStrArr = selectedFileTestResult.getModelCheckingExpected();
+        String[] modelCheckingActualResultStrArr = selectedFileTestResult.getModelCheckingActual();
+
+        // format expected/actual lists for xml, translation and interleavings
+        int lineLength = options.getTesterLineLength();
+        if (xmlActualKripkeStrArr != null && translationActualKripkeStrArr != null) {
+            xmlExpectedKripkeStrArr = wrapStrArrElements(xmlExpectedKripkeStrArr, lineLength);
+            xmlActualKripkeStrArr = wrapStrArrElements(xmlActualKripkeStrArr, lineLength);
+            translationExpectedKripkeStrArr = wrapStrArrElements(translationExpectedKripkeStrArr, lineLength);
+            translationActualKripkeStrArr = wrapStrArrElements(translationActualKripkeStrArr, lineLength);
+        }
+        interleavingsExpectedKripkeStrArr = wrapStrArrElements(interleavingsExpectedKripkeStrArr, lineLength);
+        interleavingsActualKripkeStrArr = wrapStrArrElements(interleavingsActualKripkeStrArr, lineLength);
+        modelCheckingExpectedResultStrArr = wrapStrArrElements(modelCheckingExpectedResultStrArr, lineLength);
+        modelCheckingActualResultStrArr = wrapStrArrElements(modelCheckingActualResultStrArr, lineLength);
+
+        String testsXmlExpectedTextAreaText;
+        String testsXmlActualTextAreaText;
+        String testsTranslationExpectedTextAreaText;
+        String testsTranslationActualTextAreaText;
+        String testsInterleavingsExpectedTextAreaText;
+        String testsInterleavingsActualTextAreaText;
+        String testsModelCheckingExpectedTextAreaText;
+        String testsModelCheckingActualTextAreaText;
+
+        testsXmlExpectedTextAreaText = new String();
+        testsXmlActualTextAreaText = new String();
+        testsTranslationExpectedTextAreaText = new String();
+        testsTranslationActualTextAreaText = new String();
+        testsInterleavingsExpectedTextAreaText = new String();
+        testsInterleavingsActualTextAreaText = new String();
+        testsModelCheckingExpectedTextAreaText = new String();
+        testsModelCheckingActualTextAreaText = new String();
+
+        // should this stuff be moved to controller, or maybe to model or something??
+
+        if (xmlActualKripkeStrArr != null && translationActualKripkeStrArr != null) {
+            testsXmlExpectedTextAreaText = "Expected" + "\n\n" + strArrToString(xmlExpectedKripkeStrArr);
+            testsXmlActualTextAreaText = "Actual" + "\n\n" + strArrToString(xmlActualKripkeStrArr);
+            testsTranslationExpectedTextAreaText = "Expected" + "\n\n" + strArrToString(translationExpectedKripkeStrArr);
+            testsTranslationActualTextAreaText = "Actual" + "\n\n" + strArrToString(translationActualKripkeStrArr);
+        }
+
+        testsInterleavingsExpectedTextAreaText = "Expected" + "\n\n" + strArrToString(interleavingsExpectedKripkeStrArr);
+        testsInterleavingsActualTextAreaText = "Actual" + "\n\n" + strArrToString(interleavingsActualKripkeStrArr);
+        testsModelCheckingExpectedTextAreaText = "Expected" + "\n\n" + strArrToString(modelCheckingExpectedResultStrArr);
+        testsModelCheckingActualTextAreaText = "Actual" + "\n\n" + strArrToString(modelCheckingActualResultStrArr);
+
+        components.testsXmlExpectedTextArea.setText(testsXmlExpectedTextAreaText);
+        components.testsXmlActualTextArea.setText(testsXmlActualTextAreaText);
+        components.testsTranslationExpectedTextArea.setText(testsTranslationExpectedTextAreaText);
+        components.testsTranslationActualTextArea.setText(testsTranslationActualTextAreaText);
+        components.testsInterleavingsExpectedTextArea.setText(testsInterleavingsExpectedTextAreaText);
+        components.testsInterleavingsActualTextArea.setText(testsInterleavingsActualTextAreaText);
+        components.testsModelCheckingExpectedTextArea.setText(testsModelCheckingExpectedTextAreaText);
+        components.testsModelCheckingActualTextArea.setText(testsModelCheckingActualTextAreaText);
+
     }
 
     private void initAnalyzer() {
@@ -397,6 +463,35 @@ public class View extends JFrame implements Observer {
         if (selections.getStep() != null) { components.stepList.setSelectedIndex(getIndexFromListElem(selections.getStep().toString(), components.stepList)); }
         if (selections.getModel() != null) { components.modelList.setSelectedIndex(getIndexFromListElem(selections.getModel(), components.modelList)); }
         if (selections.getState() != null) { components.stateList.setSelectedIndex(getIndexFromListElem(selections.getState().getName(), components.stateList)); }
+    }
+
+    // helper
+
+    String[] wrapStrArrElements(String[] strArr, int lineLength) {
+        for (int i=0; i<strArr.length; i++) {
+            String string = strArr[i];
+            String stringWrapped = wrapString(string, "\n", lineLength) + "\n";
+            strArr[i] = stringWrapped;
+        }
+        return strArr;
+    }
+
+    // insert line break every x characters (code from https://stackoverflow.com/questions/537174/putting-char-into-a-java-string-for-each-n-characters/537190#537190)
+    static String wrapString(String text, String insert, int period) {
+        StringBuilder builder = new StringBuilder(text);
+        int i = 0;
+        while (i + period < builder.length() && (i = builder.lastIndexOf(",", i + period)) != -1) {
+            builder.replace(i, i + 1, ",\n");
+        }
+        return builder.toString();
+    }
+
+    String strArrToString(String[] strArr) {
+        String combinedString = "";
+        for (String thisString : strArr) {
+            combinedString = combinedString + thisString + "\n";
+        }
+        return combinedString;
     }
 
 }

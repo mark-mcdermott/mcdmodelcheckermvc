@@ -285,4 +285,25 @@ public class Options {
     public int getTesterModelCheckingLinesToSkip() {
         return testerModelCheckingLinesToSkip;
     }
+
+    public int getTesterLineLength() {
+        return testerLineLength;
+    }
+
+    public int getTesterExpectedActualTextAreaWidth() {
+        return testerExpectedActualTextAreaWidth;
+    }
+
+    public int getTesterExpectedActualTextAreaHeight() {
+        return testerExpectedActualTextAreaHeight;
+    }
+
+    public int getTesterExpectedActualPanelHeight() {
+        return testerExpectedActualPanelHeight;
+    }
+
+    public int getTesterExpectedActualPanelWidth() {
+        return testerExpectedActualPanelWidth;
+    }
+
 }
