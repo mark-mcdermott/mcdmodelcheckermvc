@@ -746,8 +746,10 @@ public class Components {
         modelCheckingPanelGridPosition.gridx = 3;
         modelCheckingPanelGridPosition.gridy = 0;
         modelCheckingPanelGridPosition.fill = GridBagConstraints.HORIZONTAL;
-        testsModelCheckingTitle = new JLabel();
+        testsPanel.add(testsModelCheckingPanel, interleavingsPanelGridPosition);
+        testsModelCheckingTitle = new JLabel("Model Checking");
         testsModelCheckingTitle.setBorder(BorderFactory.createEmptyBorder(0, 100, 10, 0));
+        testsModelCheckingPanel.add(testsModelCheckingTitle, BorderLayout.NORTH);
         testsModelCheckingExpectedLabel = new JLabel("Expected");
         testsModelCheckingExpectedLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
         testsModelCheckingExpectedLabel.setFont(titleFont);
@@ -759,7 +761,9 @@ public class Components {
         testsModelCheckingExpectedTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
         testsModelCheckingExpectedScrollPane = new JScrollPane();
         testsModelCheckingExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsModelCheckingExpectedScrollPane.setViewportView(testsModelCheckingExpectedTextArea);
         testsModelCheckingExpectedSplitPane = new JSplitPane();
+        testsModelCheckingPanel.add(testsModelCheckingExpectedScrollPane, BorderLayout.WEST);
         testsModelCheckingActualLabel = new JLabel("Actual");
         testsModelCheckingActualLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
         testsModelCheckingActualLabel.setFont(titleFont);
@@ -771,6 +775,8 @@ public class Components {
         testsModelCheckingActualTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
         testsModelCheckingActualScrollPane = new JScrollPane();
         testsModelCheckingActualScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsModelCheckingActualScrollPane.setViewportView(testsModelCheckingActualTextArea);
+        testsModelCheckingPanel.add(testsModelCheckingActualScrollPane, BorderLayout.EAST);
 
         // spacers
         testerSpacerRight = new JPanel();

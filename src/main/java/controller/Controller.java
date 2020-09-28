@@ -418,7 +418,9 @@ public class Controller {
 
     private TesterData getInitialTesterData(ListsContent initialAnalyzerListContent) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
         String pathToTestFiles = options.getPathToTests();
-        String[] allFiles = getFileStringsListFromDir(new File(pathToTestFiles));
+        // String[] allFiles = getFileStringsListFromDir(new File(pathToTestFiles));
+        // String[] allFiles = { "OneStep.ljx" };
+        String[] allFiles = new XmlFileOrder().getFileOrder();
         String selectedFile = allFiles[0];
         FileTest fileTestSelectedFile = new FileTest(selectedFile, pathToTestFiles, model, options);
         FileTestSet fileTestSet = fileTestSetFromTestsPath(pathToTestFiles,allFiles);
