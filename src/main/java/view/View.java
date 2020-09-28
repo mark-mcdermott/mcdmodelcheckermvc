@@ -100,6 +100,8 @@ public class View extends JFrame implements Observer {
 
     private void initTester() {
         this.getContentPane().removeAll();
+        components.layoutSettings = new GridBagConstraints();
+        components.layoutSettings.anchor = GridBagConstraints.NONE;
         components.sharedComponents(this);
         components.testerSidebar();
         components.testerComponents();
