@@ -81,6 +81,16 @@ public class View extends JFrame implements Observer {
         repaint();
     }
 
+    private void initTester() {
+        this.getContentPane().removeAll();
+        components.layoutSettings = new GridBagConstraints();
+        components.layoutSettings.anchor = GridBagConstraints.NONE;
+        components.sharedComponents(this);
+        components.testerSidebar();
+        components.testerComponents();
+        addButtonListeners();
+    }
+
     private void testerContent() {
 
         // pull the results out of the model
@@ -96,15 +106,6 @@ public class View extends JFrame implements Observer {
         components.individualResultTextarea.setText(selectedFilePassFail);
         components.aggregateResultTextarea.setText(allResultsStr);
 
-    }
-
-    private void initTester() {
-        this.getContentPane().removeAll();
-        components.layoutSettings = new GridBagConstraints();
-        components.layoutSettings.anchor = GridBagConstraints.NONE;
-        components.sharedComponents(this);
-        components.testerSidebar();
-        components.testerComponents();
     }
 
     private void initAnalyzer() {
