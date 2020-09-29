@@ -63,14 +63,26 @@ public class LeafTemplate {
         leafStarted.addChild(leafTerminated);
         leafTerminated.addParent(leafStarted);
         leafStarted.addRelation(new Relation(leafStarted, leafTerminated));
+
         // get relations for hooking up children/parents to template vertices
         ArrayList<Relation> relationsToAdd = new ArrayList<>();
         ArrayList<Relation> relationsToRemove = new ArrayList<>();
+
         // relations for hooking up children
         if (children != null) {
             for (Vertex child : children) {
-                relationsToAdd.add(new Relation(leafCompleted, child));
-                relationsToAdd.add(new Relation(leafTerminated, child));
+
+                // originally i had all exit nodes linking to all child nodes. dr. p said this was wrong.
+                // relationsToAdd.add(new Relation(leafCompleted, child));
+                // relationsToAdd.add(new Relation(leafTerminated, child));
+
+                // fixed code - completeds link to completeds, terminateds link to terminateds
+                if (child.getStatus() == TERMINATED) {
+                    relationsToAdd.add(new Relation(leafTerminated, child));
+                } else {
+                    relationsToAdd.add(new Relation(leafCompleted, child));
+                }
+
                 relationsToRemove.add(new Relation(vertexToReplace, child));
             }
         }
