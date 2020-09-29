@@ -78,6 +78,7 @@ public class View extends JFrame implements Observer {
     private void renderTesterState() {
         initTester();
         testerContent();
+        addButtonListeners();
         testerListeners(model);
         repaint();
     }

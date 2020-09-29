@@ -39,9 +39,11 @@ public class StatesThatHoldForModel {
             ArrayList<Vertex> statesThatHold = statesThatHoldSet.states();
             for (int i = 0; i < statesThatHold.size(); i++) {
                 Vertex thisState = statesThatHold.get(i);
-                statesThatHoldStr += thisState.toStringDetailed();
+                // statesThatHoldStr += thisState.toStringDetailed();
+                statesThatHoldStr += thisState.getName();
                 if (i <= statesThatHold.size() - 2) {
-                    statesThatHoldStr += ",\n";
+                    statesThatHoldStr += ",";
+                    // statesThatHoldStr += ",\n";
                 }
             }
             statesThatHoldStr += "}";

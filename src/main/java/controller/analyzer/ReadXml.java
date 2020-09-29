@@ -167,10 +167,10 @@ public class ReadXml {
                             transitionTarget = thisVertex;
                         }
                     }
+                    vertex.addChild(transitionTarget);
+                    transitionTarget.addParent(vertex);
+                    vertex.addRelation(new Relation(vertex, transitionTarget));
                 }
-                vertex.addChild(transitionTarget);
-                transitionTarget.addParent(vertex);
-                vertex.addRelation(new Relation(vertex, transitionTarget));
 
                 vertexList.addVertex(vertex);
                 if (vertexList.getRoot() == null) {
