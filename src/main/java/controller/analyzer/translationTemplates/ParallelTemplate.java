@@ -79,6 +79,7 @@ public class ParallelTemplate {
             }
         }
 
+        // TODO probably have to differentiate here between children & origChildren, to make it "recursive" in the way dr. p mentioned
         // get relations for hooking up children to template vertices
         Integer numChildren = (children == null) ? null : children.size();
         ArrayList<ArrayList<Vertex>> permutations = null;
