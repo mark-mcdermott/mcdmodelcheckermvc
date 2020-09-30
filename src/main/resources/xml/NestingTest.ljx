@@ -1,35 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE littlejil PUBLIC "-//LASER//DTD Little-JIL 1.5//EN" "http://laser.cs.umass.edu/dtd/littlejil-1.5.dtd">
 <littlejil>
    <module>
       <step-declaration id="_2" kind="parallel" name="step 0">
-         <connector>
-            <substep-connector />
             <step-declaration id="_0" kind="parallel" name="step 1">
-               <connector>
-                  <substep-connector />
                   <step-declaration id="_10" kind="leaf" name="New Step #2" />
-               </connector>
-               <connector>
-                  <substep-connector />
                   <step-declaration id="_12" kind="leaf" name="New Step #3" />
-               </connector>
             </step-declaration>
-         </connector>
-         <connector>
-            <substep-connector />
             <step-declaration id="_1" kind="leaf" name="New Step #3" />
-         </connector>
       </step-declaration>
-      <export step-name="test step 0" />
    </module>
-   <metadata>
-      <diagram name="NestingTest">
-         <location id="_3" key="_2" x-position="265" y-position="79" />
-         <location id="_4" key="_0" x-position="167" y-position="207" />
-         <location id="_5" key="_1" x-position="376" y-position="212" />
-         <location id="_11" key="_10" x-position="117" y-position="344" />
-         <location id="_13" key="_12" x-position="250" y-position="353" />
-      </diagram>
-   </metadata>
 </littlejil>
