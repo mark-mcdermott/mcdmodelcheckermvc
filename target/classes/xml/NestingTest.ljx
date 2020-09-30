@@ -1,6 +1,6 @@
 <littlejil>
    <module>
-      <step-declaration id="_2" kind="parallel" name="step 0">
+      <step-declaration id="_2" kind="parallel" name="step 0" property="test">
             <step-declaration id="_0" kind="parallel" name="step 1">
                   <step-declaration id="_10" kind="leaf" name="New Step #2" />
                   <step-declaration id="_12" kind="leaf" name="New Step #3" />

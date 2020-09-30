@@ -6,6 +6,8 @@ import controller.types.ctl.Label;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
+import controller.types.graph.VertexStatus;
+import controller.utils.ExceptionMessage;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,29 +81,57 @@ public class ParallelTemplate {
             }
         }
 
-        // TODO probably have to differentiate here between children & origChildren, to make it "recursive" in the way dr. p mentioned
         // get relations for hooking up children to template vertices
-        Integer numChildren = (children == null) ? null : children.size();
+        // Integer numChildren = (children == null) ? null : children.size();
+        Integer numOrigChildren = (origChildren == null) ? null : origChildren.size();
         ArrayList<ArrayList<Vertex>> permutations = null;
         if (!getInterleavings) {
-            if (children != null && numChildren != null) {
-                for (Integer i = 0; i < numChildren; i++) {
+            // if (children != null && numChildren != null) {
+            if (origChildren != null && numOrigChildren != null) {
+                // for (Integer i = 0; i < numChildren; i++) {
+                for (Integer i = 0; i < numOrigChildren; i++) {
 
-                    Vertex thisChild = children.get(i);
-                    relationsToRemove.add(new Relation(vertexToReplace, thisChild));
-                    relationsToAdd.add(new Relation(parStarted, thisChild));
+                    // Vertex thisChild = children.get(i);
+                    Vertex thisSubstep = origChildren.get(i);
+                    // relationsToRemove.add(new Relation(vertexToReplace, thisChild));
+                    relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
+                    // relationsToAdd.add(new Relation(parStarted, thisChild));
+                    relationsToAdd.add(new Relation(parStarted, thisSubstep));
 
-                    for (Integer j = 0; j < numChildren; j++) {
+                    // for (Integer j = 0; j < numChildren; j++) {
+                    for (Integer j = 0; j < numOrigChildren; j++) {
                         if (i != j) {
-                            Vertex otherChild = children.get(j);
-                            relationsToAdd.add(new Relation(otherChild, thisChild));
-                            relationsToAdd.add(new Relation(thisChild, otherChild));
+                            // Vertex otherChild = children.get(j);
+                            Vertex otherSubstep = origChildren.get(j);
+                            // relationsToAdd.add(new Relation(otherChild, thisChild));
+                            relationsToAdd.add(new Relation(otherSubstep, thisSubstep));
+                            // relationsToAdd.add(new Relation(thisChild, otherChild));
+                            relationsToAdd.add(new Relation(thisSubstep, otherSubstep));
                         }
                     }
-                    thisChild.setParentSiblingNum(0);
-                    thisChild.setSiblingNum(i);
-                    relationsToAdd.add(new Relation(thisChild, parCompleted));
-                    relationsToAdd.add(new Relation(thisChild, parTerminated));
+                    // thisChild.setParentSiblingNum(0);
+                    thisSubstep.setParentSiblingNum(0);
+                    // thisChild.setSiblingNum(i);
+                    thisSubstep.setSiblingNum(i);
+                    // relationsToAdd.add(new Relation(thisChild, parCompleted));
+                    relationsToAdd.add(new Relation(thisSubstep, parCompleted));
+                    // relationsToAdd.add(new Relation(thisChild, parTerminated));
+                    relationsToAdd.add(new Relation(thisSubstep, parTerminated));
+                }
+
+                ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
+                if (childrenNotOrig != null) {
+                    for (int i=0; i<childrenNotOrig.size(); i++) {
+                        Vertex thisChild = childrenNotOrig.get(i);
+                        VertexStatus thisChildStatus = thisChild.getStatus();
+                        if (thisChildStatus == COMPLETED) {
+                            relationsToAdd.add(new Relation(parCompleted, thisChild));
+                        } else if (thisChildStatus == TERMINATED) {
+                            relationsToAdd.add(new Relation(parTerminated, thisChild));
+                        } else {
+                            new ExceptionMessage("parallel translation child not completed or terminated - not sure how to handle. ParallelTemplate.java");
+                        }
+                    }
                 }
 
             } else {
@@ -186,6 +216,24 @@ public class ParallelTemplate {
     }
 
     public TemplateSwapDetails getTemplateSwapDetails() { return templateSwapDetails; }
+
+    // helper
+    private ArrayList<Vertex> getChildrenNotOrig(ArrayList<Vertex> origChildren, ArrayList<Vertex> children) {
+        if (children == null) { return null; }
+        ArrayList<Vertex> childrenNotOrig = new ArrayList<>();
+        for (Vertex child : children) {
+            Boolean found = false;
+            for (Vertex origChild : origChildren) {
+                if (origChild == child) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                childrenNotOrig.add(child);
+            }
+        }
+        return childrenNotOrig;
+    }
 
     // interleavings
     public ArrayList<ArrayList<Vertex>> getChildrenInterleavings(ArrayList<Vertex> children, ArrayList<Relation> relationsToAdd, ArrayList<Relation> relationsToRemove, Vertex vertexToRemove) {
