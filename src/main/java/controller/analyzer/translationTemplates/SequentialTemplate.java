@@ -6,6 +6,7 @@ import controller.types.ctl.Label;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
+import controller.types.graph.VertexStatus;
 
 import java.util.ArrayList;
 
@@ -78,6 +79,7 @@ public class SequentialTemplate {
         // completed step as their child (only the later one will)
         // this is demonstrated in the 4th translation step of FiveSteps.ljs
         // TODO: ask Dr. Podorozhny about which order to do them (then add that logic here)
+        /*
         if (children != null && numChildren != null) {
             for (Integer i = 0; i < numChildren; i++) {
                 Vertex thisChild = children.get(i);
@@ -102,6 +104,47 @@ public class SequentialTemplate {
                 Vertex thisChild = children.get(i);
                 relationsToAdd.add(new Relation(thisChild, seqTerminated));
             }
+        } */
+
+
+
+        // hook up original children as the substeps (as in the sequential diagram)
+        int numOrigChildren = origChildren.size();
+
+        for (int i=0; i<numOrigChildren; i++) {
+            Vertex thisSubstep = origChildren.get(i);
+            Vertex prevSubstep = (i == 0) ? null : origChildren.get(i - 1);
+            thisSubstep.setParentSiblingNum(0);
+            thisSubstep.setSiblingNum(0);
+
+            if (i == 0) { // first substep hooked up as a child of seqStarted
+                relationsToAdd.add(new Relation(seqStarted, thisSubstep));
+                relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
+            } else { // all substeps but first are hooked up as a child of the previous substep
+                relationsToAdd.add(new Relation(prevSubstep, thisSubstep));
+                relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
+            }
+            if (i == numOrigChildren - 1) { // last substep hooks up to seqCompleted
+                relationsToAdd.add(new Relation(thisSubstep, seqCompleted));
+            }
+            relationsToAdd.add(new Relation(thisSubstep, seqTerminated)); // all substeps hook up to seqTerminated
+        }
+
+        // See if node to replace was originally hooked up to a terminated. If so, hook seqTerminated up to it
+        Vertex childTerminated = getChildTerminated(children);
+        if (childTerminated != null) {
+            relationsToAdd.add(new Relation(seqTerminated, childTerminated));
+        }
+
+        // hook up all children that aren't original (and aren't terminated) as children of seqCompleted (hook terminated up as child of seqTerminated)
+        ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
+        for (Vertex childNotOrig : childrenNotOrig) {
+            VertexStatus status = childNotOrig.getStatus();
+            if (status != TERMINATED) {
+                relationsToAdd.add(new Relation(seqCompleted, childNotOrig));
+            } else {
+                relationsToAdd.add(new Relation(seqTerminated, childNotOrig));
+            }
         }
 
         // get relations for hooking up parents to template vertices
@@ -119,8 +162,40 @@ public class SequentialTemplate {
 
     }
 
+
+    // see if one of the children is a terminated
+    private Vertex getChildTerminated(ArrayList<Vertex> children) {
+        Vertex terminatedChild = null;
+        int numChildren = children.size();
+        for (int i = 0; i < numChildren; i++) {
+            Vertex child = children.get(i);
+            VertexStatus childStatus = child.getStatus();
+            if (childStatus == TERMINATED) {
+                terminatedChild = child;
+            }
+        }
+        return terminatedChild;
+    }
+
     public TemplateSwapDetails getTemplateSwapDetails() {
         return templateSwapDetails;
+    }
+
+    private ArrayList<Vertex> getChildrenNotOrig(ArrayList<Vertex> origChildren, ArrayList<Vertex> children) {
+        if (children == null) { return null; }
+        ArrayList<Vertex> childrenNotOrig = new ArrayList<>();
+        for (Vertex child : children) {
+            Boolean found = false;
+            for (Vertex origChild : origChildren) {
+                if (origChild == child) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                childrenNotOrig.add(child);
+            }
+        }
+        return childrenNotOrig;
     }
 
 }
