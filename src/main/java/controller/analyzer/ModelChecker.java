@@ -60,6 +60,11 @@ public class ModelChecker {
         // Double stopWatchSecs = durationToSecs(stopWatchStart, stopWatchEnd);
         // resultStr = getResultStr(stateToCheck, doesStateHold, model, labelHash, stopWatchSecs, counterExamplePaths);
 
+        if (model.equals("AG(EF(p))")) {
+            int i=0;
+            i++;
+        }
+
         // ** eval the model (and get counterexamples) **
         statesThatHoldAndCounterExamples = new CtlCompiler(model, kripke, stateToCheck).getStatesThatHoldAndCounterExamples();
         statesThatHold = statesThatHoldAndCounterExamples.getStatesThatHoldForModel();

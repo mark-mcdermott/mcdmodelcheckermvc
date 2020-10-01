@@ -6,6 +6,7 @@ import controller.types.ctl.Label;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
+import controller.types.graph.VertexStatus;
 
 import java.util.ArrayList;
 
@@ -76,8 +77,9 @@ public class LeafTemplate {
                 // relationsToAdd.add(new Relation(leafCompleted, child));
                 // relationsToAdd.add(new Relation(leafTerminated, child));
 
-                // fixed code - completeds link to completeds, terminateds link to terminateds
-                if (child.getStatus() == TERMINATED) {
+                // fixed code - completeds link to completeds, terminateds link to terminateds (or in choice to all hasNotStarteds and also to hasStarted1)
+                VertexStatus status = child.getStatus();
+                if (status == TERMINATED || status == SUBSTEP_HAS_NOT_STARTED || status == SUBSTEP_HAS_STARTED) {
                     relationsToAdd.add(new Relation(leafTerminated, child));
                 } else {
                     relationsToAdd.add(new Relation(leafCompleted, child));

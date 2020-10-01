@@ -155,6 +155,7 @@ public class Translate {
                         Vertex child = children.get(i);
                         int curNumVisits = child.getNumVisits();
                         if (curNumVisits <= loopsNum) {
+                        // if (curNumVisits < loopsNum) {
                             if (targetStep == null || numSteps < targetStep) {
                                 translateChildrenRecursively(child, getInterleavings, loopsNum);
                             }

@@ -1,0 +1,23 @@
+<littlejil>
+   <module>
+      <step-declaration id="_1" kind="parallel" name="added root node">
+            <step-declaration id="_8" kind="parallel" name="diagnosis">
+                  <step-declaration id="_14" kind="parallel" name="nurse takes tests">
+                        <step-declaration id="_10" kind="leaf" name="covid-19 test" />
+                        <step-declaration id="_12" kind="leaf" name="blood test" />
+                  </step-declaration>
+                  <step-declaration id="_16" kind="parallel" name="doctor examination">
+                        <step-declaration id="_18" kind="leaf" name="listens to lungs" />
+                        <step-declaration id="_20" kind="leaf" name="check O2 level (finger clip)" />
+                  </step-declaration>
+                  <step-declaration id="_22" kind="leaf" name="CT scan" />
+            </step-declaration>
+            <step-declaration id="_87" kind="sequential" name="treatment">
+              <step-declaration id="_26" kind="leaf" name="antibiotics" />
+              <step-declaration id="_88" kind="leaf" name="isolation room" />
+              <step-declaration id="_89" kind="leaf" name="high flow nasal oxygen" />
+              <step-declaration id="_90" kind="leaf" name="mechanical ventilation" property="ventilator needed" />
+            </step-declaration>
+      </step-declaration>
+   </module>
+</littlejil>

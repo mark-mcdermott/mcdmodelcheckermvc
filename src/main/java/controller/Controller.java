@@ -336,7 +336,8 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        String[] files = {"OneStep.ljx"};
+        // String[] files = {"OneStep.ljx"};
+        String[] files = {"choice-two-steps.ljx"};
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";

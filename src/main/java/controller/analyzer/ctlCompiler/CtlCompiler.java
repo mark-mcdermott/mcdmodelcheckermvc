@@ -31,6 +31,7 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     static CounterExamples counterExamplesWorkingList;
     static CounterExamples allPaths;
     static Boolean firstPathNotAllPFound;
+    static ArrayList<Vertex> firstPathNotAllPFoundVisited;
     static Boolean firstGlobalPathWithNoPFound;
     static Boolean firstPathNotAllPOrQFound;
     static Boolean pFound;
@@ -285,9 +286,11 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     static CounterExamples getFirstPathNotAllP(Set statesThatHoldForModel, Set statesThatHoldForProperty) {
         CounterExample counterExample = new CounterExample();
         thisPathWorkingList = new ArrayList<>();
+        firstPathNotAllPFoundVisited = new ArrayList<>();
         counterExamplesWorkingList = new CounterExamples();
 
         thisPathWorkingList.add(stateToCheck);
+        firstPathNotAllPFoundVisited.add(stateToCheck);
 
         if (!statesThatHoldForProperty.hasState(stateToCheck)) {
             counterExample = new CounterExample(thisPathWorkingList);
@@ -296,7 +299,7 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
             if (stateToChecksChildren != null && stateToChecksChildren.size() > 0) {
                 firstPathNotAllPFound = false;
                 for (Vertex child : stateToChecksChildren) {
-                    if (!firstPathNotAllPFound) {
+                    if (!firstPathNotAllPFound && !firstPathNotAllPFoundVisited.contains(child)) {
                         getFirstPathNotAllPRecursive(child, statesThatHoldForModel, statesThatHoldForProperty);
                     }
                 }
@@ -305,15 +308,17 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
         return counterExamplesWorkingList;
     }
 
+    // TODO: not positive but I think this is running infinitely on kripkes with loops - make sure there's a isVisited check
     static void getFirstPathNotAllPRecursive(Vertex state, Set statesThatHoldForModel, Set statesThatHoldForProperty) {
 
         thisPathWorkingList.add(state);
+        firstPathNotAllPFoundVisited.add(state);
 
         if (statesThatHoldForProperty.hasState(state)) {
             ArrayList<Vertex> children = state.getChildren();
             if (children != null && children.size() > 0) {
                 for (Vertex child : children) {
-                    if (!firstPathNotAllPFound) {
+                    if (!firstPathNotAllPFound && !firstPathNotAllPFoundVisited.contains(child)) {
                         getFirstPathNotAllPRecursive(child, statesThatHoldForModel, statesThatHoldForProperty);
                     }
                 }

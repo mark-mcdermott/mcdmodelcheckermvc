@@ -109,25 +109,29 @@ public class SequentialTemplate {
 
 
         // hook up original children as the substeps (as in the sequential diagram)
-        int numOrigChildren = origChildren.size();
+        Integer numOrigChildren = null;
+        if (origChildren != null) {
+            numOrigChildren = origChildren.size();
 
-        for (int i=0; i<numOrigChildren; i++) {
-            Vertex thisSubstep = origChildren.get(i);
-            Vertex prevSubstep = (i == 0) ? null : origChildren.get(i - 1);
-            thisSubstep.setParentSiblingNum(0);
-            thisSubstep.setSiblingNum(0);
+            for (int i=0; i<numOrigChildren; i++) {
+                Vertex thisSubstep = origChildren.get(i);
+                Vertex prevSubstep = (i == 0) ? null : origChildren.get(i - 1);
+                thisSubstep.setParentSiblingNum(0);
+                thisSubstep.setSiblingNum(0);
 
-            if (i == 0) { // first substep hooked up as a child of seqStarted
-                relationsToAdd.add(new Relation(seqStarted, thisSubstep));
-                relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
-            } else { // all substeps but first are hooked up as a child of the previous substep
-                relationsToAdd.add(new Relation(prevSubstep, thisSubstep));
-                relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
+                if (i == 0) { // first substep hooked up as a child of seqStarted
+                    relationsToAdd.add(new Relation(seqStarted, thisSubstep));
+                    relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
+                } else { // all substeps but first are hooked up as a child of the previous substep
+                    relationsToAdd.add(new Relation(prevSubstep, thisSubstep));
+                    relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
+                }
+                if (i == numOrigChildren - 1) { // last substep hooks up to seqCompleted
+                    relationsToAdd.add(new Relation(thisSubstep, seqCompleted));
+                }
+                relationsToAdd.add(new Relation(thisSubstep, seqTerminated)); // all substeps hook up to seqTerminated
             }
-            if (i == numOrigChildren - 1) { // last substep hooks up to seqCompleted
-                relationsToAdd.add(new Relation(thisSubstep, seqCompleted));
-            }
-            relationsToAdd.add(new Relation(thisSubstep, seqTerminated)); // all substeps hook up to seqTerminated
+
         }
 
         // See if node to replace was originally hooked up to a terminated. If so, hook seqTerminated up to it
@@ -137,13 +141,15 @@ public class SequentialTemplate {
         }
 
         // hook up all children that aren't original (and aren't terminated) as children of seqCompleted (hook terminated up as child of seqTerminated)
-        ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
-        for (Vertex childNotOrig : childrenNotOrig) {
-            VertexStatus status = childNotOrig.getStatus();
-            if (status != TERMINATED) {
-                relationsToAdd.add(new Relation(seqCompleted, childNotOrig));
-            } else {
-                relationsToAdd.add(new Relation(seqTerminated, childNotOrig));
+        if (origChildren != null && children != null) {
+            ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
+            for (Vertex childNotOrig : childrenNotOrig) {
+                VertexStatus status = childNotOrig.getStatus();
+                if (status != TERMINATED) {
+                    relationsToAdd.add(new Relation(seqCompleted, childNotOrig));
+                } else {
+                    relationsToAdd.add(new Relation(seqTerminated, childNotOrig));
+                }
             }
         }
 
