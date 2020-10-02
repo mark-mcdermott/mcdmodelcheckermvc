@@ -30,9 +30,11 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     static ArrayList<Vertex> thisPathWorkingList;
     static CounterExamples counterExamplesWorkingList;
     static CounterExamples allPaths;
+    static ArrayList<Vertex> allPathsVisited;
     static Boolean firstPathNotAllPFound;
     static ArrayList<Vertex> firstPathNotAllPFoundVisited;
     static Boolean firstGlobalPathWithNoPFound;
+    static ArrayList<Vertex> firstGlobalPathWithNoPFoundVisited;
     static Boolean firstPathNotAllPOrQFound;
     static Boolean pFound;
 
@@ -193,12 +195,15 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
         CounterExamples counterExamples = new CounterExamples();
         thisPathWorkingList = new ArrayList<>();
         allPaths = new CounterExamples();
+        allPathsVisited = new ArrayList<Vertex>();
+        allPathsVisited.add(stateToCheck);
+        stateToChecksChildren = stateToCheck.getChildren();
         if (stateToChecksChildren == null || stateToChecksChildren.size() == 0) {
             counterExample.addVertex(stateToCheck);
             counterExamples.add(counterExample);
         } else {
-            for (Vertex child : stateToChecksChildren) {
-                getAllPathsRecursive(child);
+            for (Vertex thisChild : stateToChecksChildren) {
+                getAllPathsRecursive(thisChild);
             }
         }
         return counterExamples;
@@ -206,14 +211,18 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
 
     static void getAllPathsRecursive(Vertex state) {
         thisPathWorkingList.add(state);
+        // stateToChecksChildren.add(state);
+        allPathsVisited.add(state);
         ArrayList<Vertex> children = state.getChildren();
-        if (children == null || children.size() == 0) {
-            CounterExample counterExample = new CounterExample(thisPathWorkingList);
-            allPaths.add(counterExample);
-            thisPathWorkingList.remove(state);
-        } else {
+         if (children == null || children.size() == 0 ) {
+             CounterExample counterExample = new CounterExample(thisPathWorkingList);
+             allPaths.add(counterExample);
+             thisPathWorkingList.remove(state);
+         } else {
             for (Vertex child : children) {
-                getAllPathsRecursive(child);
+                if (!allPathsVisited.contains(child)) {
+                    getAllPathsRecursive(child);
+                }
             }
         }
     }
@@ -221,8 +230,10 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     static CounterExamples getFirstGlobalPathWithNoP(Set statesThatHold) {
         thisPathWorkingList = new ArrayList<>();
         counterExamplesWorkingList = new CounterExamples();
+        firstGlobalPathWithNoPFoundVisited = new ArrayList<>();
         firstGlobalPathWithNoPFound = false;
         thisPathWorkingList.add(stateToCheck);
+        firstGlobalPathWithNoPFoundVisited.add(stateToCheck);
         if (stateToChecksChildren != null) {
             for (Vertex child : stateToChecksChildren) {
                 if (!firstGlobalPathWithNoPFound) {
@@ -239,7 +250,7 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     static void getFirstGlobalPathWithNoPRecursive(Vertex state, Set statesThatHoldForModel) {
 
         thisPathWorkingList.add(state);
-
+        firstGlobalPathWithNoPFoundVisited.add(state);
         // if state isn't p
         if (!statesThatHoldForModel.hasState(state)) {
             ArrayList<Vertex> children = state.getChildren();
@@ -251,7 +262,7 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
                 firstGlobalPathWithNoPFound = true;
             } else {
                 for (Vertex child : children) {
-                    if (!firstGlobalPathWithNoPFound) {
+                    if (!firstGlobalPathWithNoPFound && !firstGlobalPathWithNoPFoundVisited.contains(child)) {
                         getFirstGlobalPathWithNoPRecursive(child, statesThatHoldForModel);
                     }
                 }
