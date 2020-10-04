@@ -1,8 +1,0 @@
-<littlejil>
-   <module>
-      <step-declaration id="_134" kind="choice" name="covid symptoms">
-            <step-declaration id="_136" kind="leaf" name="home, no isolation" />
-            <step-declaration id="_138" kind="leaf" name="swab test" />
-      </step-declaration>
-   </module>
-</littlejil>

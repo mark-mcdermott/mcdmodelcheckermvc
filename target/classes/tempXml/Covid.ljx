@@ -1,0 +1,13 @@
+<littlejil>
+   <module>
+      <step-declaration id="_134" kind="choice" name="covid symptoms">
+            <step-declaration id="_136" kind="leaf" name="home, no isolation" />
+            <step-declaration id="_138" kind="choice" name="swab test">
+                <step-declaration id="_140" kind="parallel" name="treatment">
+                    <step-declaration id="_144" kind="leaf" name="lung US" />
+                    <step-declaration id="_146" kind="leaf" name="CT chest" />
+                </step-declaration>
+            </step-declaration>
+      </step-declaration>
+   </module>
+</littlejil>

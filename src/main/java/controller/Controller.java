@@ -52,6 +52,7 @@ public class Controller {
         AnalyzerData initialAnalyzerData = getInitialAnalyzerData(model.getFilesCache());
         TesterData initialTesterData = getInitialTesterData(initialAnalyzerData.getListsContent());
         model.setData(appState, initialAnalyzerData, initialTesterData);
+        // model.setData(appState, initialAnalyzerData);
     }
 
     // from https://stackoverflow.com/a/1846349, accessed 9/25/20
@@ -336,8 +337,8 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        // String[] files = {"OneStep.ljx"};
-        String[] files = {"Covid.ljx"};
+        String[] files = {"TwoSteps.ljx"};
+        // String[] files = {"Covid.ljx"};
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";

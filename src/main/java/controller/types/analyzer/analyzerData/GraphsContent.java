@@ -36,6 +36,19 @@ public class GraphsContent {
         this.stepGraphs = null;
     }
 
+    public GraphsContent(VertexList xmlVertList, VertexList transVertList, Kripke xmlKripke, Kripke transKripke, LabelHash labelHash) {
+        this.xmlVertList = xmlVertList;
+        this.transVertList = transVertList;
+        this.interVertList = interVertList;
+        this.xmlKripke = xmlKripke;
+        this.transKripke = transKripke;
+        this.interKripke = interKripke;
+        this.labelHash = labelHash;
+        this.isStepGraph = false;
+        this.numSteps = null;
+        this.stepGraphs = null;
+    }
+
     public GraphsContent(VertexList xmlVertList, LabelHash labelHash, VertexList[] stepGraphs) {
         this.xmlVertList = xmlVertList;
         this.transVertList = transVertList;

@@ -129,7 +129,7 @@ public class Translate {
         numSteps++;
 
         // TODO: remove this, for debugging only
-        if (numNodesExpanded==132) {
+        if (getInterleavings && numSteps==7) {
             int breakpointMarker=5;
         }
 
@@ -308,6 +308,11 @@ public class Translate {
                     templateSwapDetails = new SequentialTemplate(vertex, vertexListToTranslate).getTemplateSwapDetails();
                     break;
                 case PARALLEL:
+                    if (getInterleavings && vertex.getName().equals("s3")) {
+                        System.out.println("hi");
+                        int breakpointMarker = -1;
+                        breakpointMarker++;
+                    }
                     templateSwapDetails = new ParallelTemplate(vertex, vertexListToTranslate, getInterleavings).getTemplateSwapDetails();
                     break;
                 case TRY:
