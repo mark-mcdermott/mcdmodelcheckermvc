@@ -42,8 +42,8 @@ public class GetGraphs {
 
         // normal case: get all three completed graphs
         if (!isStepSelected) {
-            // graphsContent = getAllThreeGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash); // TODO uncomment
-            graphsContent = getXmlAndTransGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash); // TODO comment
+            graphsContent = getAllThreeGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash); // TODO uncomment
+            // graphsContent = getXmlAndTransGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash); // TODO comment
 
         // stepGraph case: get two graphs of same type (tran/inter) but of two steps (selectedStep & selectedStep - 1)
         } else if (isStepSelected) {

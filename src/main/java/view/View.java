@@ -368,8 +368,8 @@ public class View extends JFrame implements Observer {
         if (displayType == XML_ONLY || displayType == TRANS_ONLY || displayType == INTER_ONLY) {
             drawOneAcrossGraph(drawGraph, displayType);
         } else if (displayType == ALL_GRAPHS) {
-            // drawThreeAcrossGraphs(drawGraph); // TODO uncomment
-            drawOneAcrossGraph(drawGraph, XML_ONLY); // TODO comment
+            drawThreeAcrossGraphs(drawGraph); // TODO uncomment
+            // drawOneAcrossGraph(drawGraph, XML_ONLY); // TODO comment
 
         }
     }

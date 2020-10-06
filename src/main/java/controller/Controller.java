@@ -50,9 +50,9 @@ public class Controller {
         // AppState appState = TESTER; // ANALY_DEFAULT;
         AppState appState = ANALY_DEFAULT;
         AnalyzerData initialAnalyzerData = getInitialAnalyzerData(model.getFilesCache());
-        // TesterData initialTesterData = getInitialTesterData(initialAnalyzerData.getListsContent()); // TODO: uncomment this
-        // model.setData(appState, initialAnalyzerData, initialTesterData); // TODO: uncomment this
-        model.setData(appState, initialAnalyzerData); // TODO: comment this
+        TesterData initialTesterData = getInitialTesterData(initialAnalyzerData.getListsContent()); // TODO: uncomment this
+        model.setData(appState, initialAnalyzerData, initialTesterData); // TODO: uncomment this
+        // model.setData(appState, initialAnalyzerData); // TODO: comment this
     }
 
     // from https://stackoverflow.com/a/1846349, accessed 9/25/20
