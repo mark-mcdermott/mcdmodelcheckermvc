@@ -1,0 +1,7 @@
+<littlejil>
+   <module>
+      <step-declaration id="_1" kind="sequential" name="covid-19 experience">
+        <step-declaration id="_2" kind="leaf" name="symptoms detected" />
+      </step-declaration>
+   </module>
+</littlejil>

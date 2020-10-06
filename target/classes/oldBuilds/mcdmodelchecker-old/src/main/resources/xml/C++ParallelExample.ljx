@@ -1,0 +1,12 @@
+<littlejil source="https://www.cs.cmu.edu/~15210/pasl.html Example 2 (near top of document), accessed 7/19/20 (screenshot: https://imgur.com/a/l9K1wBd)">
+    <module>
+        <step-declaration id="_0" kind="sequential" name="C++ Parallel Code Example" property="test property">
+            <step-declaration id="_2" kind="leaf" name="Initialize variables" />
+            <step-declaration id="_4" kind="parallel" name="Set variable values">
+                <step-declaration id="_6" kind="leaf" name="Set value of b1" />
+                <step-declaration id="_8" kind="leaf" name="Set value of b2" />
+            </step-declaration>
+            <step-declaration id="_10" kind="leaf" name="Output results" />
+        </step-declaration>
+    </module>
+</littlejil>

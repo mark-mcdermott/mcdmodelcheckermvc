@@ -42,7 +42,8 @@ public class GetGraphs {
 
         // normal case: get all three completed graphs
         if (!isStepSelected) {
-            graphsContent = getAllThreeGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash);
+            // graphsContent = getAllThreeGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash); // TODO uncomment
+            graphsContent = getXmlAndTransGraphs(xmlFilenames,readXml,xmlFileCache,translate,numLoops,isStepSelected,selectedStep,labelHash); // TODO comment
 
         // stepGraph case: get two graphs of same type (tran/inter) but of two steps (selectedStep & selectedStep - 1)
         } else if (isStepSelected) {
@@ -117,6 +118,32 @@ public class GetGraphs {
         Kripke interKripke = new Kripke(interVertList);
 
         GraphsContent graphsContent = new GraphsContent(xmlVertList, transVertList, interVertList, xmlKripke, transKripke, interKripke, labelHash);
+        return graphsContent;
+    }
+
+    private GraphsContent getXmlAndTransGraphs(String[] xmlFilenames, ReadXml readXml, File[] xmlFileCache, Translate translate, Integer numLoops, Boolean isStepSelected, Integer selectedStep, LabelHash labelHash) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+        Boolean prevStep = false;
+
+        // get xml, translation & interleavings vertex lists
+        VertexList xmlVertList;
+        // if only one xml file selected, get xmlVertexList normally
+        if (xmlFilenames.length == 1) {
+            String xmlFilename = xmlFilenames[0];
+            File xmlFile = getCacheFileFromFilename(xmlFilename, xmlFileCache);
+            xmlVertList = readXml.xmlFileToVertexList(xmlFile, labelHash);
+            // if multiple xml files are selected, make each xmlVertexList and merge them together with a new root vertex
+        } else {
+            xmlVertList = getJointVertexListFromXmlFilenames(xmlFilenames, labelHash, xmlFileCache);
+        }
+        VertexList transVertList = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep);
+        // VertexList interVertList = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep);
+
+        // get xml, translation & interleavings kripke structures
+        Kripke xmlKripke = new Kripke(xmlVertList);
+        Kripke transKripke = new Kripke(transVertList);
+        // Kripke interKripke = new Kripke(interVertList);
+
+        GraphsContent graphsContent = new GraphsContent(xmlVertList, transVertList, null, xmlKripke, transKripke, null, labelHash);
         return graphsContent;
     }
 

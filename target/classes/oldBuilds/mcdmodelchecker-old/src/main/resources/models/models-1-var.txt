@@ -1,0 +1,12 @@
+⊤
+⊥
+p
+¬p
+EX(p)
+AX(p)
+EG(p)
+AG(p)
+EF(p)
+AF(p)
+EX(AF(p))
+AG(EF(p))

@@ -1,0 +1,29 @@
+-- [ParTwoSteps.ljx] --
+xml
+W={s0,s1};
+R={(s0,s1)};
+L(s0)={p};
+
+translation
+W={s0,s1,s2,s3,s4,s5,s6,s7};
+R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s7),(s4,s5),(s4,s6),(s7,s5),(s7,s6)};
+L(s0)={p},L(s1)={p},L(s5)={p};
+
+interleavings
+W={s0,s1,s2,s3,s4,s5,s6,s7};
+R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s7),(s4,s5),(s4,s6),(s7,s5),(s7,s6)};
+L(s0)={p},L(s1)={p},L(s6)={p};
+
+model checking
+⊤: {s0,s1,s2,s3,s4,s5,s6,s7}
+⊥: {}
+p: {s0,s1,s6}
+¬p: {s2,s3,s4,s5,s7}
+EX(p): {s0,s4,s7}
+AX(p): {s0,s5,s6}
+EG(p): {s6}
+AG(p): {s6}
+EF(p): {s0,s1,s2,s3,s4,s6,s7}
+AF(p): {s0,s1,s6}
+EX(AF(p)): {s0,s4,s7}
+AG(EF(p)): {s6}

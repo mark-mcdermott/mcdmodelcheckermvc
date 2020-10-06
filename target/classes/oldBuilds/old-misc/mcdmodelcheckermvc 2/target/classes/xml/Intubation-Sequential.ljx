@@ -1,0 +1,10 @@
+<littlejil>
+   <module>
+      <step-declaration id="_0" kind="sequential" name="Intubation of COVID-19 patient" property="RN, RT and Intubator present">
+         <step-declaration id="_1" kind="leaf" name="O2 preoxygenation (3-5 mins)" />
+         <step-declaration id="_2" kind="leaf" name="Endotracheal tube cuff" />
+         <step-declaration id="_3" kind="leaf" name="Positive pressure ventilation" />
+         <step-declaration id="_3" kind="leaf" name="Seal soiled equipment in biohazard bags" />
+      </step-declaration>
+   </module>
+</littlejil>

@@ -1,0 +1,9 @@
+<littlejil>
+    <module>
+        <step-declaration id="_0" kind="sequential" name="C++ Parallel Code Example" property="test">
+            <step-declaration id="_4" kind="parallel" name="Set variable values">
+                <step-declaration id="_6" kind="leaf" name="Set value of b1" />
+            </step-declaration>
+        </step-declaration>
+    </module>
+</littlejil>

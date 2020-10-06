@@ -1,0 +1,29 @@
+-- [NestingTestSimplified.ljx] --
+xml
+W={s0,s1,s2,s3,s4};
+R={(s0,s1),(s0,s4),(s1,s2),(s1,s3)};
+;
+
+translation
+W={};
+R={};
+;
+
+interleavings
+W={};
+R={};
+;
+
+model checking
+⊤: {}
+⊥: {}
+p: {}
+¬p: {}
+EX(p): {}
+AX(p): {}
+EG(p): {}
+AG(p): {}
+EF(p): {}
+AF(p): {}
+EX(AF(p)): {}
+AG(EF(p)): {}

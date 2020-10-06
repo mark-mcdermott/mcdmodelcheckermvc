@@ -1,0 +1,34 @@
+<littlejil>
+   <module>
+      <step-declaration id="_10" kind="sequential" name="Process Checks">
+            <step-declaration id="_23" kind="leaf" name="set class's bank property" />
+            <step-declaration id="_26" kind="sequential" name="get checks list from csv">
+                  <step-declaration id="_5" kind="sequential" name="get list of csv rows">
+                        <step-declaration id="_8" kind="leaf" name="init csvRows and declare row variable" />
+                        <step-declaration id="_30" kind="leaf" name="get bufferedReader" />
+                        <step-declaration id="_9" kind="sequential" name="readCsv row">
+                              <step-declaration id="_22" kind="leaf" name="set row = csv.readLine()" />
+                              <step-declaration id="_28" kind="leaf" name="csvRows.addRow(row)" />
+                              <step-declaration id="_18" kind="leaf" name="i++;" />
+                        </step-declaration>
+                        <step-declaration id="_21" kind="leaf" name="close csvReader" />
+                  </step-declaration>
+                  <step-declaration id="_6" kind="sequential" name="get list of checks from csv rows">
+                        <step-declaration id="_14" kind="leaf" name="init checks variable" />
+                        <step-declaration id="_11" kind="sequential" name="get check">
+                              <step-declaration id="_12" kind="leaf" name="set checkElems = row.split(&quot;,')" />
+                              <step-declaration id="_16" kind="leaf" name="get check details variables from checkElems" />
+                              <step-declaration id="_29" kind="leaf" name="create check" />
+                              <step-declaration id="_17" kind="leaf" name="add check to checks" />
+                        </step-declaration>
+                  </step-declaration>
+            </step-declaration>
+            <step-declaration id="_27" kind="sequential" name="depositChecks(checks);" property="depositing checks">
+                  <step-declaration id="_20" kind="sequential" name="depositCheck">
+                        <step-declaration id="_19" kind="leaf" name="set acct = bank.getAcct(check.getDepAcctNo());" />
+                        <step-declaration id="_24" kind="leaf" name="set balance = balance + check.amount()" />
+                  </step-declaration>
+            </step-declaration>
+      </step-declaration>
+   </module>
+</littlejil>

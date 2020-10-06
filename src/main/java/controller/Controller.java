@@ -50,9 +50,9 @@ public class Controller {
         // AppState appState = TESTER; // ANALY_DEFAULT;
         AppState appState = ANALY_DEFAULT;
         AnalyzerData initialAnalyzerData = getInitialAnalyzerData(model.getFilesCache());
-        TesterData initialTesterData = getInitialTesterData(initialAnalyzerData.getListsContent());
-        model.setData(appState, initialAnalyzerData, initialTesterData);
-        // model.setData(appState, initialAnalyzerData);
+        // TesterData initialTesterData = getInitialTesterData(initialAnalyzerData.getListsContent()); // TODO: uncomment this
+        // model.setData(appState, initialAnalyzerData, initialTesterData); // TODO: uncomment this
+        model.setData(appState, initialAnalyzerData); // TODO: comment this
     }
 
     // from https://stackoverflow.com/a/1846349, accessed 9/25/20
@@ -337,8 +337,8 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        String[] files = {"TwoSteps.ljx"};
-        // String[] files = {"Covid.ljx"};
+        // String[] files = {"TwoSteps.ljx"};
+        String[] files = {"Covid.ljx"};
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";

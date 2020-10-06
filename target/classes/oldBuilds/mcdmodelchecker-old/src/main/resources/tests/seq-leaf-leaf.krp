@@ -1,0 +1,29 @@
+-- [seq-leaf-leaf.krp] --
+xml
+
+
+
+
+translation
+
+
+
+
+interleavings
+W={s0,s1,s2};
+R={(s0,s1),(s0,s2)};
+L(s0)={p};
+
+model checking
+⊤: {s0,s1,s2}
+⊥: {}
+p: {s0}
+¬p: {s1,s2}
+EX(p): {}
+AX(p): {s1,s2}
+EG(p): {}
+AG(p): {}
+EF(p): {s0}
+AF(p): {s0}
+EX(AF(p)): {}
+AG(EF(p)): {}

@@ -1,0 +1,21 @@
+<littlejil>
+   <module>
+      <step-declaration id="_1" kind="sequential" name="ventilator order">
+         <step-declaration id="_2" kind="parallel" name="department steps">
+            <step-declaration id="_3" kind="leaf" name="department head asks management" />
+            <step-declaration id="_4" kind="leaf" name="department members research best ventilators" />
+         </step-declaration>
+         <step-declaration id="_5" kind="leaf" name="management orders from supplier" />
+         <step-declaration id="_6" kind="choice" name="vendor requests ventilator from their supplier">
+            <step-declaration id="_7" kind="leaf" name="supplier sends ventilator to vendor" />
+            <step-declaration id="_8" kind="sequential" name="supplier responds saying ventilator is not available" transitionTo="6" />
+         </step-declaration>
+         <step-declaration id="_9" kind="parallel" name="preperation for shipping">
+            <step-declaration id="_10" kind="leaf" name="management arranges payment" />
+            <step-declaration id="_11" kind="leaf" name="supplier finds ventilator in warehouse" />
+         </step-declaration>
+         <step-declaration id="_12" kind="leaf" name="ventilator ships" />
+         <step-declaration id="_13" kind="leaf" name="ventilator arrives at patient room" property="(ventilator ready)" />
+      </step-declaration>
+   </module>
+</littlejil>

@@ -1,0 +1,29 @@
+-- [TransTryThreeSubsteps.ljx] --
+xml
+W={s0,s1,s2,s3};
+R={};
+L(s0)={p};
+
+translation
+W={s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23};
+R={};
+L(s0)={p},L(s1)={p},L(s11)={p},L(s12)={p};
+
+interleavings
+W={s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23};
+R={};
+L(s0)={p},L(s1)={p},L(s11)={p},L(s12)={p};
+
+model checking
+⊤: {s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23}
+⊥: {}
+p: {s0,s1,s11,s12}
+¬p: {s2,s3,s4,s5,s6,s7,s8,s9,s10,s13,s14,s15,s16,s17,s18,s19,s20,s21,s22,s23}
+EX(p): {s10,s13,s17,s18}
+AX(p): {s0,s10,s11,s12,s13,s17,s18}
+EG(p): {s0,s11,s12}
+AG(p): {s0,s11,s12}
+EF(p): {s0,s1,s11,s12,s10,s13,s17,s18}
+AF(p): {s0,s1,s11,s12,s10,s13,s17,s18}
+EX(AF(p)): {s10,s13,s17,s18,s9,s16}
+AG(EF(p)): {s0,s10,s11,s12,s13,s17,s18}

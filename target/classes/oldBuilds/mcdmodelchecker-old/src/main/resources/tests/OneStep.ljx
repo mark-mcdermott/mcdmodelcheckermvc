@@ -1,0 +1,29 @@
+-- [OneStep.ljx] --
+xml
+W={s0};
+R={};
+L(s0)={p};
+
+translation
+W={s0,s1,s2,s3};
+R={(s0,s1),(s1,s2),(s1,s3)};
+L(s0)={p},L(s1)={p},L(s2)={p};
+
+interleavings
+W={s0,s1,s2,s3};
+R={(s0,s1),(s1,s2),(s1,s3)};
+L(s0)={p},L(s1)={p},L(s2)={p};
+
+model checking
+⊤: {s0,s1,s2,s3}
+⊥: {}
+p: {s0,s1,s2}
+¬p: {s3}
+EX(p): {s0,s1}
+AX(p): {s0,s2,s3}
+EG(p): {s0,s1,s2}
+AG(p): {s2}
+EF(p): {s0,s1,s2}
+AF(p): {s0,s1,s2}
+EX(AF(p)): {s0,s1}
+AG(EF(p)): {s2}

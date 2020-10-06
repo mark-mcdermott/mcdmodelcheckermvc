@@ -1,0 +1,8 @@
+<littlejil>
+    <module>
+        <step-declaration id="_0" kind="try" name="Nurse orders blood transfusion" property="test">
+            <step-declaration id="_1" kind="leaf" name="Nurse calls blood bank" />
+            <step-declaration id="_2" kind="leaf" name="Nurse requests patient blood type" />
+        </step-declaration>
+    </module>
+</littlejil>

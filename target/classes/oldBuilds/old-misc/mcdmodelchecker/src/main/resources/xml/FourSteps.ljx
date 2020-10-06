@@ -1,0 +1,9 @@
+<littlejil>
+    <module>
+        <step-declaration id="_0" kind="sequential" name="seq 1" property="test">
+            <step-declaration id="_1" kind="leaf" name="leaf 1" />
+            <step-declaration id="_3" kind="leaf" name="leaf 2" />
+            <step-declaration id="_4" kind="leaf" name="leaf 3" />
+        </step-declaration>
+    </module>
+</littlejil>

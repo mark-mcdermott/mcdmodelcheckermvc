@@ -1,0 +1,17 @@
+<littlejil>
+   <module>
+      <step-declaration id="_82" kind="sequential" name="covid-19 hospitalization">
+            <step-declaration id="_83" kind="parallel" name="diagnosis" >
+                  <step-declaration id="_84" kind="leaf" name="nurse takes tests" />
+                  <step-declaration id="_85" kind="leaf" name="doctor examination" />
+                  <step-declaration id="_86" kind="leaf" name="ct scan" />
+            </step-declaration>
+            <step-declaration id="_87" kind="sequential" name="treatment">
+                  <step-declaration id="_88" kind="leaf" name="isolation room" />
+                  <step-declaration id="_89" kind="leaf" name="high flow nasal oxygen" />
+                  <step-declaration id="_90" kind="leaf" name="mechanical ventilation" property="ventilator needed" />
+            </step-declaration>
+      </step-declaration>
+   </module>
+</littlejil>
+

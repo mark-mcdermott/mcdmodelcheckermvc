@@ -1,0 +1,5 @@
+<littlejil>
+    <module>
+        <step-declaration id="_0" kind="leaf" name="Doctor performs heart transplant" property="heart is ready" />
+    </module>
+</littlejil>

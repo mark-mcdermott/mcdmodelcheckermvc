@@ -1,0 +1,11 @@
+<littlejil>
+   <module>
+      <step-declaration kind="parallel" name="0">
+            <step-declaration kind="parallel" name="1">
+              <step-declaration kind="leaf" name="2" />
+              <step-declaration kind="leaf" name="3" />
+            </step-declaration>
+            <step-declaration kind="leaf" name="4" />
+      </step-declaration>
+   </module>
+</littlejil>

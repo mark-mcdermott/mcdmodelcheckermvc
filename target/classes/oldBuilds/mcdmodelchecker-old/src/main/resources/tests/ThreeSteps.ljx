@@ -1,0 +1,29 @@
+-- [ThreeSteps.ljx] --
+xml
+W={s0,s1,s2};
+R={(s0,s1),(s0,s2)};
+L(s0)={p};
+
+translation
+W={s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11};
+R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s11),(s4,s5),(s4,s6),(s6,s7),(s7,s8),(s7,s10),(s8,s9),(s8,s5),(s10,s9),(s10,s5),(s11,s5),(s11,s6)};
+L(s0)={p},L(s1)={p},L(s9)={p};
+
+interleavings
+W={s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11};
+R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s11),(s4,s5),(s4,s6),(s6,s7),(s7,s8),(s7,s10),(s8,s9),(s8,s5),(s10,s9),(s10,s5),(s11,s5),(s11,s6)};
+L(s0)={p},L(s1)={p},L(s9)={p};
+
+model checking
+⊤: {s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11}
+⊥: {}
+p: {s0,s1,s9}
+¬p: {s2,s3,s4,s5,s6,s7,s8,s10,s11}
+EX(p): {s0,s8,s10}
+AX(p): {s0,s5,s9}
+EG(p): {s9}
+AG(p): {s9}
+EF(p): {s0,s1,s2,s3,s4,s6,s7,s8,s9,s10,s11}
+AF(p): {s0,s1,s9}
+EX(AF(p)): {s0,s8,s10}
+AG(EF(p)): {s9}
