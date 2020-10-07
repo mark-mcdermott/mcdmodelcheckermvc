@@ -308,11 +308,11 @@ public class Translate {
                     templateSwapDetails = new SequentialTemplate(vertex, vertexListToTranslate).getTemplateSwapDetails();
                     break;
                 case PARALLEL:
-                    if (getInterleavings && vertex.getName().equals("s3")) {
-                        System.out.println("hi");
-                        int breakpointMarker = -1;
-                        breakpointMarker++;
-                    }
+//                    if (getInterleavings && vertex.getName().equals("s3")) {
+//                        System.out.println("hi");
+//                        int breakpointMarker = -1;
+//                        breakpointMarker++;
+//                    }
                     templateSwapDetails = new ParallelTemplate(vertex, vertexListToTranslate, getInterleavings).getTemplateSwapDetails();
                     break;
                 case TRY:

@@ -1,25 +1,32 @@
 <littlejil>
    <module>
-      <step-declaration id="_1" kind="sequential" name="covid-19 experience">
-        <step-declaration id="_2" kind="leaf" name="symptoms detected" property="moderate risk to others" />
-        <step-declaration id="_3" kind="choice" name="response to symptoms">
-            <step-declaration id="_4" kind="choice" name="stay home">
-                <step-declaration id="_5" kind="leaf" name="isolate" transitionTo="3" />
-                <step-declaration id="_6" kind="leaf" name="don't isolate" transitionTo="3" />
-            </step-declaration>
-            <step-declaration id="_7" kind="sequential" name="seek medical response">
-                <step-declaration id="_8" kind="leaf" name="swab test" property="moderate risk to others" />
-                <step-declaration id="_9" kind="choice" name="hospitalization">
-                    <step-declaration id="_10" kind="sequential" name="imaging tests">
-                       <step-declaration id="_11" kind="leaf" name="lung ultrasound" />
-                       <step-declaration id="_12" kind="leaf" name="chest CT scan" />
-                    </step-declaration>
-                    <step-declaration id="_13" kind="sequential" name="covid response">
-                       <step-declaration id="_14" kind="leaf" name="RT-PCR test" />
-                       <step-declaration id="_15" kind="leaf" name="covid treatment" />
+      <step-declaration id="_1" kind="parallel" name="added root node">
+        <step-declaration id="_2" kind="sequential" name="patient gets covid-19">
+            <step-declaration id="_3" kind="leaf" name="symptoms detected" property="moderate risk to others" />
+            <step-declaration id="_4" kind="choice" name="response to symptoms">
+                <step-declaration id="_4" kind="choice" name="stay home">
+                    <step-declaration id="_5" kind="leaf" name="isolate" properties="low risk to others,at home" transitionTo="3" />
+                    <step-declaration id="_6" kind="leaf" name="don't isolate" properties="moderate risk,at home" transitionTo="3" />
+                </step-declaration>
+                <step-declaration id="_7" kind="sequential" name="seek medical response">
+                    <step-declaration id="_8" kind="leaf" name="swab test" property="moderate risk to others" />
+                    <step-declaration id="_9" kind="sequential" name="hospitalization">
+                        <step-declaration id="_10" kind="leaf" name="antiviral drugs" property="high risk to others" />
+                        <step-declaration id="_11" kind="leaf" name="ventilation" property="ventilation needed,high risk to others" />
                     </step-declaration>
                 </step-declaration>
             </step-declaration>
+        </step-declaration>
+        <step-declaration id="_12" kind="sequential" name="hospital orders ventilator">
+            <step-declaration id="_13" kind="sequential" name="medical team requests ventilator from management">
+                <step-declaration id="_14" kind="leaf" name="team fills out purchase order" />
+                <step-declaration id="_15" kind="leaf" name="team requests approval from management" />
+                <step-declaration id="_16" kind="leaf" name="team receives feedback from management" />
+            </step-declaration>
+            <step-declaration id="_17" kind="leaf" name="hospital requests ventilator from vendor" property="ventilator requested" />
+            <step-declaration id="_18" kind="leaf" name="vendor ships ventilator" />
+            <step-declaration id="_19" kind="leaf" name="hospital receives ventilator" />
+            <step-declaration id="_20" kind="leaf" name="orderly sets up ventilator in room" property="ventilator available" />
         </step-declaration>
       </step-declaration>
    </module>
