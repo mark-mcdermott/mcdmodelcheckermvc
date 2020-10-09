@@ -1,0 +1,26 @@
+<littlejil>
+   <module>
+      <step-declaration id="_1" kind="sequential" name="covid-19 experience">
+        <step-declaration id="_2" kind="leaf" name="symptoms detected" property="moderate risk to others" />
+        <step-declaration id="_3" kind="choice" name="response to symptoms">
+            <step-declaration id="_4" kind="choice" name="stay home">
+                <step-declaration id="_5" kind="leaf" name="isolate" transitionTo="3" />
+                <step-declaration id="_6" kind="leaf" name="don't isolate" transitionTo="3" />
+            </step-declaration>
+            <step-declaration id="_7" kind="sequential" name="seek medical response">
+                <step-declaration id="_8" kind="leaf" name="swab test" property="moderate risk to others" />
+                <step-declaration id="_9" kind="choice" name="hospitalization">
+                    <step-declaration id="_10" kind="parallel" name="imaging tests">
+                       <step-declaration id="_11" kind="leaf" name="lung ultrasound" />
+                       <step-declaration id="_12" kind="leaf" name="chest CT scan" />
+                    </step-declaration>
+                    <step-declaration id="_13" kind="sequential" name="covid response">
+                       <step-declaration id="_14" kind="leaf" name="RT-PCR test" />
+                       <step-declaration id="_15" kind="leaf" name="covid treatment" />
+                    </step-declaration>
+                </step-declaration>
+            </step-declaration>
+        </step-declaration>
+      </step-declaration>
+   </module>
+</littlejil>
