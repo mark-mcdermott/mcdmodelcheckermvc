@@ -220,7 +220,7 @@ public class Components {
     public void initFrame(JFrame frame) {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
-        frame.setSize(new Dimension(1650, 950)); // might be able to change to setPreferredSize
+        frame.setSize(new Dimension(1750, 950)); // might be able to change to setPreferredSize
     }
 
     // shared components

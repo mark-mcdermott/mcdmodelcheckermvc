@@ -19,10 +19,10 @@ public class LeafTemplate {
 
     LeafTemplate() { }
 
-    public LeafTemplate(Vertex vertexToReplace, VertexList vertexList) {
+    public LeafTemplate(Vertex vertexToReplace, VertexList translatedVertexList, VertexList originalVertexList) {
 
         // init vars
-        Integer number = getHighestVertexNum(vertexList) + 1;
+        Integer number = getHighestVertexNum(translatedVertexList) + 1;
         VertexKind kind = (vertexToReplace.getKind() == null) ? null : vertexToReplace.getKind();
         String blurb = (vertexToReplace.getBlurb() == null) ? null : vertexToReplace.getBlurb();
         ArrayList<String> properties = (vertexToReplace.getProperties() == null) ? null : vertexToReplace.getProperties();
@@ -69,16 +69,12 @@ public class LeafTemplate {
         ArrayList<Relation> relationsToAdd = new ArrayList<>();
         ArrayList<Relation> relationsToRemove = new ArrayList<>();
 
-        // relations for hooking up children
+        // relations for hooking up children in the translated list
         if (children != null) {
             for (Vertex child : children) {
 
-                // originally i had all exit nodes linking to all child nodes. dr. p said this was wrong.
-                // relationsToAdd.add(new Relation(leafCompleted, child));
-                // relationsToAdd.add(new Relation(leafTerminated, child));
-
-                // fixed code - completeds link to completeds, terminateds link to terminateds (or in choice to all hasNotStarteds and also to hasStarted1)
                 VertexStatus status = child.getStatus();
+                // not sure about SUBSTEP_HAS_NOT_STARTED / SUBSTEP_HAS_STARTED here
                 if (status == TERMINATED || status == SUBSTEP_HAS_NOT_STARTED || status == SUBSTEP_HAS_STARTED) {
                     relationsToAdd.add(new Relation(leafTerminated, child));
                 } else {
@@ -88,6 +84,7 @@ public class LeafTemplate {
                 relationsToRemove.add(new Relation(vertexToReplace, child));
             }
         }
+
         // get relations for hooking up parents
         if (parents != null) {
             for (Vertex parent : parents) {

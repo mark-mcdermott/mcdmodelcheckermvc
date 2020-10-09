@@ -6,6 +6,7 @@ import controller.types.ctl.Label;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
+import controller.types.graph.VertexStatus;
 
 import java.util.ArrayList;
 
@@ -78,15 +79,15 @@ public class ChoiceTemplate {
         ArrayList<Relation> relationsToAdd = new ArrayList<>();
         ArrayList<Relation> relationsToRemove = new ArrayList<>();
 
-        // add relations for hooking up children
-        if (children != null) {
+        // add relations for hooking up original children as substeps
+        if (origChildren != null) {
 
             int notStartedDistanceFromRoot = choiceStarted.getDistanceFromRoot() + 1;
             int substepDistanceFromRoot = notStartedDistanceFromRoot + 1;
 
-            for (int i=0; i<children.size(); i++) {
-                int lastIndex = children.size() - 1;
-                Vertex thisChild = children.get(i);
+            for (int i=0; i<origChildren.size(); i++) {
+                int lastIndex = origChildren.size() - 1;
+                Vertex thisChild = origChildren.get(i);
                 int ithChild = i + 1;
                 int substepNum = ithChild;
                 // int thisDistanceFromRoot = choiceStarted.getDistanceFromRoot() + ithChild;
@@ -181,6 +182,19 @@ public class ChoiceTemplate {
             for (Vertex parent : parents) {
                 relationsToAdd.add(new Relation(parent, choicePosted));
                 relationsToRemove.add(new Relation(parent, vertexToReplace));
+            }
+        }
+
+        // get relations for hooking up children from translatedVertexLisrt
+        if (children != null && children.size() > 0) {
+            for (Vertex child : children) {
+                VertexStatus status = child.getStatus();
+                if (status == TERMINATED) {
+                    relationsToAdd.add(new Relation(choiceTerminated, child));
+                } else {
+                    relationsToAdd.add(new Relation(choiceCompleted, child));
+                }
+
             }
         }
 

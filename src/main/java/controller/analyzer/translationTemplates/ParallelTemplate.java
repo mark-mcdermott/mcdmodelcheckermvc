@@ -81,7 +81,7 @@ public class ParallelTemplate {
             }
         }
 
-        // get relations for hooking up children to template vertices
+        // get relations for hooking up original children as substeps
         // Integer numChildren = (children == null) ? null : children.size();
         Integer numOrigChildren = (origChildren == null) ? null : origChildren.size();
         ArrayList<ArrayList<Vertex>> permutations = null;
@@ -119,10 +119,11 @@ public class ParallelTemplate {
                     relationsToAdd.add(new Relation(thisSubstep, parTerminated));
                 }
 
-                ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
-                if (childrenNotOrig != null) {
-                    for (int i=0; i<childrenNotOrig.size(); i++) {
-                        Vertex thisChild = childrenNotOrig.get(i);
+                // hook up the children nodes from the translatedVertexList
+                // ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
+                if (children != null) {
+                    for (int i=0; i<children.size(); i++) {
+                        Vertex thisChild = children.get(i);
                         VertexStatus thisChildStatus = thisChild.getStatus();
                         if (thisChildStatus == COMPLETED) {
                             relationsToAdd.add(new Relation(parCompleted, thisChild));

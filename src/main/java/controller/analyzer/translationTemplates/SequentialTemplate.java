@@ -39,8 +39,8 @@ public class SequentialTemplate {
         Integer origSiblingNum = siblingNum;
         Boolean isRoot = false;
         Boolean isOriginal = false;
-        Integer numChildren = children.size();
-        Vertex firstChild = children.get(0);
+        Integer numChildren = (children == null) ? 0 : children.size();
+        Vertex firstChild = (children == null || children.size() == 0) ? null : children.get(0);
         if (vertexToReplace.getParents() != null && vertexToReplace.getParents().size() > 0) {
             parents = vertexToReplace.getParents();
             parentSiblingNum = parents.get(0).getSiblingNum();
@@ -134,7 +134,7 @@ public class SequentialTemplate {
 
         }
 
-        // See if node to replace was originally hooked up to a terminated. If so, hook seqTerminated up to it
+        // See if node to replace was originally hooked up to a terminated in the translatedVertexList. If so, hook seqTerminated up to it
         Vertex childTerminated = getChildTerminated(children);
         if (childTerminated != null) {
             relationsToAdd.add(new Relation(seqTerminated, childTerminated));

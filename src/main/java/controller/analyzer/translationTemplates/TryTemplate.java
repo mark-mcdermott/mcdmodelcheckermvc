@@ -6,6 +6,7 @@ import controller.types.ctl.Label;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
+import controller.types.graph.VertexStatus;
 
 import java.util.ArrayList;
 
@@ -18,10 +19,10 @@ public class TryTemplate {
 
     public TryTemplate() { }
 
-    public TryTemplate(Vertex vertexToReplace, VertexList vertexList) {
+    public TryTemplate(Vertex vertexToReplace, VertexList translatedVertexList, VertexList originalVertexList) {
 
         // init vars
-        Integer number = getHighestVertexNum(vertexList);
+        Integer number = getHighestVertexNum(translatedVertexList);
         VertexKind kind = (vertexToReplace.getKind() == null) ? null : vertexToReplace.getKind();
         String blurb = (vertexToReplace.getBlurb() == null) ? null : vertexToReplace.getBlurb();
         ArrayList<String> properties = (vertexToReplace.getProperties() == null) ? null : vertexToReplace.getProperties();
@@ -71,10 +72,11 @@ public class TryTemplate {
         ArrayList<Relation> relationsToAdd = new ArrayList<>();
         ArrayList<Relation> relationsToRemove = new ArrayList<>();
 
-        if (children != null && numChildren != null) {
+        // hook up original children as substeps
+        if (origChildren != null && origChildren.size() > 0) {
             for (Integer i = 0; i < numChildren; i++) {
-                Vertex thisChild = children.get(i);
-                Vertex prevChild = (i == 0) ? null : children.get(i - 1);
+                Vertex thisChild = origChildren.get(i);
+                Vertex prevChild = (i == 0) ? null : origChildren.get(i - 1);
                 thisChild.setParentSiblingNum(0);
                 thisChild.setSiblingNum(0);
                 if (i == 0) {
@@ -97,6 +99,17 @@ public class TryTemplate {
                 relationsToAdd.add(new Relation(parent, tryPosted));
                 relationsToRemove.add(new Relation(parent, vertexToReplace));
             }
+        }
+
+        // hook up children from translatedVertexList
+        for (Vertex child : children) {
+            VertexStatus status = child.getStatus();
+            if (status == TERMINATED) {
+                relationsToAdd.add(new Relation(tryTerminated,child));
+            } else {
+                relationsToAdd.add(new Relation(tryCompleted, child));
+            }
+
         }
 
         // create template vertex list

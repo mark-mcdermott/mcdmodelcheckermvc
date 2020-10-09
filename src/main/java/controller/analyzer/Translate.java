@@ -20,7 +20,6 @@ import static controller.types.graph.VertexStatus.COMPLETED;
 public class Translate {
 
     VertexList originalVertexList;
-    VertexList vertexListToTranslate;
     VertexList translatedVertexList;
     ArrayList<Vertex> permutedVertices;
     Queue<Vertex> queueToTranslate;
@@ -77,12 +76,15 @@ public class Translate {
         numNodesExpanded = 0;
         permutedVertices = new ArrayList<>();
         this.originalVertexList = origVertexList;
-        vertexListToTranslate = origVertexList.copyVertexList(); // preserve original xmlVertexList
-        // vertexListToTranslate.setNumSteps(0);
-        Vertex root = vertexListToTranslate.getRoot();
+        translatedVertexList = new VertexList();
+
+
+        VertexList copiedVertexList = origVertexList.copyVertexList();
+
+        Vertex root = copiedVertexList.getRoot();
         translateRootVertex(root, getInterleavings);
         numSteps++;
-        Vertex translatedRoot = vertexListToTranslate.getRoot();
+        Vertex translatedRoot = translatedVertexList.getRoot();
 
         if (!isStepSelected || targetStep == null || targetStep > 1 && numSteps < targetStep) {
             // not sure this is necessary
@@ -99,23 +101,23 @@ public class Translate {
         }
 
         if (!isStepSelected) {
-            vertexListToTranslate.setNumTotalSteps(numSteps);
+            translatedVertexList.setNumTotalSteps(numSteps);
         } else {
             if (selectedStep != null) {
-                vertexListToTranslate.setNumTotalSteps(selectedStep);
+                translatedVertexList.setNumTotalSteps(selectedStep);
             } else {
-                vertexListToTranslate.setNumTotalSteps(numSteps);
+                translatedVertexList.setNumTotalSteps(numSteps);
             }
             // vertexListToTranslate.setNumTargetSteps(numSteps);
             // if (!getInterleavings) { vertexListToTranslate.setNumTotalSteps(model.getNumTranslationSteps()); }
             // else { vertexListToTranslate.setNumTotalSteps(model.getNumInterleavingsSteps()); }
         }
 
-        fixPermutedVertexReferences(vertexListToTranslate, permutedVertices);
+        fixPermutedVertexReferences(translatedVertexList, permutedVertices);
 
         renumberVertices();
 
-        VertexList translatedVertexList = vertexListToTranslate;
+        // VertexList translatedVertexList = translatedVertexList;
 
         // Kripke translationKripke = translatedVertexList.getKripke();
         // System.out.println("controller.Translate: 74");
@@ -176,7 +178,9 @@ public class Translate {
             if (queueToTranslate == null) { queueToTranslate = new LinkedList<>(); }
             ArrayList<Vertex> children = vertex.getChildren();
             for (Vertex child : children) {
-                queueToTranslate.add(child);
+                if (child.getIsOriginal()) {
+                    queueToTranslate.add(child);
+                }
             }
         }
         // translate the children in the queue
@@ -194,7 +198,7 @@ public class Translate {
             resetVerticesIsVisited();
             resetVerticesNumbers();
             Integer vertexNumber = 0;
-            Vertex root = vertexListToTranslate.getRoot();
+            Vertex root = translatedVertexList.getRoot();
             root.setName("s" + vertexNumber);
             root.setNumber(vertexNumber++);
             root.setVisited(true);
@@ -211,7 +215,7 @@ public class Translate {
     }
     private void renumberVerticesRecursive(Vertex vertex) {
         if (!vertex.getVisited()) {
-            int newNum = getHighestVertexNum(vertexListToTranslate) + 1;
+            int newNum = getHighestVertexNum(translatedVertexList) + 1;
             vertex.setNumber(newNum);
             vertex.setName("s" + newNum);
 
@@ -256,20 +260,20 @@ public class Translate {
     }
 
     private void resetVerticesIsVisited() {
-        for (Vertex vertex : vertexListToTranslate.getList()) {
+        for (Vertex vertex : translatedVertexList.getList()) {
             vertex.setVisited(false);
         }
     }
 
     private void resetVerticesNumbers() {
-        for (Vertex vertex : vertexListToTranslate.getList()) {
+        for (Vertex vertex : translatedVertexList.getList()) {
             vertex.setNumber(-1);
         }
     }
 
     private Boolean isAlreadyNumberedCorrectly() {
         ArrayList<Integer> vertexNumbers = new ArrayList<>();
-        for (Vertex vertex : vertexListToTranslate.getList()) {
+        for (Vertex vertex : translatedVertexList.getList()) {
             Integer vertexNumber = vertex.getNumber();
             vertexNumbers.add(vertexNumber);
         }
@@ -286,62 +290,40 @@ public class Translate {
     private void translateVertex(Vertex vertex, Boolean isRoot, Boolean getInterleavings) {
         Boolean isOriginal = vertex.getIsOriginal();
         TemplateSwapDetails templateSwapDetails = new TemplateSwapDetails();
-        if (numNodesExpanded == 105 && vertex.getNumber()==391) {
-            int debugBreakpoint = 5;
-        }
-        if (numNodesExpanded == 132 ) {
-            int debugBreakpoint = 5;
-        }
-        if (isOriginal) {
-            // if (getInterleavings && numNodesExpanded == 3) {
-            if (numNodesExpanded == 2) {
-                // System.out.println("Translate.java: 205");
-            }
-            switch (vertex.getKind()) {
-                case LEAF:
-//                    if (getInterleavings && numNodesExpanded == 2) {
-//                        System.out.println("test");
-//                    }
-                    templateSwapDetails = new LeafTemplate(vertex, vertexListToTranslate).getTemplateSwapDetails();
-                    break;
-                case SEQUENTIAL:
-                    templateSwapDetails = new SequentialTemplate(vertex, vertexListToTranslate).getTemplateSwapDetails();
-                    break;
-                case PARALLEL:
-//                    if (getInterleavings && vertex.getName().equals("s3")) {
-//                        System.out.println("hi");
-//                        int breakpointMarker = -1;
-//                        breakpointMarker++;
-//                    }
-                    templateSwapDetails = new ParallelTemplate(vertex, vertexListToTranslate, getInterleavings).getTemplateSwapDetails();
-                    break;
-                case TRY:
-                    templateSwapDetails = new TryTemplate(vertex, vertexListToTranslate).getTemplateSwapDetails();
-                    break;
-                case CHOICE:
-                    templateSwapDetails = new ChoiceTemplate(vertex, vertexListToTranslate).getTemplateSwapDetails();
-                    break;
-                default:
-                    //
-            }
-            if (getInterleavings) {
-                if (numNodesExpanded == 132) {
-                    // System.out.println("hi");
-                }
-            }
-            swapInTemplate(templateSwapDetails, isRoot);
 
-            ArrayList<Vertex> thesePermutedVertices = templateSwapDetails.getOrigVerticesPermuted();
-            if (thesePermutedVertices != null) {
-                for (Vertex permutedVertex : thesePermutedVertices) {
-                    permutedVertices.add(permutedVertex);
-                }
-            }
+        switch (vertex.getKind()) {
+            case LEAF:
+                templateSwapDetails = new LeafTemplate(vertex, translatedVertexList, originalVertexList).getTemplateSwapDetails();
+                break;
+            case SEQUENTIAL:
+                templateSwapDetails = new SequentialTemplate(vertex, translatedVertexList).getTemplateSwapDetails();
+                break;
+            case PARALLEL:
+                templateSwapDetails = new ParallelTemplate(vertex, translatedVertexList, getInterleavings).getTemplateSwapDetails();
+                break;
+            case TRY:
+                templateSwapDetails = new TryTemplate(vertex, translatedVertexList, originalVertexList).getTemplateSwapDetails();
+                break;
+            case CHOICE:
+                templateSwapDetails = new ChoiceTemplate(vertex, translatedVertexList).getTemplateSwapDetails();
+                break;
+            default:
+                //
+        }
 
-            // permutedVertices = templateSwapDetails.getOrigVerticesPermuted();
-            vertex.setHasBeenExpanded(true);
-            if (getInterleavings) {
-                if (numNodesExpanded == 5) {
+        swapInTemplate(templateSwapDetails, isRoot);
+
+        ArrayList<Vertex> thesePermutedVertices = templateSwapDetails.getOrigVerticesPermuted();
+        if (thesePermutedVertices != null) {
+            for (Vertex permutedVertex : thesePermutedVertices) {
+                permutedVertices.add(permutedVertex);
+            }
+        }
+
+        // permutedVertices = templateSwapDetails.getOrigVerticesPermuted();
+        vertex.setHasBeenExpanded(true);
+        if (getInterleavings) {
+            if (numNodesExpanded == 5) {
 
 //                    ArrayList<Vertex> verticesWithoutParents = new ArrayList<>();
 //                    for (Vertex thisVertex : vertexListToTranslate.getList()) {
@@ -350,12 +332,12 @@ public class Translate {
 //                            verticesWithoutParents.add(thisVertex);
 //                        }
 //                    }
-                    // System.out.println(verticesWithoutParents);
-                }
+                // System.out.println(verticesWithoutParents);
             }
-            numNodesExpanded++;
         }
+        numNodesExpanded++;
     }
+    //}
 
     private void translateRootVertex(Vertex vertex, Boolean getInterleavings) {
         translateVertex(vertex, true, getInterleavings);
@@ -364,10 +346,11 @@ public class Translate {
 
     private void swapInRoot(TemplateSwapDetails templateSwapDetails) {
         if (templateSwapDetails != null & templateSwapDetails.getTemplate() != null && templateSwapDetails.getTemplate().getRoot() != null) {
-            vertexListToTranslate.setRoot(templateSwapDetails.getTemplate().getRoot());
+            translatedVertexList.setRoot(templateSwapDetails.getTemplate().getRoot());
         }
     }
 
+    // this does not hook up the template to the children in the translated vertex list - that happens in the templates
     private void swapInTemplate(TemplateSwapDetails templateSwapDetails, Boolean isRoot) {
 
         if (isRoot) {
@@ -384,7 +367,7 @@ public class Translate {
         // add template vertices
         if (template != null && template.getList() != null) {
             for (Vertex templateVertex : template.getList()) {
-                vertexListToTranslate.addVertex(templateVertex);
+                translatedVertexList.addVertex(templateVertex);
             }
         }
 
@@ -440,13 +423,13 @@ public class Translate {
         // remove the vertex getting replaced by the template
         if (vertexToReplace != null) {
             // vertexListToTranslate.removeVertexFromList(vertexToReplace); // this line was causing a bug in graphs with a parallel substep of a parallel node
-            vertexListToTranslate.removeVertexFromListAndAllParentsAndChildren(vertexToReplace);
+            translatedVertexList.removeVertexFromListAndAllParentsAndChildren(vertexToReplace);
         }
 
         // remove any originally permuted vertices (if any exist)
         if (origVerticesPermuted != null) {
             for (Vertex origVertexPermuted : origVerticesPermuted) {
-                vertexListToTranslate.removeVertexFromListAndAllParentsAndChildren(origVertexPermuted);
+                translatedVertexList.removeVertexFromListAndAllParentsAndChildren(origVertexPermuted);
             }
         }
     }
@@ -514,7 +497,7 @@ public class Translate {
 
         if (origPermutedVertices != null) {
             for (Vertex origVertexPermuted : origPermutedVertices) {
-                vertexListToTranslate.removeVertexFromList(origVertexPermuted);
+                translatedVertexList.removeVertexFromList(origVertexPermuted);
             }
         }
 
