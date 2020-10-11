@@ -446,7 +446,7 @@ public class View extends JFrame implements Observer {
         components.graphPanel2Title.setText("Translation");
         components.graphPanel3Title.setText("Interleavings");
         // set three-across styles
-        components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayouts3AcrossWidth(), options.getGraphLayoutsHeight()));
+        components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayouts3AcrossXMLWidth(), options.getGraphLayoutsHeight()));
         components.graphPanel2.setPreferredSize(new Dimension(options.getGraphLayouts3AcrossWidth(), options.getGraphLayoutsHeight()));
         components.graphPanel3.setPreferredSize(new Dimension(options.getGraphLayouts3AcrossWidth(), options.getGraphLayoutsHeight()));
     }

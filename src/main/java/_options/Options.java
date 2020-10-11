@@ -19,6 +19,9 @@ public class Options {
     private int graphPanels3AcrossWidth;
     private int graphPanelsHeight;
     private int graphLayouts3AcrossWidth;
+    private int graphLayouts3AcrossXMLWidth;
+    private int graphLayouts3AcrossWidthMacBookMonitor;
+    private int graphLayouts3AcrossWidthAOCMonitor;
     private int graphLayout2AcrossWidth;
     private int graphayout1AcrossWidth;
     private int graphLayoutsHeight;
@@ -91,7 +94,10 @@ public class Options {
         // graph width/heights
         graphPanelsHeight = 970;
         graphPanels3AcrossWidth = 500;
-        graphLayouts3AcrossWidth = 465;
+        graphLayouts3AcrossXMLWidth = 465;
+        graphLayouts3AcrossWidthMacBookMonitor = 465;
+        graphLayouts3AcrossWidthAOCMonitor = 865;
+        graphLayouts3AcrossWidth = graphLayouts3AcrossWidthAOCMonitor; // 465 // TODO: change this to graphLayouts3AcrossWidthMacBookMonitor if on macbook
         graphLayout2AcrossWidth = 675;
         graphayout1AcrossWidth = 1400;
         graphLayoutsHeight = 920;
@@ -276,6 +282,10 @@ public class Options {
 
     public int getGraphPanels3AcrossWidth() {
         return graphPanels3AcrossWidth;
+    }
+
+    public int getGraphLayouts3AcrossXMLWidth() {
+        return graphLayouts3AcrossXMLWidth;
     }
 
     public int getTesterKripkeLinesToSkip() {
