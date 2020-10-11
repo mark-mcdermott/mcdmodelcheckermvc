@@ -119,6 +119,13 @@ public class SequentialTemplate {
                 thisSubstep.setParentSiblingNum(0);
                 thisSubstep.setSiblingNum(0);
 
+                // remove substep's original children (they will be dealt with recursively in future steps)
+                if (thisSubstep.getChildren() != null && thisSubstep.getChildren().size() > 0) {
+                    for (Vertex thisSubstepChild : thisSubstep.getChildren()) {
+                        relationsToRemove.add(new Relation(thisSubstep,thisSubstepChild));
+                    }
+                }
+
                 if (i == 0) { // first substep hooked up as a child of seqStarted
                     relationsToAdd.add(new Relation(seqStarted, thisSubstep));
                     relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
@@ -162,7 +169,7 @@ public class SequentialTemplate {
         }
 
         // create template vertex list
-        VertexList template = new VertexList(seqPosted, seqStarted, seqCompleted, seqTerminated);
+        VertexList template = new VertexList(seqPosted, seqStarted, seqCompleted, seqTerminated, new VertexList(origChildren));
 
         this.templateSwapDetails = new TemplateSwapDetails(template, vertexToReplace, relationsToAdd, relationsToRemove);
 

@@ -98,6 +98,13 @@ public class ParallelTemplate {
                     // relationsToAdd.add(new Relation(parStarted, thisChild));
                     relationsToAdd.add(new Relation(parStarted, thisSubstep));
 
+                    // remove substep's original children (they will be dealt with recursively in future steps)
+                    if (thisSubstep.getChildren() != null && thisSubstep.getChildren().size() > 0) {
+                        for (Vertex thisSubstepChild : thisSubstep.getChildren()) {
+                            relationsToRemove.add(new Relation(thisSubstep,thisSubstepChild));
+                        }
+                    }
+
                     // for (Integer j = 0; j < numChildren; j++) {
                     for (Integer j = 0; j < numOrigChildren; j++) {
                         if (i != j) {
@@ -130,7 +137,10 @@ public class ParallelTemplate {
                         } else if (thisChildStatus == TERMINATED) {
                             relationsToAdd.add(new Relation(parTerminated, thisChild));
                         } else {
-                            new ExceptionMessage("parallel translation child not completed or terminated - not sure how to handle. ParallelTemplate.java");
+                            if (!origChildren.contains(thisChild)) {
+                                relationsToAdd.add(new Relation(parCompleted, thisChild)); // not 100% sure this covers all cases
+                            }
+                            // new ExceptionMessage("parallel translation child not completed or terminated - not sure how to handle. ParallelTemplate.java");
                         }
                     }
                 }
@@ -141,7 +151,7 @@ public class ParallelTemplate {
             }
 
             // create template vertex list
-            template = new VertexList(parPosted, parStarted, parCompleted, parTerminated);
+            template = new VertexList(parPosted, parStarted, parCompleted, parTerminated, new VertexList(origChildren));
 
             // if interleavings, instead of hooking up children normally,
             // get all permutations and hook those up instead

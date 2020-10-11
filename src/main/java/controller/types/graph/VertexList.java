@@ -36,6 +36,18 @@ public class VertexList {
         root = rootVertex1;
     }
 
+    public VertexList(Vertex rootVertex1, Vertex vertex2, Vertex vertex3, Vertex vertex4, VertexList substeps) {
+        list = new ArrayList<Vertex>();
+        list.add(rootVertex1);
+        list.add(vertex2);
+        list.add(vertex3);
+        list.add(vertex4);
+        for (Vertex substep : substeps.list) {
+            list.add(substep);
+        }
+        root = rootVertex1;
+    }
+
     public VertexList(Vertex rootVertex1, Vertex vertex2, Vertex vertex3, Vertex vertex4, ArrayList<ArrayList<Vertex>> permutations) {
         list = new ArrayList<Vertex>();
         list.add(rootVertex1);
