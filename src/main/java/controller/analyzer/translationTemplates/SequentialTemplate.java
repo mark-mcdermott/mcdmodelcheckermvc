@@ -7,6 +7,7 @@ import controller.types.graph.Vertex;
 import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
 import controller.types.graph.VertexStatus;
+import controller.utils.ListHelper;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,7 @@ public class SequentialTemplate {
         Integer origNumber = number;
         ArrayList<Vertex> origParents = (vertexToReplace.getOrigParents() == null) ? null : vertexToReplace.getOrigParents();
         ArrayList<Vertex> origChildren = (vertexToReplace.getOrigChildren() == null) ? null : vertexToReplace.getOrigChildren();
+        ArrayList<Vertex> origChildrenCopy = new ListHelper().copyVertexArrList(origChildren);
         Integer origDistanceFromRoot = distanceFromRoot;
         Integer origSiblingNum = siblingNum;
         Boolean isRoot = false;
@@ -48,6 +50,7 @@ public class SequentialTemplate {
             parentSiblingNum = 0;
             siblingNum = 0;
         }
+
 
         // create template vertices
         Vertex seqPosted = new Vertex(number, "s" + number.toString(), kind, POSTED, blurb, properties, labels, null, null,
@@ -114,8 +117,9 @@ public class SequentialTemplate {
             numOrigChildren = origChildren.size();
 
             for (int i=0; i<numOrigChildren; i++) {
-                Vertex thisSubstep = origChildren.get(i);
-                Vertex prevSubstep = (i == 0) ? null : origChildren.get(i - 1);
+                // Vertex thisSubstep = origChildren.get(i);
+                Vertex thisSubstep = origChildrenCopy.get(i);
+                Vertex prevSubstep = (i == 0) ? null : origChildrenCopy.get(i - 1);
                 thisSubstep.setParentSiblingNum(0);
                 thisSubstep.setSiblingNum(0);
 
@@ -148,8 +152,8 @@ public class SequentialTemplate {
         }
 
         // hook up all children that aren't original (and aren't terminated) as children of seqCompleted (hook terminated up as child of seqTerminated)
-        if (origChildren != null && children != null) {
-            ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
+        if (origChildrenCopy != null && children != null) {
+            ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildrenCopy, children);
             for (Vertex childNotOrig : childrenNotOrig) {
                 VertexStatus status = childNotOrig.getStatus();
                 if (status != TERMINATED) {
@@ -169,7 +173,7 @@ public class SequentialTemplate {
         }
 
         // create template vertex list
-        VertexList template = new VertexList(seqPosted, seqStarted, seqCompleted, seqTerminated, new VertexList(origChildren));
+        VertexList template = new VertexList(seqPosted, seqStarted, seqCompleted, seqTerminated, new VertexList(origChildrenCopy));
 
         this.templateSwapDetails = new TemplateSwapDetails(template, vertexToReplace, relationsToAdd, relationsToRemove);
 
