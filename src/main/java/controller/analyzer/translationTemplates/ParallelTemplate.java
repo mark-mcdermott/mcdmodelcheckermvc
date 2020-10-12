@@ -156,17 +156,18 @@ public class ParallelTemplate {
             // if interleavings, instead of hooking up children normally,
             // get all permutations and hook those up instead
         } else if (getInterleavings) {
-            // permutations = getChildrenInterleavings(origChildren, relationsToAdd, relationsToRemove, vertexToReplace);
+            permutations = getChildrenInterleavings(origChildren, relationsToAdd, relationsToRemove, vertexToReplace);
             // TODO: ask Dr Podorozhny if this should be origChildren or children!
-            permutations = getChildrenInterleavings(children, relationsToAdd, relationsToRemove, vertexToReplace);
+            // permutations = getChildrenInterleavings(children, relationsToAdd, relationsToRemove, vertexToReplace);
             origVerticesPermuted = new ArrayList<>();
-            if (children != null) {
-                for (Vertex child : children) {
-                    origVerticesPermuted.add(child);
+            if (origChildren != null) {
+                for (Vertex origChild : origChildren) {
+                    origVerticesPermuted.add(origChild);
                 }
             }
 
-            ArrayList<Vertex> childrensChildren = new ArrayList<>();
+            // i think this isn't necessary now 10/11/20
+            /*ArrayList<Vertex> childrensChildren = new ArrayList<>();
             if (children != null) {
                 for (Vertex child : children) {
                     ArrayList<Vertex> childsChildren = child.getChildren();
@@ -176,14 +177,20 @@ public class ParallelTemplate {
                         }
                     }
                 }
-            }
+            }*/
 
-            // remove original children
-            // for (Vertex child : origChildren) {
-            // TODO: is this right? Trying to fix negative node numbers
-            for (Vertex child : children) {
-                relationsToRemove.add(new Relation(vertexToReplace, child));
-                // vertexList.removeVertexFromList(child);
+            // fix children's relations
+            for (Vertex origChild : origChildren) {
+                // remove relation between node to replace and each child
+                relationsToRemove.add(new Relation(vertexToReplace, origChild));
+
+                ArrayList<Vertex> origChildsOrigChildren = origChild.getOrigChildren();
+                if (origChildsOrigChildren != null && origChildsOrigChildren.size() > 0) {
+                    for (Vertex origChildsOrigChild : origChild.getOrigChildren()) {
+                        relationsToRemove.add(new Relation(origChild, origChildsOrigChild));
+                    }
+                }
+
             }
 
 
@@ -210,12 +217,17 @@ public class ParallelTemplate {
 
             }
 
-            // attach children's children to par completed and par terminated
-            // i think this was an error
-            // for (Vertex childsChild : childrensChildren) {
-            //    relationsToAdd.add(new Relation(parTerminated, childsChild));
-            //    relationsToAdd.add(new Relation(parCompleted, childsChild));
-            // }
+            // attach children to par completed and par terminated
+
+            ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
+            for (Vertex child : childrenNotOrig) {
+                VertexStatus status = child.getStatus();
+                if (status == TERMINATED) {
+                    relationsToAdd.add(new Relation(parTerminated, child));
+                } else {
+                    relationsToAdd.add(new Relation(parCompleted, child));
+                }
+            }
 
             // create template vertex list
             template = new VertexList(parPosted, parStarted, parCompleted, parTerminated, permutations);
@@ -263,12 +275,21 @@ public class ParallelTemplate {
             permuteStateArrayRecursive(origArray, 0, arrayLength);
 
             for (ArrayList<Vertex> permutation : tempVertexArrayPermutations) {
+                ArrayList permutedVerticesChildrenRemoved = removeChildrenFromPermutedVertices(permutation);
                 ArrayList permutedVerticesLinked = linkPermutedVertices(permutation, relationsToAdd, relationsToRemove);
                 ArrayList permutedVerticesParentsFixed = fixPermutedVerticesParents(permutedVerticesLinked, vertexToRemove);
                 permutationsParentAndChildrenFixed.add(permutedVerticesParentsFixed);
             }
         }
         return permutationsParentAndChildrenFixed;
+    }
+
+    // remove the children from permuted vertices
+    ArrayList<Vertex> removeChildrenFromPermutedVertices(ArrayList<Vertex> permutation) {
+        for (Vertex vertex : permutation) {
+            vertex.setChildren(null);
+        }
+        return permutation;
     }
 
     // goes through each vertex in a permutation and removes the vertexToRemove from its list of parents
