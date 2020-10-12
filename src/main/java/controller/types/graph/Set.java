@@ -154,6 +154,22 @@ public class Set {
         return resultStr;
     }
 
+    public String toStringWithLineLengths() {
+        String resultStr = "{";
+        for (int i=0; i<states.size(); i++) {
+            Vertex vertex = states.get(i);
+            resultStr = resultStr + vertex.getName();
+            if (i<states.size() - 1) {
+                resultStr = resultStr + ",";
+                if (i % 8 == 0 && i != 0) {
+                    resultStr = resultStr + "\n";
+                }
+            }
+        }
+        resultStr = resultStr + "}";
+        return resultStr;
+    }
+
     public int getNumStates() {
         return states.size();
     }

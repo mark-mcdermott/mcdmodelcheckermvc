@@ -156,7 +156,8 @@ public class ModelChecker {
     }
 
     private String getResultStatesThatHold(Set statesThatHold) {
-        return statesThatHold.toString().equals("{}") ? "No states hold" : statesThatHold.toString();
+        // return statesThatHold.toString().equals("{}") ? "No states hold" : statesThatHold.toString();
+        return statesThatHold.toString().equals("{}") ? "No states hold" : statesThatHold.toStringWithLineLengths();
     }
 
     private String getResultDoesHold(Set statesThatHold, Vertex stateToCheck) {

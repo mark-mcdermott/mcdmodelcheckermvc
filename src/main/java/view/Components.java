@@ -242,6 +242,7 @@ public class Components {
     public void analyzerSidebarContainer() {
         JPanel sidebarWrapper = new JPanel();
         sidebarWrapper.setLayout(new GridBagLayout());
+        // sidebarWrapper.setPreferredSize(new Dimension(275, 2000));
         GridBagConstraints sidebarWrapperStyle = new GridBagConstraints();
         sidebarWrapperStyle.anchor = GridBagConstraints.NORTH;
         sidebarWrapperStyle.weighty = 1;
@@ -469,11 +470,13 @@ public class Components {
         sidebarInner.add(resultStatesThatHoldTitle, resultStatesThatHoldTitleStyle);
         resultStatesField = new JTextArea();
         resultStatesField.setFont(listFont);
+        // resultStatesField.setPreferredSize(new Dimension(275, 25));
         resultStatesFieldStyle = new GridBagConstraints();
         resultStatesFieldStyle.gridx = 1;
         resultStatesFieldStyle.gridy = 19;
         resultStatesFieldStyle.fill = GridBagConstraints.HORIZONTAL;
         resultStatesScrollpane = new JScrollPane(resultStatesField);
+        resultStatesScrollpane.setPreferredSize(new Dimension(275, 50));
         sidebarInner.add(resultStatesScrollpane, resultStatesFieldStyle);
         // counter examples label
         resultCounterExampleTitle = new JLabel("Counterexample path(s):");
