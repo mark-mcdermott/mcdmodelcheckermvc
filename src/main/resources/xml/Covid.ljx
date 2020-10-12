@@ -12,7 +12,7 @@
                     <step-declaration id="_9" kind="leaf" name="rt-pcr test" />
                     <step-declaration id="_10" kind="leaf" name="lung ultrasound" property="moderate risk to others" />
                     <step-declaration id="_11" kind="leaf" name="chest ct scan" property="moderate risk to others" />
-                    <step-declaration id="_12" kind="leaf" name="ventilation" property="high risk to others,ventilator needed" />
+                    <step-declaration id="_12" kind="leaf" name="ventilation" properties="high risk to others,ventilator needed" />
                 </step-declaration>
             </step-declaration>
             <step-declaration id="_13" kind="sequential" name="hospital orders ventilator">

@@ -230,11 +230,12 @@ public class ListHelper {
         // ListHelper listHelper = new ListHelper();
         if (numProperties == 1) {
             modelList = options.getModels1Var();
-        } else if (numProperties == 2) {
+        // } else if (numProperties == 2) {
+        } else if (numProperties > 1) {
             modelList = options.getModels2Var();
-        } else {
-            new McdException("Controller.java " + getLineNumber() + ": Number of properties must be 1 or 2");
-        }
+        } // else {
+            // new McdException("Controller.java " + getLineNumber() + ": Number of properties must be 1 or 2");
+        // }
         return modelList;
     }
 

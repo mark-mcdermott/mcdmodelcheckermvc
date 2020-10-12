@@ -56,7 +56,8 @@ public class Controller extends McdModelCheckerApp {
         String file = options.getXmlFileOrder()[0];
         GraphType graphs = GraphType.values()[0];
         Integer step = null;
-        String modelStr = options.getModels1Var()[0]; // change this to getModels2Var if you change selectedFile to a file with 2 properties
+        // String modelStr = options.getModels1Var()[0]; // change this to getModels2Var if you change selectedFile to a file with 2 properties
+        String modelStr = options.getModels2Var()[0]; // TODO: change back to getModels2Var if you change selectedFile to a file with 2 properties
         Integer loops = 0;
         AnalyzerState state = DEFAULT_STATE;
         return new Selections(file, graphs, step, modelStr, loops, state);
