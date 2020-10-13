@@ -1,0 +1,149 @@
+From https://es-static.fbk.eu/tools/FSAP/examples/elevator/readme.txt, accessed 10/13/20
+
+=========================================
+MODEL: elevator.smv, sat_elevator.smv.xml
+AUTHOR: The NuSMV group
+=========================================
+
+A model of an elevator system for a 4-floors building.
+
+MODEL
+=====
+
+The model includes module both for the physical system and the
+controller.  The physical system is composed of the following modules:
+- reservation buttons, one for each floor, used to request service
+- the cabin, equipped with an engine
+- the door of the elevator
+The controller takes as input (as sensory signals) the floor and the
+direction of motion of the cabin, the status of the door, and the
+status of the four buttons. It decides the controls to the engine, to
+the door and to the buttons. A number of safety and liveness
+requirements have to be met by the elevator system (see below).
+
+See further comments in the source file.
+
+FAILURE MODES
+=============
+
+- button stuck pressed
+  type = "stuck_at_1"
+  NuSMV node: Button.pressed
+  description: a button stuck pressed
+
+- button stuck not pressed
+  type = "stuck_at_0"
+  NuSMV node: Button.pressed
+  description: a button stuck not pressed
+
+- door stuck open
+  type = "stuck_at_open"
+  NuSMV node = Door.status
+  description: a door stuck open
+
+- door stuck closed
+  type = "stuck_at_closed"
+  NuSMV node = Door.status
+  description: a door stuck closed
+
+- cabin stuck standing
+  type = "stuck_at_standing"
+  NuSMV node = Cabin.direction
+  description: a cabin stuck standing
+
+- cabin stuck moving up
+  type = "stuck_at_moving_up"
+  NuSMV node = Cabin.direction
+  description: a cabin stuck moving up
+
+- cabin stuck moving down
+  type = "stuck_at_moving_down"
+  NuSMV node = Cabin.direction
+  description: a cabin stuck moving down
+
+SAFETY REQUIREMENTS
+===================
+
+- CTL property
+  formula = "AG((ctrl.reset_1 -> button_1.pressed) &
+                (ctrl.reset_2 -> button_2.pressed) &
+                (ctrl.reset_3 -> button_3.pressed) &
+                (ctrl.reset_4 -> button_4.pressed))"
+  description: the controller must not reset a button that is not pressed
+
+- CTL property
+  formula = "AG (ctrl.move_cmd = stop -> cabin.direction  in
+    {moving_up,moving_down})"
+  description: the controller can issue a stop command only if the direction
+    is up or down
+
+- CTL property
+  formula = "AG (ctrl.move_cmd in {move_up,move_down}  ->
+    cabin.direction = standing )"
+  description: the controller can issue a move command only if the direction
+    is standing
+
+- CTL property
+  formula = "AG (cabin.Floor = 4 -> AX(cabin.direction != moving_up)) "
+  description: the cabin can move up only if the floor is not 4
+
+- CTL property
+  formula = "AG (cabin.Floor = 1 -> AX(cabin.direction != moving_down))"
+  description: the cabin can move down only if the floor is not 1
+
+- CTL property
+  formula = "AG (ctrl.door_cmd = open   ->  door.status = closed)"
+  description: the controller can issue an open command only if the door
+    is closed
+
+- CTL property
+  formula = "AG (ctrl.door_cmd = close  ->  door.status = open)"
+  description: the controller can issue a close command only if the door is
+    open
+
+- CTL property
+  formula = "(AG AF ! button_1.pressed) &
+             (AG AF ! button_2.pressed) &
+             (AG AF ! button_2.pressed) &
+             (AG AF ! button_2.pressed)"
+  description: no button can reach a state where it remains pressed forever
+
+- CTL property
+  formula = "(AG (button_1.pressed ->
+    A [button_1.pressed U (cabin.Floor = 1 & door.status = open)]) &
+                 (button_2.pressed ->
+    A [button_2.pressed U (cabin.Floor = 2 & door.status = open)]) &
+                 (button_3.pressed ->
+    A [button_3.pressed U (cabin.Floor = 3 & door.status = open)]) &
+                 (button_4.pressed ->
+    A [button_4.pressed U (cabin.Floor = 4 & door.status = open)]))"
+  description:  no pressed button can be reset until the cabin stops at the
+    corresponding floor and opens the door
+
+- CTL property
+  formula = "AG (((button_1.pressed & cabin.Floor = 1 & door.status = open) ->
+    AX ! button_1.pressed) &
+                 ((button_2.pressed & cabin.Floor = 2 & door.status = open) ->
+    AX ! button_2.pressed) &
+                 ((button_3.pressed & cabin.Floor = 3 & door.status = open) ->
+    AX ! button_3.pressed) &
+                 ((button_4.pressed & cabin.Floor = 4 & door.status = open) ->
+    AX ! button_4.pressed))"
+  description: a button must be reset as soon as the cabin stops at the
+    corresponding floor with the door open.
+
+- CTL property
+  formula = "AG (door.status = open -> cabin.direction = standing)"
+  description: the cabin can move only when the door is closed
+
+- CTL property
+  formula = "AG (((! button_1.pressed) & (! button_2.pressed) &
+                  (! button_3.pressed) & (! button_4.pressed))
+                   -> (ctrl.door_cmd = nop & ctrl.move_cmd = nop))"
+  description: if no button is pressed, the controller must issue no commands
+    and the cabin must be standing
+
+- PROP formula for FAULT TREE generation
+  formula: "door.status = open & cabin.direction != standing"
+  description: we want to investigate which failure events can cause the
+    cabin to move when the door is open
