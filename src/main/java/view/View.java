@@ -13,6 +13,7 @@ import controller.utils.ExceptionMessage;
 import model.Model;
 import org.xml.sax.SAXException;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -20,6 +21,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -386,6 +389,8 @@ public class View extends JFrame implements Observer {
         components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());
         components.graphPanel1.add(components.graphPanel1Title, PAGE_START);
         components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayout1AcrossWidth(), options.getGraphLayoutsHeight()));
+
+
         // add one-across graph and its title
         if (displayType == XML_ONLY) {
             drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList());

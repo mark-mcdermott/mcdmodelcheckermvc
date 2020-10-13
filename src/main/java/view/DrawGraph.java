@@ -8,19 +8,25 @@ import edu.uci.ics.jung.algorithms.layout.Layout;
 import edu.uci.ics.jung.graph.DirectedGraph;
 import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
+import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
 import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
 import edu.uci.ics.jung.visualization.control.ViewScalingControl;
+import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import org.apache.commons.collections15.Transformer;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class DrawGraph {
@@ -123,6 +129,36 @@ public class DrawGraph {
                     numEdges++;
                 }
             }
+        }
+
+        // pdf test (code from https://stackoverflow.com/a/10426669, accessed 10/12/20)
+        // Create the VisualizationImageServer
+        // vv is the VisualizationViewer containing my graph
+        VisualizationImageServer<Vertex,Integer> vis =
+                new VisualizationImageServer<Vertex,Integer>(visualizationViewer.getGraphLayout(), visualizationViewer.getGraphLayout().getSize());
+
+        // Configure the VisualizationImageServer the same way
+        // you did your VisualizationViewer. In my case e.g.
+
+        vis.setBackground(Color.WHITE);
+        //        vis.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Edge>());
+        //        vis.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<Node, Edge>());
+        //        vis.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Node>());
+        //        vis.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
+
+        // Create the buffered image
+        BufferedImage image = (BufferedImage) vis.getImage(
+                new Point2D.Double(visualizationViewer.getGraphLayout().getSize().getWidth() / 2,
+                        visualizationViewer.getGraphLayout().getSize().getHeight() / 2),
+                new Dimension(visualizationViewer.getGraphLayout().getSize()));
+
+        // Write image to a png file
+        File outputfile = new File("src/main/resources/images/test.png");
+
+        try {
+            ImageIO.write(image, "png", outputfile);
+        } catch (IOException e) {
+            // Exception handling
         }
 
     }

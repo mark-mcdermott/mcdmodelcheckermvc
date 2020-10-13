@@ -99,7 +99,7 @@ public class Options {
         graphLayouts3AcrossWidthAOCMonitor = 865;
         graphLayouts3AcrossWidth = graphLayouts3AcrossWidthAOCMonitor; // 465 // TODO: change this to graphLayouts3AcrossWidthMacBookMonitor if on macbook
         graphLayout2AcrossWidth = 675;
-        graphayout1AcrossWidth = 1400;
+        graphayout1AcrossWidth = 2500; // 1400 for macbook
         graphLayoutsHeight = 920;
 
         // xml graphs settings
