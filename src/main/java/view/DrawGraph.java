@@ -29,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static controller.types.analyzer.analyzerData.DisplayType.INTER_ONLY;
+
 public class DrawGraph {
 
     private Integer nodeDiameter;
@@ -131,28 +133,110 @@ public class DrawGraph {
             }
         }
 
-        // pdf test (code from https://stackoverflow.com/a/10426669, accessed 10/12/20)
-        // Create the VisualizationImageServer
-        // vv is the VisualizationViewer containing my graph
-        VisualizationImageServer<Vertex,Integer> vis =
-                new VisualizationImageServer<Vertex,Integer>(visualizationViewer.getGraphLayout(), visualizationViewer.getGraphLayout().getSize());
 
-        // Configure the VisualizationImageServer the same way
-        // you did your VisualizationViewer. In my case e.g.
 
-        vis.setBackground(Color.WHITE);
-        //        vis.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller<Edge>());
-        //        vis.getRenderContext().setEdgeShapeTransformer(new EdgeShape.Line<Node, Edge>());
-        //        vis.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<Node>());
-        //        vis.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR);
+    }
 
-        // Create the buffered image
+    public void drawGraphAndMakePdf(JPanel thisGraphPanel, VertexList vertexList) throws IOException {
+
+        // clear temp lists between each graph
+        tempPlacedVertices = new ArrayList<>();
+        tempXyCoords = new ArrayList<>();
+
+        // init vars
+        VisualizationViewer<Vertex,Integer> visualizationViewer;
+        KeyListener graphMouseKeyListener;
+
+        // create directed graph
+        DirectedGraph<Vertex, Integer> graph = new DirectedSparseMultigraph<Vertex, Integer>();
+
+        // create jung layout and visualization viewer
+        FRLayout layout = new FRLayout<Vertex, Integer>(graph);
+        visualizationViewer = new VisualizationViewer<Vertex,Integer>(layout);
+
+        // set dimensions
+        layout.setSize(new Dimension(layoutWidth, layoutHeight));
+        layout.setAttractionMultiplier(vertexAttractionMultiplier);
+        visualizationViewer.setPreferredSize(new Dimension(layoutWidth, layoutHeight));
+        visualizationViewer.setBackground(Color.white);
+
+        // grey vertices
+        Transformer<Vertex, Paint> vertexPaint = new Transformer<Vertex, Paint>() {
+            public Paint transform(Vertex i) { return Color.LIGHT_GRAY; }
+        };
+
+        // shrink the vertices a bit
+        visualizationViewer.getRenderContext().setVertexShapeTransformer(n -> {
+            int xyOffset = nodeDiameter / -2; // xyOffset recenters the vertices after shrinking them
+            return new Ellipse2D.Double(xyOffset, xyOffset, nodeDiameter, nodeDiameter);
+        });
+
+        visualizationViewer.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
+        visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+        visualizationViewer.getRenderer().getVertexLabelRenderer().setPosition(edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position.E);
+
+        // shrink the whole tree a bit
+        ScalingControl scaler = new ViewScalingControl();
+        scaler.scale(visualizationViewer, scaleFactor, visualizationViewer.getCenter());
+
+        // setup mouse zoom
+        final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse<Vertex, Number>();
+        visualizationViewer.setGraphMouse(graphMouse);
+        visualizationViewer.addKeyListener((graphMouse.getModeKeyListener()));
+        GraphZoomScrollPane graphZoomScrollPane = new GraphZoomScrollPane(visualizationViewer);
+        thisGraphPanel.add(graphZoomScrollPane);
+        visualizationViewer.setGraphMouse(graphMouse);
+        graphMouseKeyListener = graphMouse.getModeKeyListener();
+        visualizationViewer.addKeyListener(graphMouseKeyListener);
+
+        // place root vertex
+        tempXyCoords = new ArrayList<ArrayList<Double>>();
+        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0);
+        placeVertex(vertexList.getRoot(), rootXyCoords, layout);
+
+        // place vertices and add edges
+        if (vertexList.getRoot().getChildren() != null) {
+            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset);
+        }
+        for (Vertex vertex : vertexList.getList()) {
+            if (vertex.getChildren()!= null) {
+                for (Vertex child : vertex.getChildren()) {
+                    graph.addEdge(numEdges, vertex, child);
+                    numEdges++;
+                }
+            }
+        }
+
+        // image export stuff
+        // code/approach from https://stackoverflow.com/a/10426669, accessed 10/12/20
+        // i'm converting these pngs to pdfs in photoshop and then compressing on https://www.ilovepdf.com
+
+        // this is random but works. something is overriding all size input specs, it's annoying.
+        Integer visLayoutWidth = 7000;
+        Integer visLayoutHeight = 7000;
+
+        System.out.println(visLayoutWidth.toString() + " " + layoutHeight.toString());
+        VisualizationImageServer<Vertex,Integer> vis = new VisualizationImageServer<Vertex,Integer>(layout, new Dimension(visLayoutWidth, visLayoutHeight));
+
+        // set dimensions
+        layout.setSize(new Dimension(visLayoutWidth, visLayoutHeight));
+        layout.setAttractionMultiplier(vertexAttractionMultiplier);
+        vis.setPreferredSize(new Dimension(visLayoutWidth, visLayoutHeight));
+        vis.setBackground(Color.white);
+        // shrink the vertices a bit
+        vis.getRenderContext().setVertexShapeTransformer(n -> {
+            int xyOffset = nodeDiameter / -2; // xyOffset recenters the vertices after shrinking them
+            return new Ellipse2D.Double(xyOffset, xyOffset, nodeDiameter, nodeDiameter);
+        });
+
+        vis.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
+        vis.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+        vis.getRenderer().getVertexLabelRenderer().setPosition(edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position.E);
+        // shrink the whole tree a bit
+        scaler.scale(vis, scaleFactor, vis.getCenter());
+
         BufferedImage image = (BufferedImage) vis.getImage(
-                new Point2D.Double(visualizationViewer.getGraphLayout().getSize().getWidth() / 2,
-                        visualizationViewer.getGraphLayout().getSize().getHeight() / 2),
-                new Dimension(visualizationViewer.getGraphLayout().getSize()));
-
-        // Write image to a png file
+                new Point2D.Double(visLayoutWidth / 2, layoutHeight / 2), new Dimension(visLayoutWidth, visLayoutHeight));
         File outputfile = new File("src/main/resources/images/test.png");
 
         try {

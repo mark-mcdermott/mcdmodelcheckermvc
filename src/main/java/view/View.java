@@ -50,29 +50,43 @@ public class View extends JFrame implements Observer {
 
     public void update(Observable o, Object arg) {
         if (arg == "ANALY_DEFAULT") {
-            renderAnalyzerDefaultState();
+            try {
+                renderAnalyzerDefaultState();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (arg == "ANALY_COMP") {
-            renderAnalyzerComparisonState();
+            try {
+                renderAnalyzerComparisonState();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (arg == "ANALY_RESULTS") {
-            renderAnalyzerResultsState();
+            try {
+                renderAnalyzerResultsState();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (arg == "TESTER") {
             renderTesterState();
         }
+
     }
 
-    private void renderAnalyzerDefaultState() {
+    private void renderAnalyzerDefaultState() throws IOException {
         initAnalyzer();
         drawGraphs(ANALY_DEFAULT);
         repaint();
+
     }
 
-    private void renderAnalyzerComparisonState() {
+    private void renderAnalyzerComparisonState() throws IOException {
         initAnalyzer();
         drawGraphs(ANALY_COMP);
         repaint();
     }
 
-    private void renderAnalyzerResultsState() {
+    private void renderAnalyzerResultsState() throws IOException {
         initAnalyzer();
         drawGraphs(ANALY_RESULTS);
         repaint();
@@ -345,7 +359,7 @@ public class View extends JFrame implements Observer {
         return list.getModel().getElementAt(index).toString();
     }
 
-    private void drawGraphs(AppState appState) {
+    private void drawGraphs(AppState appState) throws IOException {
         // set up graph settings
         DirectedGraphOptions graphOptions = options.graphOptions();
         Boolean isStepGraph = model.getSelectedStep() == null ? false : true;
@@ -367,7 +381,7 @@ public class View extends JFrame implements Observer {
 
     }
 
-    private void drawDefaultGraphs(DrawGraph drawGraph, DisplayType displayType) {
+    private void drawDefaultGraphs(DrawGraph drawGraph, DisplayType displayType) throws IOException {
         if (displayType == XML_ONLY || displayType == TRANS_ONLY || displayType == INTER_ONLY) {
             drawOneAcrossGraph(drawGraph, displayType);
         } else if (displayType == ALL_GRAPHS) {
@@ -383,7 +397,7 @@ public class View extends JFrame implements Observer {
 
 
 
-    private void drawOneAcrossGraph(DrawGraph drawGraph, DisplayType displayType) {
+    private void drawOneAcrossGraph(DrawGraph drawGraph, DisplayType displayType) throws IOException {
         // setup one-across graph styles
         components.mainGraphPanel.remove(components.graphPanel1);
         components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());
@@ -399,6 +413,7 @@ public class View extends JFrame implements Observer {
             drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList());
             components.graphPanel1Title.setText("Translation");
         } else if (displayType == INTER_ONLY) {
+            // drawGraph.drawGraphAndMakePdf(components.graphPanel1, model.getInterleavingsVertexList());
             drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList());
             components.graphPanel1Title.setText("Interleavings");
         }

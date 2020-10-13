@@ -23,6 +23,7 @@ controller/analyzer/translationTemplates/TryTemplate.class
 controller/types/ctl/Label.class
 view/View$4.class
 controller/types/modelChecking/StatesThatHoldAndCounterExamples.class
+view/DrawGraph$2.class
 controller/analyzer/ctlCompiler/CtlCompilerParser$EuContext.class
 controller/utils/Utils.class
 controller/types/graph/Set.class
