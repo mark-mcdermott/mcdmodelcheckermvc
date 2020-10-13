@@ -1,0 +1,19 @@
+<littlejil>
+   <module>
+
+
+            <step-declaration id="_9" kind="sequential" name="covid">
+                <step-declaration id="_14" kind="parallel" name="initial response">
+                    <step-declaration id="_14" kind="leaf" name="isolate at home" />
+                    <step-declaration id="_14" kind="leaf" name="monitor symptoms" />
+                </step-declaration>
+                <step-declaration id="_14" kind="parallel" name="initial response">
+                    <step-declaration id="_14" kind="leaf" name="rt-pcr test" />
+                    <step-declaration id="_14" kind="leaf" name="lung ultrasound" />
+                </step-declaration>
+            </step-declaration>
+
+
+
+   </module>
+</littlejil>
