@@ -3,7 +3,7 @@
      <step-declaration id="_1" kind="parallel" name="added root">
         <step-declaration id="_10" kind="sequential" name="Process Checks">
               <step-declaration id="_23" kind="leaf" name="set class's bank property" />
-              <step-declaration id="_26" kind="sequential" name="get checks list from csv">
+              <step-declaration id="_26" kind="sequential" name="get checks list from csv" property="reading from disk">
                     <step-declaration id="_5" kind="sequential" name="get list of csv rows">
                           <step-declaration id="_8" kind="leaf" name="init csvRows and declare row variable" />
                           <step-declaration id="_30" kind="leaf" name="get bufferedReader" />
@@ -33,7 +33,7 @@
         </step-declaration>
         <step-declaration id="_39" kind="sequential" name="Process Transfers">
               <step-declaration id="_47" kind="leaf" name="set class's bank property" />
-              <step-declaration id="_54" kind="sequential" name="get transfers list from csv">
+              <step-declaration id="_54" kind="sequential" name="get transfers list from csv" property="reading from disk">
                     <step-declaration id="_31" kind="sequential" name="get list of csv rows">
                           <step-declaration id="_49" kind="leaf" name="init csvRows and declare row variable" />
                           <step-declaration id="_50" kind="leaf" name="get bufferedReader" />
