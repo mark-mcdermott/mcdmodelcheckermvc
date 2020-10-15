@@ -352,8 +352,8 @@ public class Controller {
         String[] files = new XmlFileOrder().getFileOrder();
         String[] displays = new DisplayTypes().getDisplayTypes();
         Integer[] steps = null;
-        String[] models = new Models().getModels1Var();
-        // String[] models = new Models().getModels2Var(); // TODO: change back to getModels1Var when you change default xml file to a 1 property fiole
+        // String[] models = new Models().getModels1Var();
+        String[] models = new Models().getModels2Var(); // TODO: change back to getModels1Var when you change default xml file to a 1 property fiole
         Integer loops = 0;
         Vertex[] states = null;
         String[] labels = null;

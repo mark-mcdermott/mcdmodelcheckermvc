@@ -4,7 +4,7 @@
         <step-declaration id="_10" kind="sequential" name="Process Checks">
               <step-declaration id="_23" kind="leaf" name="set class's bank property" />
               <step-declaration id="_26" kind="sequential" name="get checks list from csv" property="reading from disk">
-                    <step-declaration id="_5" kind="sequential" name="get list of csv rows">
+                    <step-declaration id="_5" kind="sequential" name="get list of csv rows" property="bufferedReader open">
                           <step-declaration id="_8" kind="leaf" name="init csvRows and declare row variable" />
                           <step-declaration id="_30" kind="leaf" name="get bufferedReader" />
                           <step-declaration id="_9" kind="sequential" name="readCsv row">
@@ -12,7 +12,7 @@
                                 <step-declaration id="_28" kind="leaf" name="csvRows.addRow(row)" />
                                 <step-declaration id="_18" kind="leaf" name="i++;" />
                           </step-declaration>
-                          <step-declaration id="_21" kind="leaf" name="close csvReader" />
+                          <step-declaration id="_21" kind="leaf" name="close csvReader" properties="bufferedReader closed, have checks csv" />
                     </step-declaration>
                     <step-declaration id="_6" kind="sequential" name="get list of checks from csv rows">
                           <step-declaration id="_14" kind="leaf" name="init checks variable" />
