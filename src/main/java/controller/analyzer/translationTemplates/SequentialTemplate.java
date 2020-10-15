@@ -75,42 +75,6 @@ public class SequentialTemplate {
         ArrayList<Relation> relationsToAdd = new ArrayList<>();
         ArrayList<Relation> relationsToRemove = new ArrayList<>();
 
-        // TODO: there is a judgement call here:
-        // if the child of a sequential is a sequential, then the order that the parent
-        // sequential's completed and terminal steps attach to the child sequential matters
-        // in whether of the parent's completed or terminal nodes have the child's
-        // completed step as their child (only the later one will)
-        // this is demonstrated in the 4th translation step of FiveSteps.ljs
-        // TODO: ask Dr. Podorozhny about which order to do them (then add that logic here)
-        /*
-        if (children != null && numChildren != null) {
-            for (Integer i = 0; i < numChildren; i++) {
-                Vertex thisChild = children.get(i);
-                Vertex prevChild = (i == 0) ? null : children.get(i - 1);
-                thisChild.setParentSiblingNum(0);
-                thisChild.setSiblingNum(0);
-                if (i == 0) {
-                    relationsToAdd.add(new Relation(seqStarted, firstChild));
-                    relationsToRemove.add(new Relation(vertexToReplace, thisChild));
-                } else {
-                    relationsToAdd.add(new Relation(prevChild, thisChild));
-                    relationsToRemove.add(new Relation(vertexToReplace, thisChild));
-                }
-                if (i == numChildren - 1) {
-                    relationsToAdd.add(new Relation(thisChild, seqCompleted));
-                }
-                // adding terminated node here messes up the order - does not match official sequential diagram
-                // relationsToAdd.add(new Relation(thisChild, seqTerminated));
-            }
-            // adding terminated node here should fix the order - children will precede the terminated node, like the official sequential diagram
-            for (Integer i = 0; i < numChildren; i++) {
-                Vertex thisChild = children.get(i);
-                relationsToAdd.add(new Relation(thisChild, seqTerminated));
-            }
-        } */
-
-
-
         // hook up original children as the substeps (as in the sequential diagram)
         Integer numOrigChildren = null;
         if (origChildren != null) {
@@ -142,7 +106,6 @@ public class SequentialTemplate {
                 }
                 relationsToAdd.add(new Relation(thisSubstep, seqTerminated)); // all substeps hook up to seqTerminated
             }
-
         }
 
         // See if node to replace was originally hooked up to a terminated in the translatedVertexList. If so, hook seqTerminated up to it

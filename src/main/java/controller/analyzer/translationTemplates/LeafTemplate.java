@@ -17,8 +17,6 @@ public class LeafTemplate {
 
     TemplateSwapDetails templateSwapDetails;
 
-    LeafTemplate() { }
-
     public LeafTemplate(Vertex vertexToReplace, VertexList translatedVertexList, VertexList originalVertexList) {
 
         // init vars
@@ -64,17 +62,13 @@ public class LeafTemplate {
         leafStarted.addChild(leafTerminated);
         leafTerminated.addParent(leafStarted);
         leafStarted.addRelation(new Relation(leafStarted, leafTerminated));
-
         // get relations for hooking up children/parents to template vertices
         ArrayList<Relation> relationsToAdd = new ArrayList<>();
         ArrayList<Relation> relationsToRemove = new ArrayList<>();
-
         // relations for hooking up children in the translated list
         if (children != null) {
             for (Vertex child : children) {
-
                 VertexStatus status = child.getStatus();
-                // not sure about SUBSTEP_HAS_NOT_STARTED / SUBSTEP_HAS_STARTED here
                 if (status == TERMINATED || status == SUBSTEP_HAS_NOT_STARTED || status == SUBSTEP_HAS_STARTED) {
                     relationsToAdd.add(new Relation(leafTerminated, child));
                 } else {
@@ -84,7 +78,6 @@ public class LeafTemplate {
                 relationsToRemove.add(new Relation(vertexToReplace, child));
             }
         }
-
         // get relations for hooking up parents
         if (parents != null) {
             for (Vertex parent : parents) {

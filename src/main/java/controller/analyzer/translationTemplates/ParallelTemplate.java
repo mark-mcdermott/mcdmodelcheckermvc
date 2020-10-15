@@ -82,20 +82,13 @@ public class ParallelTemplate {
         }
 
         // get relations for hooking up original children as substeps
-        // Integer numChildren = (children == null) ? null : children.size();
         Integer numOrigChildren = (origChildren == null) ? null : origChildren.size();
         ArrayList<ArrayList<Vertex>> permutations = null;
         if (!getInterleavings) {
-            // if (children != null && numChildren != null) {
             if (origChildren != null && numOrigChildren != null) {
-                // for (Integer i = 0; i < numChildren; i++) {
                 for (Integer i = 0; i < numOrigChildren; i++) {
-
-                    // Vertex thisChild = children.get(i);
                     Vertex thisSubstep = origChildren.get(i);
-                    // relationsToRemove.add(new Relation(vertexToReplace, thisChild));
                     relationsToRemove.add(new Relation(vertexToReplace, thisSubstep));
-                    // relationsToAdd.add(new Relation(parStarted, thisChild));
                     relationsToAdd.add(new Relation(parStarted, thisSubstep));
 
                     // remove substep's original children (they will be dealt with recursively in future steps)
@@ -105,29 +98,20 @@ public class ParallelTemplate {
                         }
                     }
 
-                    // for (Integer j = 0; j < numChildren; j++) {
                     for (Integer j = 0; j < numOrigChildren; j++) {
                         if (i != j) {
-                            // Vertex otherChild = children.get(j);
                             Vertex otherSubstep = origChildren.get(j);
-                            // relationsToAdd.add(new Relation(otherChild, thisChild));
                             relationsToAdd.add(new Relation(otherSubstep, thisSubstep));
-                            // relationsToAdd.add(new Relation(thisChild, otherChild));
                             relationsToAdd.add(new Relation(thisSubstep, otherSubstep));
                         }
                     }
-                    // thisChild.setParentSiblingNum(0);
                     thisSubstep.setParentSiblingNum(0);
-                    // thisChild.setSiblingNum(i);
                     thisSubstep.setSiblingNum(i);
-                    // relationsToAdd.add(new Relation(thisChild, parCompleted));
                     relationsToAdd.add(new Relation(thisSubstep, parCompleted));
-                    // relationsToAdd.add(new Relation(thisChild, parTerminated));
                     relationsToAdd.add(new Relation(thisSubstep, parTerminated));
                 }
 
                 // hook up the children nodes from the translatedVertexList
-                // ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildren, children);
                 if (children != null) {
                     for (int i=0; i<children.size(); i++) {
                         Vertex thisChild = children.get(i);
@@ -140,7 +124,6 @@ public class ParallelTemplate {
                             if (!origChildren.contains(thisChild)) {
                                 relationsToAdd.add(new Relation(parCompleted, thisChild)); // not 100% sure this covers all cases
                             }
-                            // new ExceptionMessage("parallel translation child not completed or terminated - not sure how to handle. ParallelTemplate.java");
                         }
                     }
                 }
@@ -157,27 +140,12 @@ public class ParallelTemplate {
             // get all permutations and hook those up instead
         } else if (getInterleavings) {
             permutations = getChildrenInterleavings(origChildren, relationsToAdd, relationsToRemove, vertexToReplace);
-            // TODO: ask Dr Podorozhny if this should be origChildren or children!
-            // permutations = getChildrenInterleavings(children, relationsToAdd, relationsToRemove, vertexToReplace);
             origVerticesPermuted = new ArrayList<>();
             if (origChildren != null) {
                 for (Vertex origChild : origChildren) {
                     origVerticesPermuted.add(origChild);
                 }
             }
-
-            // i think this isn't necessary now 10/11/20
-            /*ArrayList<Vertex> childrensChildren = new ArrayList<>();
-            if (children != null) {
-                for (Vertex child : children) {
-                    ArrayList<Vertex> childsChildren = child.getChildren();
-                    if (childsChildren != null) {
-                        for (Vertex childsChild : childsChildren) {
-                            childrensChildren.add(childsChild);
-                        }
-                    }
-                }
-            }*/
 
             // fix children's relations
             for (Vertex origChild : origChildren) {
@@ -192,7 +160,6 @@ public class ParallelTemplate {
                 }
 
             }
-
 
             // attach interleavings back to the parallel template nodes
             for (ArrayList<Vertex> thisPermutation : permutations) {
@@ -212,7 +179,6 @@ public class ParallelTemplate {
                         relationsToAdd.add(new Relation(lastVertex, parCompleted));
                     }
 
-                    // vertexList.addVertex(thisVertex);
                 }
 
             }

@@ -77,20 +77,12 @@ public class Translate {
         permutedVertices = new ArrayList<>();
         this.originalVertexList = origVertexList;
         translatedVertexList = new VertexList();
-
-
         VertexList copiedVertexList = origVertexList.copyVertexList();
-
         Vertex root = copiedVertexList.getRoot();
         translateRootVertex(root, getInterleavings);
         numSteps++;
         Vertex translatedRoot = translatedVertexList.getRoot();
-
         if (!isStepSelected || targetStep == null || targetStep > 1 && numSteps < targetStep) {
-            // not sure this is necessary
-            // if (!debug || numNodesExpanded < targetNumNodesExpanded) {
-            //     translateVertexsChildren(translatedRoot, getInterleavings);
-            // }
             if (!debug || numNodesExpanded < targetNumNodesExpanded) {
                 if (root.getChildren() != null) {
                     for (Vertex child : translatedRoot.getChildren()) {
@@ -99,7 +91,6 @@ public class Translate {
                 }
             }
         }
-
         if (!isStepSelected) {
             translatedVertexList.setNumTotalSteps(numSteps);
         } else {
@@ -108,23 +99,10 @@ public class Translate {
             } else {
                 translatedVertexList.setNumTotalSteps(numSteps);
             }
-            // vertexListToTranslate.setNumTargetSteps(numSteps);
-            // if (!getInterleavings) { vertexListToTranslate.setNumTotalSteps(model.getNumTranslationSteps()); }
-            // else { vertexListToTranslate.setNumTotalSteps(model.getNumInterleavingsSteps()); }
         }
-
         fixPermutedVertexReferences(translatedVertexList, permutedVertices);
-
         renumberVertices();
-
-        // VertexList translatedVertexList = translatedVertexList;
-
-        // Kripke translationKripke = translatedVertexList.getKripke();
-        // System.out.println("controller.Translate: 74");
-        // System.out.print(translationKripke.toDescriptiveKripke());
-
         return translatedVertexList;
-
     }
 
     private void translateChildrenRecursively(Vertex vertex, Boolean getInterleavings, int loopsNum) {
@@ -288,7 +266,6 @@ public class Translate {
     }
 
     private void translateVertex(Vertex vertex, Boolean isRoot, Boolean getInterleavings) {
-        Boolean isOriginal = vertex.getIsOriginal();
         TemplateSwapDetails templateSwapDetails = new TemplateSwapDetails();
 
         switch (vertex.getKind()) {
@@ -320,24 +297,10 @@ public class Translate {
             }
         }
 
-        // permutedVertices = templateSwapDetails.getOrigVerticesPermuted();
         vertex.setHasBeenExpanded(true);
-        if (getInterleavings) {
-            if (numNodesExpanded == 5) {
-
-//                    ArrayList<Vertex> verticesWithoutParents = new ArrayList<>();
-//                    for (Vertex thisVertex : vertexListToTranslate.getList()) {
-//                        ArrayList<Vertex> thisParents = thisVertex.getParents();
-//                        if (thisParents == null || thisParents.size() == 0) {
-//                            verticesWithoutParents.add(thisVertex);
-//                        }
-//                    }
-                // System.out.println(verticesWithoutParents);
-            }
-        }
         numNodesExpanded++;
     }
-    //}
+
 
     private void translateRootVertex(Vertex vertex, Boolean getInterleavings) {
         translateVertex(vertex, true, getInterleavings);
