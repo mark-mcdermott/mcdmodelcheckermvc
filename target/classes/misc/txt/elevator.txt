@@ -121,16 +121,11 @@ SAFETY REQUIREMENTS
     corresponding floor and opens the door
 
 - CTL property
-  formula = "AG (((button_1.pressed & cabin.Floor = 1 & door.status = open) ->
-    AX ! button_1.pressed) &
-                 ((button_2.pressed & cabin.Floor = 2 & door.status = open) ->
-    AX ! button_2.pressed) &
-                 ((button_3.pressed & cabin.Floor = 3 & door.status = open) ->
-    AX ! button_3.pressed) &
-                 ((button_4.pressed & cabin.Floor = 4 & door.status = open) ->
-    AX ! button_4.pressed))"
-  description: a button must be reset as soon as the cabin stops at the
-    corresponding floor with the door open.
+  formula = "AG ( ((button_1.pressed & cabin.Floor = 1 & door.status = open) -> AX ! button_1.pressed) &
+                 ((button_2.pressed & cabin.Floor = 2 & door.status = open) -> AX ! button_2.pressed) &
+                 ((button_3.pressed & cabin.Floor = 3 & door.status = open) -> AX ! button_3.pressed) &
+                 ((button_4.pressed & cabin.Floor = 4 & door.status = open) -> AX ! button_4.pressed) )"
+  description: a button must be reset as soon as the cabin stops at the corresponding floor with the door open.
 
 - CTL property
   formula = "AG (door.status = open -> cabin.direction = standing)"

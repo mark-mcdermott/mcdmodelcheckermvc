@@ -5,9 +5,9 @@ public class XmlFileOrder {
     String[] fileOrder;
 
     public XmlFileOrder() {
-        fileOrder = new String[] {"OneStep.ljx","TwoSteps.ljx","ThreeSteps.ljx","FourSteps.ljx","FiveSteps.ljx","SeqTest.ljx","ParTwoSteps.ljx","ParThreeStep.ljx","TransSeqTwoSubsteps.ljx","TransParTwoSubsteps.ljx"};
+        // fileOrder = new String[] {"OneStep.ljx","TwoSteps.ljx","ThreeSteps.ljx","FourSteps.ljx","FiveSteps.ljx","SeqTest.ljx","ParTwoSteps.ljx","ParThreeStep.ljx","TransSeqTwoSubsteps.ljx","TransParTwoSubsteps.ljx"};
         // fileOrder = new String[] {"OneStep.ljx"};
-        // fileOrder = new String[] {"Covid.ljx","NestingTest.ljx","OneStep.ljx","TwoSteps.ljx","ThreeSteps.ljx","FourSteps.ljx","FiveSteps.ljx","SeqTest.ljx","ParTwoSteps.ljx","ParThreeStep.ljx","TransSeqTwoSubsteps.ljx","TransParTwoSubsteps.ljx","TransParThreeSubsteps.ljx"};
+        fileOrder = new String[] {"Covid.ljx"};
         // fileOrder = new String[] {"Bank-Parallel.ljx"};
     }
 

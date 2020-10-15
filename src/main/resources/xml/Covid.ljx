@@ -26,7 +26,6 @@
                 <step-declaration id="_20" kind="leaf" name="hospital receives ventilator" />
                 <step-declaration id="_21" kind="leaf" name="orderly sets up ventilator in room" property="ventilator available" />
             </step-declaration>
-
         </step-declaration>
     </module>
 </littlejil>
