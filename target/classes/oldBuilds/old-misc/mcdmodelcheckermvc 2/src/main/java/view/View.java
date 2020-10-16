@@ -475,7 +475,7 @@ public class View extends JFrame implements Observer {
             components.resultDoesHoldField.setText(model.getDoesHold());
             components.resultStatesField.setText(model.getStatesThatHold());
             components.resultCounterExampleField.setText(model.getCounterExample());
-            components.resultTimeField.setText(model.getTime());
+            components.resultModelCheckTimeField.setText(model.getTime());
         }
 
     }

@@ -53,10 +53,14 @@ public class Components {
     public GridBagConstraints resultCounterExampleFieldStyle;
     public JScrollPane resultCounterExampleScrollpane;
     public GridBagConstraints resultCounterExampleScrollpaneStyle;
-    public JLabel resultTimeTitle;
-    public GridBagConstraints resultTimeTitleStyle;
-    public JTextArea resultTimeField;
-    public GridBagConstraints resultTimeFieldStyle;
+    public JLabel resultModelCheckTimeTitle;
+    public GridBagConstraints resultModelCheckTimeTitleStyle;
+    public JTextArea resultModelCheckTimeField;
+    public GridBagConstraints resultModelCheckTimeFieldStyle;
+    public JLabel resultTranslationTimeTitle;
+    public GridBagConstraints resultTranslationTimeTitleStyle;
+    public JTextArea resultTranslationTimeField;
+    public GridBagConstraints resultTranslationTimeFieldStyle;
     public JList fileList;
     public GridBagConstraints fileListStyle;
     public JList displayList;
@@ -495,22 +499,40 @@ public class Components {
         resultCounterExampleFieldStyle.fill = GridBagConstraints.HORIZONTAL;
         resultCounterExampleScrollpane = new JScrollPane(resultCounterExampleField);
         sidebarInner.add(resultCounterExampleScrollpane, resultCounterExampleFieldStyle);
-        // time label
-        resultTimeTitle = new JLabel("Model Check Time:");
-        resultTimeTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        resultTimeTitle.setFont(titleFont);
-        resultTimeTitleStyle = new GridBagConstraints();
-        resultTimeTitleStyle.gridx = 1;
-        resultTimeTitleStyle.gridy = 22;
-        resultTimeTitleStyle.fill = GridBagConstraints.HORIZONTAL;
-        sidebarInner.add(resultTimeTitle, resultTimeTitleStyle);
-        resultTimeField = new JTextArea();
-        resultTimeField.setFont(listFont);
-        resultTimeFieldStyle = new GridBagConstraints();
-        resultTimeFieldStyle.gridx = 1;
-        resultTimeFieldStyle.gridy = 23;
-        resultTimeFieldStyle.fill = GridBagConstraints.HORIZONTAL;
-        sidebarInner.add(resultTimeField, resultTimeFieldStyle);
+        // model check time label
+        resultModelCheckTimeTitle = new JLabel("Model Check Time:");
+        resultModelCheckTimeTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultModelCheckTimeTitle.setFont(titleFont);
+        resultModelCheckTimeTitleStyle = new GridBagConstraints();
+        resultModelCheckTimeTitleStyle.gridx = 1;
+        resultModelCheckTimeTitleStyle.gridy = 22;
+        resultModelCheckTimeTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultModelCheckTimeTitle, resultModelCheckTimeTitleStyle);
+        resultModelCheckTimeField = new JTextArea();
+        resultModelCheckTimeField.setFont(listFont);
+        resultModelCheckTimeFieldStyle = new GridBagConstraints();
+        resultModelCheckTimeFieldStyle.gridx = 1;
+        resultModelCheckTimeFieldStyle.gridy = 23;
+        resultModelCheckTimeFieldStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultModelCheckTimeField, resultModelCheckTimeFieldStyle);
+
+        // translation time label
+        resultTranslationTimeTitle = new JLabel("Translation Time:");
+        resultTranslationTimeTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultTranslationTimeTitle.setFont(titleFont);
+        resultTranslationTimeTitleStyle = new GridBagConstraints();
+        resultTranslationTimeTitleStyle.gridx = 1;
+        resultTranslationTimeTitleStyle.gridy = 24;
+        resultTranslationTimeTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultTranslationTimeTitle, resultTranslationTimeTitleStyle);
+        resultTranslationTimeField = new JTextArea();
+        resultTranslationTimeField.setFont(listFont);
+        resultTranslationTimeFieldStyle = new GridBagConstraints();
+        resultTranslationTimeFieldStyle.gridx = 1;
+        resultTranslationTimeFieldStyle.gridy = 25;
+        resultTranslationTimeFieldStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultTranslationTimeField, resultTranslationTimeFieldStyle);
+
     }
 
     public void analyzerGraphComponents() {

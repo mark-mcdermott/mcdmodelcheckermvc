@@ -13,7 +13,6 @@ import controller.utils.ExceptionMessage;
 import model.Model;
 import org.xml.sax.SAXException;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -21,8 +20,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -498,7 +495,7 @@ public class View extends JFrame implements Observer {
             components.resultDoesHoldField.setText(model.getDoesHold());
             components.resultStatesField.setText(model.getStatesThatHold());
             components.resultCounterExampleField.setText(model.getCounterExample());
-            components.resultTimeField.setText(model.getTime());
+            components.resultModelCheckTimeField.setText(model.getTime());
         }
 
     }

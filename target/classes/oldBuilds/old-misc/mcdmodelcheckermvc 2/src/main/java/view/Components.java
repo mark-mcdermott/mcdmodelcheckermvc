@@ -492,21 +492,21 @@ public class Components {
         resultCounterExampleScrollpane = new JScrollPane(resultCounterExampleField);
         sidebarInner.add(resultCounterExampleScrollpane, resultCounterExampleFieldStyle);
         // time label
-        resultTimeTitle = new JLabel("Time:");
-        resultTimeTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
-        resultTimeTitle.setFont(titleFont);
-        resultTimeTitleStyle = new GridBagConstraints();
-        resultTimeTitleStyle.gridx = 1;
-        resultTimeTitleStyle.gridy = 22;
-        resultTimeTitleStyle.fill = GridBagConstraints.HORIZONTAL;
-        sidebarInner.add(resultTimeTitle, resultTimeTitleStyle);
-        resultTimeField = new JTextArea();
-        resultTimeField.setFont(listFont);
-        resultTimeFieldStyle = new GridBagConstraints();
-        resultTimeFieldStyle.gridx = 1;
-        resultTimeFieldStyle.gridy = 23;
-        resultTimeFieldStyle.fill = GridBagConstraints.HORIZONTAL;
-        sidebarInner.add(resultTimeField, resultTimeFieldStyle);
+        resultModelCheckTimeTitle = new JLabel("Time:");
+        resultModelCheckTimeTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
+        resultModelCheckTimeTitle.setFont(titleFont);
+        resultModelCheckTimeTitleStyle = new GridBagConstraints();
+        resultModelCheckTimeTitleStyle.gridx = 1;
+        resultModelCheckTimeTitleStyle.gridy = 22;
+        resultModelCheckTimeTitleStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultModelCheckTimeTitle, resultModelCheckTimeTitleStyle);
+        resultModelCheckTimeField = new JTextArea();
+        resultModelCheckTimeField.setFont(listFont);
+        resultModelCheckTimeFieldStyle = new GridBagConstraints();
+        resultModelCheckTimeFieldStyle.gridx = 1;
+        resultModelCheckTimeFieldStyle.gridy = 23;
+        resultModelCheckTimeFieldStyle.fill = GridBagConstraints.HORIZONTAL;
+        sidebarInner.add(resultModelCheckTimeField, resultModelCheckTimeFieldStyle);
     }
 
     public void analyzerGraphComponents() {
