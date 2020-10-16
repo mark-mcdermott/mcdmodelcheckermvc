@@ -496,7 +496,7 @@ public class Components {
         resultCounterExampleScrollpane = new JScrollPane(resultCounterExampleField);
         sidebarInner.add(resultCounterExampleScrollpane, resultCounterExampleFieldStyle);
         // time label
-        resultTimeTitle = new JLabel("Time:");
+        resultTimeTitle = new JLabel("Model Check Time:");
         resultTimeTitle.setBorder(BorderFactory.createEmptyBorder(10, 5, 5, 5));
         resultTimeTitle.setFont(titleFont);
         resultTimeTitleStyle = new GridBagConstraints();
