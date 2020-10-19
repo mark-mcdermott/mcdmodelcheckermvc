@@ -14,7 +14,8 @@ public class ListsContent {
     String doesHold;
     String statesThatHold;
     String counterExample;
-    String time;
+    String modelCheckTime;
+    String translationTime;
 
     public ListsContent(String[] files, String[] displays, Integer[] steps, String[] models, Integer loops, Vertex[] states, String[] labels) {
         this.files = files;
@@ -27,7 +28,7 @@ public class ListsContent {
         this.doesHold = null;
         this.statesThatHold = null;
         this.counterExample = null;
-        this.time = null;
+        this.modelCheckTime = null;
     }
 
     public String[] getFiles() {
@@ -98,8 +99,8 @@ public class ListsContent {
         return statesThatHold;
     }
 
-    public String getTime() {
-        return time;
+    public String getModelCheckTime() {
+        return modelCheckTime;
     }
 
     public void setCounterExample(String counterExample) {
@@ -114,8 +115,8 @@ public class ListsContent {
         this.statesThatHold = statesThatHold;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setModelCheckTime(String modelCheckTime) {
+        this.modelCheckTime = modelCheckTime;
     }
 
 }

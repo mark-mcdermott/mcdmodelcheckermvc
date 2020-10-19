@@ -15,7 +15,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 
+import static controller.analyzer.ModelChecker.durationToSecs;
 import static controller.types.analyzer.analyzerData.DisplayType.INTER_COMP;
 import static controller.types.analyzer.analyzerData.DisplayType.TRANS_COMP;
 
@@ -96,6 +98,10 @@ public class GetGraphs {
     }
 
     private GraphsContent getAllThreeGraphs(String[] xmlFilenames, ReadXml readXml, File[] xmlFileCache, Translate translate, Integer numLoops, Boolean isStepSelected, Integer selectedStep, LabelHash labelHash) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
+
+        // start translation time stopwatch
+        Instant stopWatchStart = Instant.now();
+
         Boolean prevStep = false;
 
         // get xml, translation & interleavings vertex lists
@@ -117,7 +123,11 @@ public class GetGraphs {
         Kripke transKripke = new Kripke(transVertList);
         Kripke interKripke = new Kripke(interVertList);
 
-        GraphsContent graphsContent = new GraphsContent(xmlVertList, transVertList, interVertList, xmlKripke, transKripke, interKripke, labelHash);
+        // start translation time stopwatch
+        Instant stopWatchEnd = Instant.now();
+        Double translationTime = durationToSecs(stopWatchStart, stopWatchEnd);
+
+        GraphsContent graphsContent = new GraphsContent(xmlVertList, transVertList, interVertList, xmlKripke, transKripke, interKripke, labelHash, translationTime);
         return graphsContent;
     }
 
@@ -143,7 +153,7 @@ public class GetGraphs {
         Kripke transKripke = new Kripke(transVertList);
         // Kripke interKripke = new Kripke(interVertList);
 
-        GraphsContent graphsContent = new GraphsContent(xmlVertList, transVertList, null, xmlKripke, transKripke, null, labelHash);
+        GraphsContent graphsContent = new GraphsContent(xmlVertList, transVertList, null, xmlKripke, transKripke, null, labelHash, null);
         return graphsContent;
     }
 

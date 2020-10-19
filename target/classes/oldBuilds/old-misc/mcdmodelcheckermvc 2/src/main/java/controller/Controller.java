@@ -205,7 +205,7 @@ public class Controller {
         analyzerData.setDoesHold(checkedModel.getResultDoesHold());
         analyzerData.setStatesThatHold(checkedModel.getResultStatesThatHold());
         analyzerData.setCounterExample(checkedModel.getResultCounterExample());
-        analyzerData.setTime(checkedModel.getResultTime());
+        analyzerData.setModelTime(checkedModel.getResultTime());
         model.setAnalyzerData(analyzerData);
     }
 
@@ -230,7 +230,7 @@ public class Controller {
             analyzerData.setDoesHold(checkedModel.getResultDoesHold());
             analyzerData.setStatesThatHold(checkedModel.getResultStatesThatHold());
             analyzerData.setCounterExample(checkedModel.getResultCounterExample());
-            analyzerData.setTime((checkedModel.getResultTime()));
+            analyzerData.setModelTime((checkedModel.getResultTime()));
             model.setAnalyzerData(analyzerData);
         }
     }

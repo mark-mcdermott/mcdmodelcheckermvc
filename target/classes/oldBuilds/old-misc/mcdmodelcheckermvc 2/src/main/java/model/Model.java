@@ -278,7 +278,7 @@ public class Model extends Observable {
     }
 
     public String getTime() {
-        return getAnalyzerData().getListsContent().getTime();
+        return getAnalyzerData().getListsContent().getModelCheckTime();
     }
 
     public void setDoesHold(String doesHold) {
@@ -292,7 +292,7 @@ public class Model extends Observable {
         getAnalyzerData().getListsContent().setCounterExample(counterExample);
     }
     public void setTime(String time) {
-        getAnalyzerData().getListsContent().setTime(time);
+        getAnalyzerData().getListsContent().setModelCheckTime(time);
     }
 
     public String[] getAllTestFiles() {

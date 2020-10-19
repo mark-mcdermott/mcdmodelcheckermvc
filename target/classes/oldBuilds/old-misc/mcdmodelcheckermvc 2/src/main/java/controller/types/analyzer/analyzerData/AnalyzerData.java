@@ -141,7 +141,7 @@ public class AnalyzerData {
         getListsContent().setCounterExample(counterExample);
     }
     public void setTime(String time) {
-        getListsContent().setTime(time);
+        getListsContent().setModelCheckTime(time);
     }
 
 }

@@ -140,8 +140,8 @@ public class AnalyzerData {
     public void setCounterExample(String counterExample) {
         getListsContent().setCounterExample(counterExample);
     }
-    public void setTime(String time) {
-        getListsContent().setTime(time);
+    public void setModelTime(String modelTime) {
+        getListsContent().setModelCheckTime(modelTime);
     }
 
 }

@@ -18,12 +18,13 @@ public class GraphsContent {
     private Integer numSteps;
     private Integer[] steps;
     private Vertex[] states;
+    private Double translationTime;
     private VertexList[] stepGraphs;    // only not null if isStepGraph is true.
                                         // stepGraphs is either null or has two vertexList elements in array -
                                         // first element is the vertexList for targetStep - 1
                                         // second element is the vertexList for targetstep
 
-    public GraphsContent(VertexList xmlVertList, VertexList transVertList, VertexList interVertList, Kripke xmlKripke, Kripke transKripke, Kripke interKripke, LabelHash labelHash) {
+    public GraphsContent(VertexList xmlVertList, VertexList transVertList, VertexList interVertList, Kripke xmlKripke, Kripke transKripke, Kripke interKripke, LabelHash labelHash, Double translationTime) {
         this.xmlVertList = xmlVertList;
         this.transVertList = transVertList;
         this.interVertList = interVertList;
@@ -34,6 +35,7 @@ public class GraphsContent {
         this.isStepGraph = false;
         this.numSteps = null;
         this.stepGraphs = null;
+        this.translationTime = translationTime;
     }
 
     public GraphsContent(VertexList xmlVertList, VertexList transVertList, Kripke xmlKripke, Kripke transKripke, LabelHash labelHash) {
@@ -153,5 +155,9 @@ public class GraphsContent {
 
     public Boolean getStepGraph() {
         return isStepGraph;
+    }
+
+    public Double getTranslationTime() {
+        return translationTime;
     }
 }
