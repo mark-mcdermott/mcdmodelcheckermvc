@@ -337,8 +337,8 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        // String[] files = {"Covid.ljx"};
-        String[] files = {"ParWith3Leaves.ljx"};
+        // String[] files = {"Bank-Parallel.ljx"};
+        String[] files = {"choice-two-steps.ljx"};
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";
