@@ -81,6 +81,8 @@ public class Options {
         debug = false;
         targetNumNodesExpanded = 1;
 
+        // ** selected file may be hardcoded in at Controller.java:341 // TODO: remove this random hard coding?
+
         // set paths
         pathToXmlDir = "src/main/resources/xml/";
         pathToKrpDir = "src/main/resources/krp/";

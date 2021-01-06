@@ -74,6 +74,12 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     public StatesThatHoldAndCounterExamples evaluateModelWithCounterExamples() {
         controller.analyzer.ctlCompiler.CtlCompilerParser parser = createParser(model);
         ParseTree tree = parser.formula();
+
+        if (model.equals("A[¬tU∧(s,¬q)]")) {
+            int i=0;
+            i++;
+        }
+
         return this.visit(tree); // this calls the above visitFormula() function in the umbrella case of formula
         // return visitFormula(tree);
     }
@@ -346,7 +352,9 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     static void getFirstPathNotAllPOrQRecursive(Vertex state, Set pSet, Set qSet) {
 
         thisPathWorkingList.add(state);
+        //System.out.println(state);
 
+        /* this is buggy
         Boolean stateHasP = pSet.hasState(state);
         Boolean stateHasQ = qSet.hasState(state);
         ArrayList<Vertex> children = state.getChildren();
@@ -370,7 +378,7 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
                     getFirstPathNotAllPOrQRecursive(child, pSet, qSet);
                 }
             }
-        }
+        }*/
     }
 
     // for EU counter examples
