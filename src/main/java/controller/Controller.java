@@ -113,7 +113,15 @@ public class Controller {
         String[] selectedFiles = getListSelections(components.fileList);
         try {
             GraphsContent graphsContent = getGraphsContent(selectedFiles, ANALY_DEFAULT, ALL_GRAPHS, model, false);
+            Integer numProps = graphsContent.getNumProps();
             AnalyzerData analyzerData = model.getAnalyzerData();
+
+            if (numProps.equals(1)) {
+                analyzerData.setListsContentModels(new Models().getModels1Var());
+            } else if (numProps.equals(2)) {
+                analyzerData.setListsContentModels(new Models().getModels2Var());
+            }
+            
             analyzerData.setFileSelections(selectedFiles);
             analyzerData.setDisplaySelections(ALL_GRAPHS);
             analyzerData.setStepSelections(null);
@@ -337,9 +345,8 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        String[] files = {"TwoSteps.ljx"};
         // String[] files = {"Bank-Parallel.ljx"};
-        // String[] files = {"choice-two-steps.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
+        String[] files = {"choice-two-steps.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";
@@ -353,8 +360,8 @@ public class Controller {
         String[] files = new XmlFileOrder().getFileOrder();
         String[] displays = new DisplayTypes().getDisplayTypes();
         Integer[] steps = null;
-        // String[] models = new Models().getModels1Var();
-        String[] models = new Models().getModels2Var(); // TODO: change back to getModels1Var when you change default xml file to a 1 property fiole
+        String[] models = new Models().getModels1Var();
+        // String[] models = new Models().getModels2Var(); // TODO: change back to getModels1Var when you change default xml file to a 1 property file
         Integer loops = 0;
         Vertex[] states = null;
         String[] labels = null;
@@ -412,12 +419,18 @@ public class Controller {
     private AnalyzerData getInitialAnalyzerData(File[] xmlFileCache) throws IOException, ExceptionMessage, ParserConfigurationException, SAXException {
         Selections selections = initialSelections();
         ListsContent listsContent = initalListsContent();
-        AnalyzerData initialAnalyzerData = new AnalyzerData(selections, listsContent, null, null);
+        AnalyzerData initialAnalyzerData = new AnalyzerData(selections, listsContent, null, null, null);
         model.setInitialAnalyzerDataWithoutNotifyingObservers(initialAnalyzerData);
         Integer selectedStep = selections.getStep() == null ? null : selections.getStep();
         GraphsContent graphsContent = getGraphsContent(selections.getFiles(), selections.getDisplay(), selections.getLoop(), xmlFileCache, selectedStep);
+        Integer numProps = graphsContent.getNumProps();
+        if (numProps.equals(1)) {
+            listsContent.setModels(new Models().getModels1Var());
+        } else if (numProps.equals(2)) {
+            listsContent.setModels(new Models().getModels2Var());
+        }
         CheckedModel checkedModel = null;
-        return new AnalyzerData(selections, listsContent, graphsContent, checkedModel);
+        return new AnalyzerData(selections, listsContent, graphsContent, checkedModel, numProps);
     }
 
     private TesterData getInitialTesterData(ListsContent initialAnalyzerListContent) throws SAXException, ParserConfigurationException, ExceptionMessage, IOException {
@@ -449,6 +462,18 @@ public class Controller {
         FileTestSet fileTestSet = new FileTestSet(fileTestSetArr);
         return fileTestSet;
     }
+
+    /*
+    // strategy based on https://stackoverflow.com/a/25225173
+    private int getNumPropsInModel(String model) {
+        int numProps = 0;
+        for (int i=0; i<model.length(); i++) {
+            if (Character.isLowerCase(model.charAt(i))) {
+                numProps++;
+            }
+        }
+        return numProps;
+    }*/
 
 
 }

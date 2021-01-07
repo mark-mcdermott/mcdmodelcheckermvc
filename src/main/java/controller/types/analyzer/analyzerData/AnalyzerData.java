@@ -11,13 +11,15 @@ public class AnalyzerData {
     ListsContent listsContent;
     GraphsContent graphsContent;
     CheckedModel checkedModel;
+    Integer numProperties;
 
-    public AnalyzerData(Selections selections, ListsContent listsContent, GraphsContent graphsContent, CheckedModel checkedModel) {
+    public AnalyzerData(Selections selections, ListsContent listsContent, GraphsContent graphsContent, CheckedModel checkedModel, Integer numProperties) {
         // this.appState = appState;
         this.selections = selections;
         this.listsContent = listsContent;
         this.graphsContent = graphsContent;
         this.checkedModel = checkedModel;
+        this.numProperties = numProperties;
     }
 
     // public AppState getAppState() { return appState; }

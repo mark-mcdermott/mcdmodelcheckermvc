@@ -82,6 +82,7 @@ public class Options {
         targetNumNodesExpanded = 1;
 
         // ** selected file may be hardcoded in at Controller.java:341 // TODO: remove this random hard coding?
+        // ** file list items may also be hardcoded in controller/content/staticContent/XmlFileOrder:8 // TODO: remove this random hard coding?
 
         // set paths
         pathToXmlDir = "src/main/resources/xml/";

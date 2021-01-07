@@ -12,6 +12,7 @@ public class LabelHash {
 
     private TreeMap<Label,String> labelHash;
     private Label currentLabel;
+    private Integer numLabels;
 
     public LabelHash() {
         labelHash = new TreeMap<Label,String>(new LabelComparator());
@@ -129,6 +130,12 @@ public class LabelHash {
             labelsArrList.add(entry.getKey());
         }
         return labelsArrList;
+    }
+
+    public Integer getNumLabels() throws ExceptionMessage {
+        ArrayList<Label> labelsArrList = getLabels();
+        Integer numLabels = labelsArrList.size();
+        return numLabels;
     }
 
     public String getPropertiesStr() {

@@ -23,6 +23,7 @@ public class GraphsContent {
                                         // stepGraphs is either null or has two vertexList elements in array -
                                         // first element is the vertexList for targetStep - 1
                                         // second element is the vertexList for targetstep
+    private Integer numProps;
 
     public GraphsContent(VertexList xmlVertList, VertexList transVertList, VertexList interVertList, Kripke xmlKripke, Kripke transKripke, Kripke interKripke, LabelHash labelHash, Double translationTime) {
         this.xmlVertList = xmlVertList;
@@ -159,5 +160,13 @@ public class GraphsContent {
 
     public Double getTranslationTime() {
         return translationTime;
+    }
+
+    public void setNumProps(Integer numProps) {
+        this.numProps = numProps;
+    }
+
+    public Integer getNumProps() {
+        return numProps;
     }
 }

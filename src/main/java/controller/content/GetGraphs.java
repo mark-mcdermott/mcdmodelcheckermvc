@@ -90,10 +90,11 @@ public class GetGraphs {
                     graphsContent = new GraphsContent(xmlVertList, labelHash, numSteps, stepGraphs);
                 }
             }
-
-
-
         }
+
+        Integer numProps = labelHash.getNumProperties();
+        graphsContent.setNumProps(numProps);
+
         return graphsContent;
     }
 
