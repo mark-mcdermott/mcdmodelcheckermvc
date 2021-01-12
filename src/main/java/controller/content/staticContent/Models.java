@@ -22,4 +22,19 @@ public class Models {
     public String[] getModels2Var() {
         return this.models[1];
     }
+
+    // code strategy from https://www.tutorialspoint.com/javaexamples/arrays_merge.htm
+    public String[] getModels1And2Var() {
+        String[] models1And2Var = new String[this.models[0].length + this.models[1].length];
+        int count = 0;
+        for (int i=0; i<this.models[0].length; i++) {
+            models1And2Var[i] = this.models[0][i];
+            count++;
+        }
+        for (int j=0; j<this.models[1].length; j++) {
+            models1And2Var[count++] = this.models[1][j];
+        }
+        return models1And2Var;
+    }
+
 }

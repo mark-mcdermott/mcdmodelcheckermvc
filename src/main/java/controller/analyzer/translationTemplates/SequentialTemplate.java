@@ -36,6 +36,10 @@ public class SequentialTemplate {
         Integer origNumber = number;
         ArrayList<Vertex> origParents = (vertexToReplace.getOrigParents() == null) ? null : vertexToReplace.getOrigParents();
         ArrayList<Vertex> origChildren = (vertexToReplace.getOrigChildren() == null) ? null : vertexToReplace.getOrigChildren();
+
+        // TODO: test this more
+        ArrayList<Vertex> syntheticChildren = (vertexToReplace.getSyntheticChildren() == null) ? null : vertexToReplace.getSyntheticChildren();
+
         ArrayList<Vertex> origChildrenCopy = new ListHelper().copyVertexArrList(origChildren);
         Integer origDistanceFromRoot = distanceFromRoot;
         Integer origSiblingNum = siblingNum;
@@ -75,7 +79,7 @@ public class SequentialTemplate {
         ArrayList<Relation> relationsToAdd = new ArrayList<>();
         ArrayList<Relation> relationsToRemove = new ArrayList<>();
 
-        // hook up original children as the substeps (as in the sequential diagram)
+        // hook up original children as the substeps (as in dr. p's sequential diagram seqStep.pdf)
         Integer numOrigChildren = null;
         if (origChildren != null) {
             numOrigChildren = origChildren.size();
@@ -116,13 +120,17 @@ public class SequentialTemplate {
 
         // hook up all children that aren't original (and aren't terminated) as children of seqCompleted (hook terminated up as child of seqTerminated)
         if (origChildrenCopy != null && children != null) {
-            ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildrenCopy, children);
-            for (Vertex childNotOrig : childrenNotOrig) {
-                VertexStatus status = childNotOrig.getStatus();
+            // ArrayList<Vertex> childrenNotOrig = getChildrenNotOrig(origChildrenCopy, children);
+            // for (Vertex childNotOrig : childrenNotOrig) {
+            for (Vertex syntheticChild : syntheticChildren) {
+                // VertexStatus status = childNotOrig.getStatus();
+                VertexStatus status = syntheticChild.getStatus();
                 if (status != TERMINATED) {
-                    relationsToAdd.add(new Relation(seqCompleted, childNotOrig));
+                    // relationsToAdd.add(new Relation(seqCompleted, childNotOrig));
+                    relationsToAdd.add(new Relation(seqCompleted, syntheticChild));
                 } else {
-                    relationsToAdd.add(new Relation(seqTerminated, childNotOrig));
+                    // relationsToAdd.add(new Relation(seqTerminated, childNotOrig));
+                    relationsToAdd.add(new Relation(seqTerminated, syntheticChild));
                 }
             }
         }

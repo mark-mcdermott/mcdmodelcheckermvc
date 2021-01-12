@@ -119,9 +119,9 @@ public class Controller {
             if (numProps.equals(1)) {
                 analyzerData.setListsContentModels(new Models().getModels1Var());
             } else if (numProps.equals(2)) {
-                analyzerData.setListsContentModels(new Models().getModels2Var());
+                analyzerData.setListsContentModels(new Models().getModels1And2Var());
             }
-            
+
             analyzerData.setFileSelections(selectedFiles);
             analyzerData.setDisplaySelections(ALL_GRAPHS);
             analyzerData.setStepSelections(null);
@@ -346,7 +346,7 @@ public class Controller {
 
     private Selections initialSelections() {
         // String[] files = {"Bank-Parallel.ljx"};
-        String[] files = {"choice-two-steps.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
+        String[] files = {"TwoSteps.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";
@@ -427,7 +427,7 @@ public class Controller {
         if (numProps.equals(1)) {
             listsContent.setModels(new Models().getModels1Var());
         } else if (numProps.equals(2)) {
-            listsContent.setModels(new Models().getModels2Var());
+            listsContent.setModels(new Models().getModels1And2Var());
         }
         CheckedModel checkedModel = null;
         return new AnalyzerData(selections, listsContent, graphsContent, checkedModel, numProps);

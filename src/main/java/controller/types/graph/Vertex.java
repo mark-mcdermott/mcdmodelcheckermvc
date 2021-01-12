@@ -958,6 +958,23 @@ public class Vertex {
         return false;
     }
 
+    public ArrayList<Vertex> getSyntheticChildren() {
+        ArrayList<Vertex> syntheticChildren = new ArrayList<Vertex>();
+
+        for (Vertex child : children) {
+            Boolean childIsOrig = false;
+            for (Vertex origChild : origChildren) {
+                if (child == origChild) {
+                    childIsOrig = true;
+                }
+            }
+            if (!childIsOrig) {
+                syntheticChildren.add(child);
+            }
+        }
+        return syntheticChildren;
+    }
+
     public ArrayList<Vertex> getParents() {
         return this.parents;
     }
