@@ -2,28 +2,33 @@
 xml
 W={s0,s1};
 R={(s0,s1)};
-L(s0)={p};
+L(s0)={p},L(s1)={q};
 
 translation
 W={s0,s1,s2,s3,s4,s5,s6,s7};
-R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s6),(s4,s5),(s6,s7)};
-L(s0)={p},L(s1)={p},L(s5)={p};
+R={(s0,s1),(s1,s4),(s4,s5),(s5,s6),(s5,s7),(s6,s2),(s7,s3)};
+L(s0)={p},L(s1)={p},L(s2)={p},L(s4)={q},L(s5)={q},L(s6)={q};
 
 interleavings
 W={s0,s1,s2,s3,s4,s5,s6,s7};
-R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s6),(s4,s5),(s6,s7)};
-L(s0)={p},L(s1)={p},L(s5)={p};
+R={(s0,s1),(s1,s4),(s4,s5),(s5,s6),(s5,s7),(s6,s2),(s7,s3)};
+L(s0)={p},L(s1)={p},L(s2)={p},L(s4)={q},L(s5)={q},L(s6)={q};
 
 model checking
 ⊤: {s0,s1,s2,s3,s4,s5,s6,s7}
 ⊥: {}
-p: {s0,s1,s5}
-¬p: {s2,s3,s4,s6,s7}
-EX(p): {s0,s4}
-AX(p): {s0,s4,s5,s7}
-EG(p): {s5}
-AG(p): {s5}
-EF(p): {s0,s1,s2,s3,s4,s5}
-AF(p): {s0,s1,s5,s4}
-EX(AF(p)): {s0,s4,s3}
-AG(EF(p)): {s4,s5}
+p: {s0,s1,s2}
+¬p: {s3,s4,s5,s6,s7}
+EX(p): {s0,s6}
+AX(p): {s0,s2,s3,s6}
+EG(p): {s2}
+AG(p): {s2}
+EF(p): {s0,s1,s2,s4,s5,s6}
+AF(p): {s0,s1,s2,s4,s6}
+EX(AF(p)): {s0,s5,s6}
+AG(EF(p)): {s2,s6}
+∧(p,q): {}
+∨(p,q): {s0,s1,s2,s4,s5,s6}
+→(p,q): {s3,s4,s5,s6,s7}
+AG(→(p,q)): {s3,s7}
+EG(→(p,q)): {s3,s4,s5,s7}

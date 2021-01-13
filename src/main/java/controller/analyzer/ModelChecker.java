@@ -61,6 +61,10 @@ public class ModelChecker {
         // resultStr = getResultStr(stateToCheck, doesStateHold, model, labelHash, stopWatchSecs, counterExamplePaths);
 
         // ** eval the model (and get counterexamples) **
+        if (model == "EX(AF(p))") {
+            int i=0;
+            i++;
+        }
         statesThatHoldAndCounterExamples = new CtlCompiler(model, kripke, stateToCheck).getStatesThatHoldAndCounterExamples();
         statesThatHold = statesThatHoldAndCounterExamples.getStatesThatHoldForModel();
         statesThatHoldStrArrList = getStatesThatHoldStrArrList(statesThatHold);
