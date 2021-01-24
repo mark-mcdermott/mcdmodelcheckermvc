@@ -234,7 +234,7 @@ public class ListHelper {
         } else {
             for (Vertex vertex : origArrList) {
                 if (vertex != null) {
-                    newArrList.add(vertex);
+                    newArrList.add(vertex); 
                 } else {
                     newArrList.add(null);
                 }

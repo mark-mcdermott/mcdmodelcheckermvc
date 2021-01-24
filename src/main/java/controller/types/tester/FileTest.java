@@ -3,6 +3,7 @@ package controller.types.tester;
 import _options.Options;
 import controller.analyzer.ModelChecker;
 import controller.analyzer.ReadKrp;
+import controller.content.staticContent.Models;
 import controller.types.ctl.Kripke;
 import controller.types.graph.LabelHash;
 import controller.types.graph.Vertex;
@@ -78,7 +79,15 @@ public class FileTest {
         Kripke kripke = actualResults.getInterleavingsKripke();
         ArrayList<Vertex> states = actualResults.getInterleavingsVertexList().getList();
         Vertex initialState = states.get(0);
-        ArrayList<String> modelList = listHelper.stringArrToArrList(model.getModels());
+
+        ArrayList<String> modelList = new ArrayList<>();
+        Models models = new Models();
+        if (numProps == 1) {
+            modelList = listHelper.stringArrToArrList(models.getModels1Var());
+        } else if (numProps == 2) {
+            modelList = listHelper.stringArrToArrList(models.getModels1And2Var());
+        }
+
         LabelHash labelHash = actualResults.getLabelHash();
         int loops = 0; // TODO: add loop variations to the tests
         String[] allStatesThatHoldForAllModelsStrArr = getAllStatesThatHoldForAllModelsStrArr(modelList, kripke, loops, labelHash);

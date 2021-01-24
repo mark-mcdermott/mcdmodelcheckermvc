@@ -396,25 +396,27 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
     static void getPathsNotAllPOrQRecursive(Vertex state, Set pSet, Set qSet) {
         ArrayList<Vertex> children = state.getChildren();
 
-        pFound = false;
-        for (Vertex child : children) {
-            Boolean stateHasP = pSet.hasState(child);
-            // if child has p, continue to recursively crawl children
-            if (stateHasP) {
-                pFound = true;
-                thisPathWorkingList.add(child);
-                getPathsNotAllPOrQRecursive(child, pSet, qSet);
-            }
-        }
-        // if none of the children have p, then counter examples found - make a counter example path with each
-        if (!pFound) {
+        //if (children != null) {
+            pFound = false;
             for (Vertex child : children) {
-                thisPathWorkingList.add(child);
-                CounterExample counterExample = new CounterExample(thisPathWorkingList);
-                counterExamplesWorkingList.add(counterExample.copy());
-                thisPathWorkingList.remove(child);
+                Boolean stateHasP = pSet.hasState(child);
+                // if child has p, continue to recursively crawl children
+                if (stateHasP) {
+                    pFound = true;
+                    thisPathWorkingList.add(child);
+                    getPathsNotAllPOrQRecursive(child, pSet, qSet);
+                }
             }
-        }
+            // if none of the children have p, then counter examples found - make a counter example path with each
+            if (!pFound) {
+                for (Vertex child : children) {
+                    thisPathWorkingList.add(child);
+                    CounterExample counterExample = new CounterExample(thisPathWorkingList);
+                    counterExamplesWorkingList.add(counterExample.copy());
+                    thisPathWorkingList.remove(child);
+                }
+            }
+        //}
 
     }
 
@@ -465,14 +467,14 @@ public class CtlCompiler extends controller.analyzer.ctlCompiler.CtlCompilerBase
                 Φ2Ctx = formula.conj().and().Φ2;
                 Φ1 = SAT(Φ1Ctx, set).getStatesThatHoldForModel();
                 Φ2 = SAT(Φ2Ctx, set).getStatesThatHoldForModel();
-                result.setStatesThatHoldForModel(Φ1.intersect(Φ2));
+                result.setStatesThatHoldForModel(Φ1.intersect(Φ2).sort());
                 return result;
             case OR:
                 Φ1Ctx = formula.conj().or().Φ1;
                 Φ2Ctx = formula.conj().or().Φ2;
                 Φ1 = SAT(Φ1Ctx, set).getStatesThatHoldForModel();
                 Φ2 = SAT(Φ2Ctx, set).getStatesThatHoldForModel();
-                result.setStatesThatHoldForModel(Φ1.union(Φ2));
+                result.setStatesThatHoldForModel(Φ1.union(Φ2).sort());
                 return result;
             case IMPLIES:
                 Φ1Ctx = formula.imp().Φ1;

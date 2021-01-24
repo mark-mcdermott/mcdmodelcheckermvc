@@ -14,7 +14,8 @@ formula
     ;
 
 not
-    : '¬' Φ1=formula
+    : '¬(' Φ1=formula ')'
+    | '¬' Φ1=formula
     ;
 
 conj
