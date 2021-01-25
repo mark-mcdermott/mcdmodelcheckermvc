@@ -345,8 +345,9 @@ public class Controller {
     }
 
     private Selections initialSelections() {
+        String[] files = {"Covid.ljx"};
         // String[] files = {"Bank-Parallel.ljx"};
-        String[] files = {"OneStep.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
+        // String[] files = {"OneStep.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
         // String model = "⊤";
