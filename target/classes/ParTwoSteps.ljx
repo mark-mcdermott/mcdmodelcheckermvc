@@ -24,6 +24,6 @@ AX(p): {s0,s4,s5,s7}
 EG(p): {s5}
 AG(p): {s5}
 EF(p): {s0,s1,s2,s3,s4,s5}
-AF(p): {s0,s1,s5,s4}
-EX(AF(p)): {s0,s4,s3}
+AF(p): {s0,s1,s4,s5}
+EX(AF(p)): {s0,s3,s4}
 AG(EF(p)): {s4,s5}

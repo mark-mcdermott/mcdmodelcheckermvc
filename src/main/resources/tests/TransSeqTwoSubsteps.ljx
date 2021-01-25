@@ -6,24 +6,24 @@ L(s0)={p};
 
 translation
 W={s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11};
-R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s11),(s4,s5),(s5,s6),(s6,s7),(s6,s9),(s7,s8),(s9,s10),(s11,s10)};
-L(s0)={p},L(s1)={p},L(s8)={p};
+R={(s0,s1),(s1,s4),(s4,s5),(s5,s6),(s5,s7),(s6,s8),(s7,s3),(s8,s9),(s9,s10),(s9,s11),(s10,s2),(s11,s3)};
+L(s0)={p},L(s1)={p},L(s2)={p};
 
 interleavings
 W={s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11};
-R={(s0,s1),(s1,s2),(s2,s3),(s3,s4),(s3,s11),(s4,s5),(s5,s6),(s6,s7),(s6,s9),(s7,s8),(s9,s10),(s11,s10)};
-L(s0)={p},L(s1)={p},L(s8)={p};
+R={(s0,s1),(s1,s4),(s4,s5),(s5,s6),(s5,s7),(s6,s8),(s7,s3),(s8,s9),(s9,s10),(s9,s11),(s10,s2),(s11,s3)};
+L(s0)={p},L(s1)={p},L(s2)={p};
 
 model checking
 ⊤: {s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11}
 ⊥: {}
-p: {s0,s1,s8}
-¬p: {s2,s3,s4,s5,s6,s7,s9,s10,s11}
-EX(p): {s0,s7}
-AX(p): {s0,s7,s8,s10}
-EG(p): {s8}
-AG(p): {s8}
-EF(p): {s0,s1,s2,s3,s4,s5,s6,s7,s8}
-AF(p): {s0,s1,s8,s7}
-EX(AF(p)): {s0,s7,s6}
-AG(EF(p)): {s7,s8}
+p: {s0,s1,s2}
+¬p: {s3,s4,s5,s6,s7,s8,s9,s10,s11}
+EX(p): {s0,s10}
+AX(p): {s0,s2,s3,s10}
+EG(p): {s2}
+AG(p): {s2}
+EF(p): {s0,s1,s2,s4,s5,s6,s8,s9,s10}
+AF(p): {s0,s1,s2,s10}
+EX(AF(p)): {s0,s9,s10}
+AG(EF(p)): {s2,s10}
