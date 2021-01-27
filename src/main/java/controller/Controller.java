@@ -346,8 +346,8 @@ public class Controller {
 
     private Selections initialSelections() {
         // String[] files = {"covid-test-no-right-side.ljx"};
-        String[] files = {"Covid.ljx"};
-        // String[] files = {"Bank-Parallel.ljx"};
+        // String[] files = {"Covid.ljx"};
+        String[] files = {"Bank-Parallel.ljx"};
         // String[] files = {"OneStep.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
@@ -362,8 +362,8 @@ public class Controller {
         String[] files = new XmlFileOrder().getFileOrder();
         String[] displays = new DisplayTypes().getDisplayTypes();
         Integer[] steps = null;
-        String[] models = new Models().getModels1Var();
-        // String[] models = new Models().getModels2Var(); // TODO: change back to getModels1Var when you change default xml file to a 1 property file
+        // String[] models = new Models().getModels1Var();
+        String[] models = new Models().getModels2Var(); // TODO: change back to getModels1Var when you change default xml file to a 1 property file
         Integer loops = 0;
         Vertex[] states = null;
         String[] labels = null;

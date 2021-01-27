@@ -6,10 +6,22 @@ public class Models {
 
     public Models() {
         String[] models1Var = {"⊤","⊥","p","¬p","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))"};
-        String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","∧(¬p,¬q)","EG(¬q)","E[¬qU∧(¬p,¬q)]","∨(E[¬qU∧(¬p,¬q)],EG(¬q))","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
+        // String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","∧(¬p,¬q)","EG(¬q)","E[¬qU∧(¬p,¬q)]","∨(E[¬qU∧(¬p,¬q)],EG(¬q))","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
         // String[] models2Var = {"A[pUq]","∧(¬p,¬q)","EG(¬q)","¬E[¬qU∧(¬p,¬q)]","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
         // String[] models2Var = {"∧(p,q)","v(p,q)","→(p,q)","AG(→(p,q))","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(p→q)","EG(p→q)","E[pUq]","A[pUq]","E[qUp]","A[qUp]","A[¬qUp]","AG(¬(∧(r,v)))"};
-        // String[] models2Var = {"AG(¬∧(p,q))","AG(→(u,AF(v)))","A[¬tU∧(s,¬q)]"};
+        //
+        // this is the Covid.ljx models
+        // String[] models2Var = {"AG(¬∧(s,q))","AG(→(u,AF(v)))"};
+        //
+        // this is the banking model
+        // String[] models2Var = {"A[¬tU∧(s,¬q)]"};
+        //
+        // this is scratchwork for the banking model
+        // String[] models2Var = {"EG(¬∧(s,¬q))"};
+        String[] models2Var = {"¬(∧(E[∧(s,¬q)U∧(¬(¬t),¬∧(s,¬q))],EG(¬(∧(s,¬q)))))","A[(¬t)U∧(s,¬q)]"};
+        // ¬(∨(E[¬qU∧(¬p,¬q)],EG(¬∧(s,¬q))))
+        // p = ¬t
+        // q = ∧(s,¬q)
         this.models = new String[][] {models1Var, models2Var};
     }
 
