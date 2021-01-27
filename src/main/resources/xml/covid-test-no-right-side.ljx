@@ -1,0 +1,31 @@
+<littlejil>
+    <module>
+        <step-declaration id="_0" kind="parallel" name="added root">
+            <step-declaration id="_1" kind="sequential" name="covid">
+                <step-declaration id="_2" kind="parallel" name="initial response">
+                    <step-declaration id="_3" kind="leaf" name="isolate at home" properties="low risk to others,at home" />
+                    <step-declaration id="_4" kind="leaf" name="monitor symptoms" />
+                    <step-declaration id="_5" kind="leaf" name="research/plan how to get swab test" />
+                    <step-declaration id="_6" kind="leaf" name="research/plan hospital visit" />
+                </step-declaration>
+                <step-declaration id="_7" kind="parallel" name="hospitalization">
+                    <step-declaration id="_8" kind="leaf" name="rt-pcr test" />
+                    <step-declaration id="_9" kind="leaf" name="lung ultrasound" property="moderate risk to others" />
+                    <step-declaration id="_10" kind="leaf" name="chest ct scan" property="moderate risk to others" />
+                    <step-declaration id="_11" kind="leaf" name="ventilation" properties="high risk to others,ventilator needed" />
+                </step-declaration>
+            </step-declaration>
+            <step-declaration id="_12" kind="sequential" name="right side placeholder">
+                <step-declaration id="_13" kind="sequential" name="medical team requests ventilator from management">
+                    <step-declaration id="_14" kind="leaf" name="team fills out purchase order" />
+                    <step-declaration id="_15" kind="leaf" name="team requests approval from management" />
+                    <step-declaration id="_16" kind="leaf" name="team receives feedback from management" />
+                </step-declaration>
+                <step-declaration id="_17" kind="leaf" name="hospital requests ventilator from vendor" property="ventilator requested" />
+                <step-declaration id="_18" kind="leaf" name="vendor ships ventilator" />
+                <step-declaration id="_19" kind="leaf" name="hospital receives ventilator" />
+                <step-declaration id="_20" kind="leaf" name="orderly sets up ventilator in room" property="ventilator available" />
+            </step-declaration>
+        </step-declaration>
+    </module>
+</littlejil>

@@ -386,6 +386,8 @@ public class Translate {
         // remove the vertex getting replaced by the template
         if (vertexToReplace != null) {
             // vertexListToTranslate.removeVertexFromList(vertexToReplace); // this line was causing a bug in graphs with a parallel substep of a parallel node
+            // TODO: write a "safe remove" of vertex with some extra checks
+            translatedVertexList.safeRemoveVertexIfExists(vertexToReplace);
             translatedVertexList.removeVertexFromListAndAllParentsAndChildren(vertexToReplace);
         }
 

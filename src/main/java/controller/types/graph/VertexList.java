@@ -106,6 +106,14 @@ public class VertexList {
         }
     }
 
+    public void safeRemoveVertexIfExists(Vertex vertexToRemove) {
+        if (vertexToRemove != null ) {
+            if (list.contains(vertexToRemove)) {
+                list.remove(vertexToRemove);
+            }
+        }
+    }
+
     public VertexList copyVertexList() {
         VertexList sourceVertexList = this;
         VertexList targetVertexList = new VertexList();
