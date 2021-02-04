@@ -84,7 +84,8 @@ public class FileTest {
         Models models = new Models();
         if (numProps == 1) {
             modelList = listHelper.stringArrToArrList(models.getModels1Var());
-        } else if (numProps == 2) {
+        // } else if (numProps == 2) {
+        } else if (numProps >= 2) {
             modelList = listHelper.stringArrToArrList(models.getModels1And2Var());
         }
 
