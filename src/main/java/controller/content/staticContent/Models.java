@@ -16,10 +16,10 @@ public class Models {
         //
         // this is the banking model
         // String[] models2Var = {"¬∨(E[∧(s,¬q)U∧(t,¬∧(s,¬q))],EG(¬∧(s,¬q)))"}; // this gets the correct answer, verified by hand
-        String[] models2Var = {"A[¬tU∧(s,¬q)]"}; // this gets the correct answer, verified by hand. TODO: check answer against plain english definition of AU
+        // String[] models2Var = {"A[¬tU∧(s,¬q)]"}; // this gets the correct answer, verified by hand.
         // String[] models2Var = {"∧(t,¬∧(s,¬q))"};
         // String[] models2Var = {"∧(s,¬q)"};
-        // String[] models2Var = {"t"};
+        String[] models2Var = {"¬t"};
         // String[] models2Var = {"EG(¬∧(s,¬q))","¬AF(∧(s,¬q))"};
 
         //
