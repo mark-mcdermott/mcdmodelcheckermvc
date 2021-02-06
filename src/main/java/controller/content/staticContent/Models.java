@@ -19,7 +19,7 @@ public class Models {
         // String[] models2Var = {"A[¬tU∧(s,¬q)]"}; // this gets the correct answer, verified by hand.
         // String[] models2Var = {"∧(t,¬∧(s,¬q))"};
         // String[] models2Var = {"∧(s,¬q)"};
-        String[] models2Var = {"¬t"};
+        String[] models2Var = {"¬   t"};
         // String[] models2Var = {"EG(¬∧(s,¬q))","¬AF(∧(s,¬q))"};
 
         //
