@@ -16,6 +16,7 @@ public class TestResult {
     private PassFail interleavingsResult;
     private String[] modelCheckingExpected;
     private String[] modelCheckingActual;
+    private String[] modelCheckingActualFormatted;
     private PassFail modelCheckingResult;
     private PassFail testPassFail;
     private int testNumPassFail;
