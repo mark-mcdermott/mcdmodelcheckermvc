@@ -30,12 +30,17 @@ AG(EF(p)): {s2,s6}
 ∧(p,q): {}
 ∨(p,q): {s0,s1,s2,s4,s5,s6}
 →(p,q): {s3,s4,s5,s6,s7}
-AG(→(p,q)): {s3,s7}
-EG(→(p,q)): {s3,s4,s5,s7}
-E[pUq]: {s0,s1,s4,s5,s6}
-A[pUq]: {s0,s1,s4,s5,s6}
-∧(¬p,¬q): {s3,s7}
-EG(¬q): {s2,s3,s7}
-E[¬qU∧(¬p,¬q)]: {s3,s7}
-∨(E[¬qU∧(¬p,¬q)],EG(¬q)): {s2,s3,s7}
-¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q))): {s0,s1,s4,s5,s6}
+EX(p): {s0,s6}
+AX(p): {s0,s2,s3, s6}
+EG(p): {s2}
+AG(p): {s2}
+EF(p): {s0,s1,s2, s4,s5,s6}
+AF(p): {s0,s1,s2, s6}
+EX(AF(p)): {s0,s5, s6}
+AG(EF(p)): {s2,s6}
+AG(→(p,q)): {s3, s7}
+EG(→(p,q)): {s3,s4, s5,s7}
+E[pUq]: {s0,s1,s4, s5,s6}
+A[pUq]: {s0,s1,s4, s5,s6}
+E[qUp]: {s0,s1,s2, s4,s5,s6}
+A[qUp]: {s0,s1,s2, s6}
