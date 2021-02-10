@@ -73,6 +73,8 @@ public class Options {
     private int testerKripkeLinesToSkip;
     private int testerModelCheckingLinesToSkip;
     private int testerLineLength;
+    private int testerLineLengthGraphs;
+    private int testerLineLengthModelCheck;
 
 
     public Options() {
@@ -152,7 +154,12 @@ public class Options {
         // tester page misc
         testerKripkeLinesToSkip = 2; // based on the stucture of the tests. if the structure of the tests were changed, this would have to change.
         testerModelCheckingLinesToSkip = 2;
-        testerLineLength = 18; // line length for expected & actual results for xml, translations & interleavings
+        // testerLineLength = 18; // line length for expected & actual results for xml, translations & interleavings
+        // testerLineLength = 30;
+
+        testerLineLengthGraphs = 18;
+        testerLineLengthModelCheck = 30;
+
         // testerExpectedActualPanelWidth = 350;
         // testerExpectedActualPanelHeight = 700;
         // testerExpectedActualTextAreaWidth = 163;
@@ -301,6 +308,12 @@ public class Options {
 
     public int getTesterLineLength() {
         return testerLineLength;
+    }
+    public int getTesterGraphsLineLength() {
+        return testerLineLengthGraphs;
+    }
+    public int getTesterModelCheckLineLength() {
+        return testerLineLengthModelCheck;
     }
 
     public int getTesterExpectedActualTextAreaWidth() {

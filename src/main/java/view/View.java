@@ -157,17 +157,21 @@ public class View extends JFrame implements Observer {
         String[] modelCheckingActualResultStrArr = selectedFileTestResult.getModelCheckingActual();
 
         // format expected/actual lists for xml, translation and interleavings
-        int lineLength = options.getTesterLineLength();
+        // int lineLength = options.getTesterLineLength();
+
+        int lineLengthGraphs = options.getTesterGraphsLineLength();
+        int lineLengthModelCheck = options.getTesterModelCheckLineLength();
+
         if (xmlActualKripkeStrArr != null && translationActualKripkeStrArr != null) {
-            xmlExpectedKripkeStrArr = wrapStrArrElements(xmlExpectedKripkeStrArr, lineLength);
-            xmlActualKripkeStrArr = wrapStrArrElements(xmlActualKripkeStrArr, lineLength);
-            translationExpectedKripkeStrArr = wrapStrArrElements(translationExpectedKripkeStrArr, lineLength);
-            translationActualKripkeStrArr = wrapStrArrElements(translationActualKripkeStrArr, lineLength);
+            xmlExpectedKripkeStrArr = wrapStrArrElements(xmlExpectedKripkeStrArr, lineLengthGraphs);
+            xmlActualKripkeStrArr = wrapStrArrElements(xmlActualKripkeStrArr, lineLengthGraphs);
+            translationExpectedKripkeStrArr = wrapStrArrElements(translationExpectedKripkeStrArr, lineLengthGraphs);
+            translationActualKripkeStrArr = wrapStrArrElements(translationActualKripkeStrArr, lineLengthGraphs);
         }
-        interleavingsExpectedKripkeStrArr = wrapStrArrElements(interleavingsExpectedKripkeStrArr, lineLength);
-        interleavingsActualKripkeStrArr = wrapStrArrElements(interleavingsActualKripkeStrArr, lineLength);
-        modelCheckingExpectedResultStrArr = wrapStrArrElements(modelCheckingExpectedResultStrArr, lineLength);
-        modelCheckingActualResultStrArr = wrapStrArrElements(modelCheckingActualResultStrArr, lineLength);
+        interleavingsExpectedKripkeStrArr = wrapStrArrElements(interleavingsExpectedKripkeStrArr, lineLengthGraphs);
+        interleavingsActualKripkeStrArr = wrapStrArrElements(interleavingsActualKripkeStrArr, lineLengthGraphs);
+        modelCheckingExpectedResultStrArr = wrapStrArrElements(modelCheckingExpectedResultStrArr, lineLengthModelCheck);
+        modelCheckingActualResultStrArr = wrapStrArrElements(modelCheckingActualResultStrArr, lineLengthModelCheck);
 
         String testsXmlExpectedTextAreaText;
         String testsXmlActualTextAreaText;

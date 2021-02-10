@@ -670,7 +670,8 @@ public class Components {
         testsXmlPanel = new JPanel();
         testsXmlPanel.setLayout(new BorderLayout());
         testsXmlPanel.setLayout(new BorderLayout());
-        testsXmlPanel.setPreferredSize(new Dimension(350, 700));
+        // testsXmlPanel.setPreferredSize(new Dimension(350, 700));
+        testsXmlPanel.setPreferredSize(new Dimension(350, 1000));
         testsXmlPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
         xmlPanelGridPosition = new GridBagConstraints();
         xmlPanelGridPosition.gridx = 0;
@@ -701,7 +702,8 @@ public class Components {
         // translation tests
         testsTranslationPanel = new JPanel();
         testsTranslationPanel.setLayout(new BorderLayout());
-        testsTranslationPanel.setPreferredSize(new Dimension(350, 700));
+        // testsTranslationPanel.setPreferredSize(new Dimension(350, 700));
+        testsTranslationPanel.setPreferredSize(new Dimension(350, 1000));
         testsTranslationPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
         testsTranslationPanel.setLayout(new BorderLayout());
         translationPanelGridPosition = new GridBagConstraints();
@@ -733,7 +735,8 @@ public class Components {
         // interleavings tests
         testsInterleavingsPanel = new JPanel();
         testsInterleavingsPanel.setLayout(new BorderLayout());
-        testsInterleavingsPanel.setPreferredSize(new Dimension(350, 700));
+        // testsInterleavingsPanel.setPreferredSize(new Dimension(350, 700));
+        testsInterleavingsPanel.setPreferredSize(new Dimension(350, 1000));
         testsInterleavingsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
         testsInterleavingsPanel.setLayout(new BorderLayout());
         interleavingsPanelGridPosition = new GridBagConstraints();
@@ -765,7 +768,8 @@ public class Components {
         // model checking tests
         testsModelCheckingPanel = new JPanel();
         testsModelCheckingPanel.setLayout(new BorderLayout());
-        testsModelCheckingPanel.setPreferredSize(new Dimension(350, 700));
+        // testsModelCheckingPanel.setPreferredSize(new Dimension(350, 700));
+        testsModelCheckingPanel.setPreferredSize(new Dimension(600, 1000));
         testsModelCheckingPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 15, 10));
         testsModelCheckingPanel.setLayout(new BorderLayout());
         modelCheckingPanelGridPosition = new GridBagConstraints();
@@ -786,7 +790,8 @@ public class Components {
         testsModelCheckingExpectedTextArea.setFont(titleFont);
         testsModelCheckingExpectedTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
         testsModelCheckingExpectedScrollPane = new JScrollPane();
-        testsModelCheckingExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
+        // testsModelCheckingExpectedScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsModelCheckingExpectedScrollPane.setPreferredSize(new Dimension(288, 700));
         testsModelCheckingExpectedScrollPane.setViewportView(testsModelCheckingExpectedTextArea);
         testsModelCheckingExpectedSplitPane = new JSplitPane();
         testsModelCheckingPanel.add(testsModelCheckingExpectedScrollPane, BorderLayout.WEST);
@@ -800,7 +805,8 @@ public class Components {
         testsModelCheckingActualTextArea.setFont(titleFont);
         testsModelCheckingActualTextArea.setBorder(BorderFactory.createEmptyBorder(15, 15, 17, 15));
         testsModelCheckingActualScrollPane = new JScrollPane();
-        testsModelCheckingActualScrollPane.setPreferredSize(new Dimension(163, 700));
+        // testsModelCheckingActualScrollPane.setPreferredSize(new Dimension(163, 700));
+        testsModelCheckingActualScrollPane.setPreferredSize(new Dimension(288, 700));
         testsModelCheckingActualScrollPane.setViewportView(testsModelCheckingActualTextArea);
         testsModelCheckingPanel.add(testsModelCheckingActualScrollPane, BorderLayout.EAST);
 
