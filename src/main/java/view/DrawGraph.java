@@ -249,6 +249,7 @@ public class DrawGraph {
 
     // graph helpers
 
+    // TODO: probably start around here! (3/18/21)
     public static Point2D.Double calcXYCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum) {
         Float horizCenter = canvasWidth / 2f - 12;
         Integer x = horizCenter.intValue();
