@@ -1,6 +1,7 @@
 package view;
 
 import _options.DirectedGraphOptions;
+import controller.types.analyzer.analyzerData.DisplayType;
 import controller.types.graph.Vertex;
 import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
@@ -33,6 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import static controller.types.analyzer.analyzerData.DisplayType.INTER_ONLY;
+import static controller.types.analyzer.analyzerData.DisplayType.XML_ONLY;
 import static controller.types.graph.VertexKind.SEQUENTIAL;
 import static controller.types.graph.VertexStatus.TERMINATED;
 
@@ -68,7 +70,7 @@ public class DrawGraph {
         this.vertexAttractionMultiplier = directedGraphOptions.getVertexAttractionMultiplier();
     }
 
-    public void drawGraph(JPanel thisGraphPanel, VertexList vertexList) {
+    public void drawGraph(JPanel thisGraphPanel, VertexList vertexList, DisplayType graphType) {
 
         // clear temp lists between each graph
         tempPlacedVertices = new ArrayList<>();
@@ -129,10 +131,11 @@ public class DrawGraph {
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
-            if (rootKind.equals(SEQUENTIAL)) {
+            if (rootKind.equals(SEQUENTIAL) && graphType != XML_ONLY) {
                 placeSequentialRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
+            } else {
+                placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
             }
-            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
         }
         for (Vertex vertex : vertexList.getList()) {
             if (vertex.getChildren()!= null) {

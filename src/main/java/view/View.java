@@ -408,14 +408,14 @@ public class View extends JFrame implements Observer {
 
         // add one-across graph and its title
         if (displayType == XML_ONLY) {
-            drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList());
+            drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList(), displayType);
             components.graphPanel1Title.setText("XML");
         } else if (displayType == TRANS_ONLY) {
-            drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList());
+            drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList(), displayType);
             components.graphPanel1Title.setText("Translation");
         } else if (displayType == INTER_ONLY) {
             // drawGraph.drawGraphAndMakePdf(components.graphPanel1, model.getInterleavingsVertexList());
-            drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList());
+            drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList(), displayType);
             components.graphPanel1Title.setText("Interleavings");
         }
     }
@@ -437,8 +437,8 @@ public class View extends JFrame implements Observer {
         Integer stepX = stepGraphSelectedStep.getNumTotalSteps();
         Integer stepXMinus1 = stepX - 1;
 
-        drawGraph.drawGraph(components.graphPanel1, stepGraphSelectedStepMinusOne);
-        drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep);
+        drawGraph.drawGraph(components.graphPanel1, stepGraphSelectedStepMinusOne, TWO_GRAPHS);
+        drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep, TWO_GRAPHS);
 
         if (type == TRANS_COMP) {
             components.graphPanel1Title.setText("Translation Step " + stepXMinus1.toString());
@@ -451,9 +451,9 @@ public class View extends JFrame implements Observer {
 
     private void drawThreeAcrossGraphs(DrawGraph drawGraph) {
         // draw three-across graphs
-        drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList());
-        drawGraph.drawGraph(components.graphPanel2, model.getTranslationVertexList());
-        drawGraph.drawGraph(components.graphPanel3, model.getInterleavingsVertexList());
+        drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList(), XML_ONLY);
+        drawGraph.drawGraph(components.graphPanel2, model.getTranslationVertexList(), TRANS_ONLY);
+        drawGraph.drawGraph(components.graphPanel3, model.getInterleavingsVertexList(), INTER_ONLY);
         // add three-across graphs
         components.mainGraphPanel.remove(components.graphPanel1);
         components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());
