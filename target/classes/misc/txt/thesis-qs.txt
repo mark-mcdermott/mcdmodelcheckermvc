@@ -1,0 +1,18 @@
+- explain your thesis
+- what problem is your thesis trying to solve
+- what approach did you take to solve it
+- what were your results
+- how does this thesis help move CS forward
+- what challenges did you face
+- explain your code
+
+- what's ctl / little-jil / model checking
+- why did you use ctl / little-jil / model checking ?
+- explain the problem with parallel processes
+- what sort of parallel processes did you explore
+
+- what specific situations did you model
+- what specific properties did you use
+- what specific results did you get
+
+- what work had already been done in this area
