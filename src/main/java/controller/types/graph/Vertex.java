@@ -676,21 +676,30 @@ public class Vertex {
         String output = "";
         Integer number = this.number;
         Integer origNumber = this.origNumber;
-        String kind = this.kind.toFirstChar();
+        String kind = this.kind.toString();
+        // String kind = this.kind.toFirstChar();
         if (this.status != null) {
-            status = this.status.toFirstChar();
+            // status = this.status.toFirstChar();
+            status = this.status.toString();
         }
         String blurb = this.blurb;
 
         if (this.status != null) {
-            output = "s" + number + ":" + kind + origNumber + status + " " + blurb;
+            // output = "s" + number + ":" + kind + origNumber + status + " " + blurb;
+            output = "s" + number + ": " + kind + " " + origNumber + " " + status;
         } else {
-            output = "s" + number + ":" + kind + origNumber + " " + blurb;
+            // output = "s" + number + ":" + kind + origNumber + " " + blurb;
+            output = "s" + number + ": " + kind + " " + origNumber;
         }
         return output;
     }
 
     public String toString() {
+        // return normalToString();
+        return toStringDetailed();
+    }
+
+    public String normalToString() {
         String output = "";
         String name = this.name;
         Integer number = this.number;

@@ -83,6 +83,7 @@ public class Components {
     public JScrollPane labelScrollpane;
     private Font extraLargeFont;
     private Font titleFont;
+    private Font graphTitleFont;
     private Font listFont;
     private Color selectedListItemColor;
     public JPanel mainGraphPanel;
@@ -232,6 +233,7 @@ public class Components {
     public void initStyles() {
         extraLargeFont = new Font("Verdana", Font.PLAIN, 13);
         titleFont = new Font("Verdana", Font.PLAIN, 11);
+        graphTitleFont = new Font("Verdana", Font.BOLD, 24);
         listFont = new Font("Verdana", Font.PLAIN, 10);
         selectedListItemColor = Color.decode("#5e7f85"); // gray/blue
     }
@@ -544,6 +546,7 @@ public class Components {
         graphPanel1Title = new JLabel();
         graphPanel1Title.setHorizontalAlignment(SwingConstants.CENTER);
         graphPanel1Title.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
+        graphPanel1Title.setFont(graphTitleFont);
         mainGraphPanel.add(graphPanel1Title);
         graphPanel1 = new JPanel();
         graphPanel1.setLayout(new BorderLayout());
@@ -553,6 +556,7 @@ public class Components {
         graphPanel2Title = new JLabel();
         graphPanel2Title.setHorizontalAlignment(SwingConstants.CENTER);
         graphPanel2Title.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
+        graphPanel2Title.setFont(graphTitleFont);
         graphPanel2 = new JPanel();
         graphPanel2.setLayout(new BorderLayout());
         graphPanel2.setBackground(Color.white);
@@ -560,6 +564,7 @@ public class Components {
         graphPanel3Title = new JLabel();
         graphPanel3Title.setHorizontalAlignment(SwingConstants.CENTER);
         graphPanel3Title.setBorder(BorderFactory.createEmptyBorder(15, 0, 10, 0));
+        graphPanel3Title.setFont(graphTitleFont);
         graphPanel3 = new JPanel();
         graphPanel3.setLayout(new BorderLayout());
         graphPanel3.setBackground(Color.white);
