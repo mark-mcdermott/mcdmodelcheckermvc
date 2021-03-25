@@ -65,9 +65,9 @@ public class GetGraphs {
                     VertexList transVertListSelectedStep;
                     VertexList transVertListSelectedStepMinusOne;
 
-                    testTransVertListForTotalNumSteps = getTransVertList(xmlVertList, translate, numLoops, false, false, null);
-                    transVertListSelectedStep = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, false, selectedStep);
-                    transVertListSelectedStepMinusOne = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, true, selectedStep);
+                    testTransVertListForTotalNumSteps = getTransVertList(xmlVertList, translate, numLoops, false, false, null, xmlFilenames);
+                    transVertListSelectedStep = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, false, selectedStep, xmlFilenames);
+                    transVertListSelectedStepMinusOne = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, true, selectedStep, xmlFilenames);
                     int numSteps = testTransVertListForTotalNumSteps.getNumTotalSteps();
                     VertexList[] stepGraphs = new VertexList[2];
                     stepGraphs[0] = transVertListSelectedStepMinusOne;
@@ -80,9 +80,9 @@ public class GetGraphs {
                     VertexList interVertListSelectedStep;
                     VertexList interVertListSelectedStepMinusOne;
 
-                    testInterVertListForTotalNumSteps = getInterVertList(xmlVertList, translate, numLoops, false, false, null);
-                    interVertListSelectedStep = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, false, selectedStep);
-                    interVertListSelectedStepMinusOne = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, true, selectedStep);
+                    testInterVertListForTotalNumSteps = getInterVertList(xmlVertList, translate, numLoops, false, false, null, xmlFilenames);
+                    interVertListSelectedStep = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, false, selectedStep, xmlFilenames);
+                    interVertListSelectedStepMinusOne = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, true, selectedStep, xmlFilenames);
                     int numSteps = testInterVertListForTotalNumSteps.getNumTotalSteps();
                     VertexList[] stepGraphs = new VertexList[2];
                     stepGraphs[0] = interVertListSelectedStepMinusOne;
@@ -116,8 +116,8 @@ public class GetGraphs {
         } else {
             xmlVertList = getJointVertexListFromXmlFilenames(xmlFilenames, labelHash, xmlFileCache);
         }
-        VertexList transVertList = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep);
-        VertexList interVertList = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep);
+        VertexList transVertList = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
+        VertexList interVertList = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
 
         // get xml, translation & interleavings kripke structures
         Kripke xmlKripke = new Kripke(xmlVertList);
@@ -146,7 +146,7 @@ public class GetGraphs {
         } else {
             xmlVertList = getJointVertexListFromXmlFilenames(xmlFilenames, labelHash, xmlFileCache);
         }
-        VertexList transVertList = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep);
+        VertexList transVertList = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
         // VertexList interVertList = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep);
 
         // get xml, translation & interleavings kripke structures
@@ -203,13 +203,13 @@ public class GetGraphs {
         return newVertexList;
     }
 
-    private VertexList getTransVertList(VertexList xmlVertList, Translate translate, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
-        VertexList transVertList = translate.getTransVertListNoInter(xmlVertList, numLoops, isStepSelected, prevStep, selectedStep);
+    private VertexList getTransVertList(VertexList xmlVertList, Translate translate, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep, String[] xmlFilenames) throws ExceptionMessage {
+        VertexList transVertList = translate.getTransVertListNoInter(xmlVertList, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
         return transVertList;
     }
 
-    private VertexList getInterVertList(VertexList xmlVertList, Translate translate, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
-        VertexList interVertList = translate.getTransVertListWithInters(xmlVertList, numLoops, isStepSelected, prevStep, selectedStep);
+    private VertexList getInterVertList(VertexList xmlVertList, Translate translate, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep, String[] xmlFilenames) throws ExceptionMessage {
+        VertexList interVertList = translate.getTransVertListWithInters(xmlVertList, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
         return interVertList;
     }
 

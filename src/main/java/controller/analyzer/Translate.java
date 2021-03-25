@@ -32,6 +32,7 @@ public class Translate {
     Model model;
     View view;
     Options options;
+    Integer tempCurNum;
 
     public Translate() {
         this.options = new Options();
@@ -55,16 +56,16 @@ public class Translate {
     }
 
     // get translated vertexList without interleavings
-    public VertexList getTransVertListNoInter(VertexList origVertexList, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
-        return getTranslatedVertexList(origVertexList, false, numLoops, isStepSelected, prevStep, selectedStep);
+    public VertexList getTransVertListNoInter(VertexList origVertexList, int numLoops, Boolean isStepSelected, Boolean prevStep, Integer selectedStep, String[] xmlFilenames) throws ExceptionMessage {
+        return getTranslatedVertexList(origVertexList, false, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
     }
 
     // get translated vertexList with interleavings
-    public VertexList getTransVertListWithInters(VertexList origVertexList, int loopsNum, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
-        return getTranslatedVertexList(origVertexList, true, loopsNum, isStepSelected, prevStep, selectedStep);
+    public VertexList getTransVertListWithInters(VertexList origVertexList, int loopsNum, Boolean isStepSelected, Boolean prevStep, Integer selectedStep, String[] xmlFilenames) throws ExceptionMessage {
+        return getTranslatedVertexList(origVertexList, true, loopsNum, isStepSelected, prevStep, selectedStep, xmlFilenames);
     }
 
-    private VertexList getTranslatedVertexList(VertexList origVertexList, Boolean getInterleavings, int loopsNum, Boolean isStepSelected, Boolean prevStep, Integer selectedStep) throws ExceptionMessage {
+    private VertexList getTranslatedVertexList(VertexList origVertexList, Boolean getInterleavings, int loopsNum, Boolean isStepSelected, Boolean prevStep, Integer selectedStep, String[] xmlFilenames) throws ExceptionMessage {
         if (prevStep != null && prevStep == true && selectedStep != null) {
             targetStep = selectedStep - 1;
         } else if (selectedStep != null) {
@@ -101,7 +102,7 @@ public class Translate {
             }
         }
         fixPermutedVertexReferences(translatedVertexList, permutedVertices);
-        renumberVertices();
+        renumberVertices(xmlFilenames);
         return translatedVertexList;
     }
 
@@ -170,9 +171,10 @@ public class Translate {
         }
     }
 
-    public void renumberVertices() {
+    public void renumberVertices(String[] xmlFilenames) {
 
-        if (!isAlreadyNumberedCorrectly()) {
+        // if (!isAlreadyNumberedCorrectly()) {
+        if (!isAlreadyNumberedCorrectlyNew(xmlFilenames)) {
             resetVerticesIsVisited();
             resetVerticesNumbers();
             Integer vertexNumber = 0;
@@ -249,6 +251,74 @@ public class Translate {
         }
     }
 
+    private Boolean isAlreadyNumberedCorrectlyNew(String[] xmlFilenames) {
+        if (xmlFilenames[0] == "TwoSteps.ljx") {
+            Integer debugVar = 0;
+        }
+        tempCurNum = 0;
+        Vertex root = translatedVertexList.getRoot();
+        if (root.getNumber() != tempCurNum) return false;
+        tempCurNum++;
+        if (!isAlreadyNumberedCorrectlyRecursiveNew(root, xmlFilenames)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private Vertex getVertexOfNumber(ArrayList<Vertex> vertices, Integer num) {
+        for (Vertex vertex : vertices) {
+            if (vertex.getNumber() == num) {
+                return vertex;
+            }
+        }
+        return new Vertex();
+    }
+
+    private Boolean isAlreadyNumberedCorrectlyRecursiveNew(Vertex node, String[] xmlFilenames) {
+        ArrayList<Vertex> children = node.getChildren();
+        if (children != null) {
+            ArrayList<Integer> childNums = new ArrayList<>();
+            for (Vertex child : children) {
+                childNums.add(child.getNumber());
+            }
+            if (childNums.contains(tempCurNum)) {
+                Vertex child = getVertexOfNumber(children, tempCurNum);
+                tempCurNum++;
+                if (isAlreadyNumberedCorrectlyRecursiveNew(child, xmlFilenames)) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return true; // at leaf (we're either done or we'll start again higher up the tree)
+        }
+    }
+
+    private Boolean isAlreadyNumberedCorrectlyRecursive(Vertex node) {
+        ArrayList<Vertex> children = node.getChildren();
+        if (children != null) {
+            Boolean found = false;
+            while (children.size() != 0) {
+                Vertex child = children.get(0);
+                children.remove(child);
+                if (child.getNumber() == tempCurNum) {
+                    found = true;
+                    tempCurNum++;
+                    if (!isAlreadyNumberedCorrectlyRecursive(child)) return false;
+                }
+            }
+            if (!found) return false;
+        } else {
+            return true;
+        }
+        return true;
+    }
+
+    // this doesn't work right
     private Boolean isAlreadyNumberedCorrectly() {
         ArrayList<Integer> vertexNumbers = new ArrayList<>();
         for (Vertex vertex : translatedVertexList.getList()) {

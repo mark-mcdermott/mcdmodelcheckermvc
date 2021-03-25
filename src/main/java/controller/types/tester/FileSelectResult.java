@@ -57,10 +57,10 @@ public class FileSelectResult {
 
         if (this.selectedFiles.get(0).endsWith(".ljx")) {
             this.xmlVertexList = readXml.convertXmlToVertexList(selectedXmlFiles, labelHash);
-            this.translationVertexList = translate.getTransVertListNoInter(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep);
+            this.translationVertexList = translate.getTransVertListNoInter(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep, listHelper.listToStringArray(selectedFiles));
             this.xmlKripke = new Kripke(xmlVertexList);
             this.translationKripke = new Kripke(translationVertexList);
-            this.interleavingsVertexList = translate.getTransVertListWithInters(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep);
+            this.interleavingsVertexList = translate.getTransVertListWithInters(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep, listHelper.listToStringArray(selectedFiles));
         }
         if (this.selectedFiles.get(0).endsWith(".krp")) {
             this.krpVertexList = readKrp.convertKrpToVertexList(selectedFiles.get(0), labelHash);
@@ -97,10 +97,10 @@ public class FileSelectResult {
 
         if (this.selectedFiles.get(0).endsWith(".ljx")) {
             this.xmlVertexList = readXml.convertXmlToVertexList(selectedXmlFiles, labelHash);
-            this.translationVertexList = translate.getTransVertListNoInter(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep);
+            this.translationVertexList = translate.getTransVertListNoInter(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep, listHelper.listToStringArray(selectedFiles));
             this.xmlKripke = new Kripke(xmlVertexList);
             this.translationKripke = new Kripke(translationVertexList);
-            this.interleavingsVertexList = translate.getTransVertListWithInters(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep);
+            this.interleavingsVertexList = translate.getTransVertListWithInters(xmlVertexList, numLoops, isStepSelected, prevStep, selectedStep, listHelper.listToStringArray(selectedFiles));
         }
         if (this.selectedFiles.get(0).endsWith(".krp")) {
             this.krpVertexList = readKrp.convertKrpToVertexList(selectedFiles.get(0), labelHash);
