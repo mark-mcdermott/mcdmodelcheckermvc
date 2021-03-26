@@ -29,6 +29,7 @@ public class ParallelTemplate {
         // init vars
         Integer number = getHighestVertexNum(vertexList) + 1;
         VertexKind kind = (vertexToReplace.getKind() == null) ? null : vertexToReplace.getKind();
+        Integer kindNum = vertexToReplace.getKindNum();
         String blurb = (vertexToReplace.getBlurb() == null) ? null : vertexToReplace.getBlurb();
         ArrayList<String> properties = (vertexToReplace.getProperties() == null) ? null : vertexToReplace.getProperties();
         ArrayList<Label> labels = (vertexToReplace.getLabels() == null) ? null : vertexToReplace.getLabels();
@@ -47,19 +48,19 @@ public class ParallelTemplate {
         Boolean isOriginal = false;
 
         // create template vertices
-        Vertex parPosted = new Vertex(number, "s" + number.toString(), kind, POSTED, blurb, properties, labels, null, null,
+        Vertex parPosted = new Vertex(number, "s" + number.toString(), kind, kindNum, POSTED, blurb, properties, labels, null, null,
                 distanceFromRoot, siblingNum, parentSiblingNum, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
 
-        Vertex parStarted = new Vertex(++number, "s" + number, kind, STARTED, blurb, properties, labels, null, null,
+        Vertex parStarted = new Vertex(++number, "s" + number, kind, kindNum, STARTED, blurb, properties, labels, null, null,
                 ++distanceFromRoot, 0, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
 
-        Vertex parCompleted = new Vertex(++number, "s" + number, kind, COMPLETED, blurb, properties, labels, null, null,
+        Vertex parCompleted = new Vertex(++number, "s" + number, kind, kindNum, COMPLETED, blurb, properties, labels, null, null,
                 ++distanceFromRoot, 0, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
 
-        Vertex parTerminated = new Vertex(++number, "s" + number, kind, TERMINATED, blurb, null, null, null, null,
+        Vertex parTerminated = new Vertex(++number, "s" + number, kind, kindNum, TERMINATED, blurb, null, null, null, null,
                 distanceFromRoot, 1, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
 

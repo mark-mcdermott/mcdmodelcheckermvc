@@ -24,6 +24,7 @@ public class TryTemplate {
         // init vars
         Integer number = getHighestVertexNum(translatedVertexList);
         VertexKind kind = (vertexToReplace.getKind() == null) ? null : vertexToReplace.getKind();
+        Integer kindNum = vertexToReplace.getKindNum();
         String blurb = (vertexToReplace.getBlurb() == null) ? null : vertexToReplace.getBlurb();
         ArrayList<String> properties = (vertexToReplace.getProperties() == null) ? null : vertexToReplace.getProperties();
         ArrayList<Label> labels = (vertexToReplace.getLabels() == null) ? null : vertexToReplace.getLabels();
@@ -50,16 +51,16 @@ public class TryTemplate {
         }
 
         // create template vertices
-        Vertex tryPosted = new Vertex(number, "s" + number.toString(), kind, POSTED, blurb, properties, labels, null, null,
+        Vertex tryPosted = new Vertex(number, "s" + number.toString(), kind, kindNum, POSTED, blurb, properties, labels, null, null,
                 distanceFromRoot, siblingNum, parentSiblingNum, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
-        Vertex tryStarted = new Vertex(++number, "s" + number, kind, STARTED, blurb, properties, labels, null, null,
+        Vertex tryStarted = new Vertex(++number, "s" + number, kind, kindNum, STARTED, blurb, properties, labels, null, null,
                 ++distanceFromRoot, 0, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
-        Vertex tryCompleted = new Vertex(++number, "s" + number, kind, COMPLETED, blurb, properties, labels, null, null,
+        Vertex tryCompleted = new Vertex(++number, "s" + number, kind, kindNum, COMPLETED, blurb, properties, labels, null, null,
                 ++distanceFromRoot, 0, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
-        Vertex tryTerminated = new Vertex(++number, "s" + number, kind, TERMINATED, blurb, null, null, null, null,
+        Vertex tryTerminated = new Vertex(++number, "s" + number, kind, kindNum, TERMINATED, blurb, null, null, null, null,
                 distanceFromRoot, 1, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
 

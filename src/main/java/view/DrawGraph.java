@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import static controller.types.analyzer.analyzerData.DisplayType.INTER_ONLY;
 import static controller.types.analyzer.analyzerData.DisplayType.XML_ONLY;
+import static controller.types.graph.VertexKind.PARALLEL;
 import static controller.types.graph.VertexKind.SEQUENTIAL;
 import static controller.types.graph.VertexStatus.TERMINATED;
 
@@ -133,6 +134,8 @@ public class DrawGraph {
         if (vertexList.getRoot().getChildren() != null) {
             if (rootKind.equals(SEQUENTIAL) && graphType != XML_ONLY) {
                 placeSequentialRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
+            } else if (rootKind.equals(PARALLEL) && graphType != XML_ONLY) {
+                //
             } else {
                 placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
             }
@@ -265,10 +268,10 @@ public class DrawGraph {
 
     public static Point2D.Double calcXYSequentialCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, VertexStatus nodeStatus, String nodeName, Vertex vertex) {
         Float horizCenter = canvasWidth / 2f - 12;
-        Integer x;
-        Integer leftSlot = horizCenter.intValue();
-        Integer middleSlot = leftSlot + vertexSiblingOffset;
-        Integer rightSlot = leftSlot + vertexSiblingOffset * 2;
+        double x;
+        double leftSlot = horizCenter.intValue();
+        double middleSlot = leftSlot + vertexSiblingOffset * 1.00001;
+        double rightSlot = leftSlot + vertexSiblingOffset * 1.4;
         String name = nodeName;
         if (parentHorizPos == null || nodeStatus != TERMINATED) {
             x = leftSlot;

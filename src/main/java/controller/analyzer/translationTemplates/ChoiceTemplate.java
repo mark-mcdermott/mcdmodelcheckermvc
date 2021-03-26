@@ -26,6 +26,7 @@ public class ChoiceTemplate {
         // Integer number = new TranslateOld().getHighestVertexNum(vertexList) + 1;
         Integer number = getHighestVertexNum(vertexList) + 1;
         VertexKind kind = (vertexToReplace.getKind() == null) ? null : vertexToReplace.getKind();
+        Integer kindNum = vertexToReplace.getKindNum();
         String blurb = (vertexToReplace.getBlurb() == null) ? null : vertexToReplace.getBlurb();
         ArrayList<String> properties = (vertexToReplace.getProperties() == null) ? null : vertexToReplace.getProperties();
         ArrayList<Label> labels = (vertexToReplace.getLabels() == null) ? null : vertexToReplace.getLabels();
@@ -48,16 +49,16 @@ public class ChoiceTemplate {
         int terminatedDistanceFromRoot = startedDistanceFromRoot + numChildren + 1;
 
         // create posted & started template vertices
-        Vertex choicePosted = new Vertex(number, "s" + number.toString(), kind, POSTED, blurb, properties, labels, null, null,
+        Vertex choicePosted = new Vertex(number, "s" + number.toString(), kind, kindNum, POSTED, blurb, properties, labels, null, null,
                 distanceFromRoot, siblingNum, parentSiblingNum, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
-        Vertex choiceStarted = new Vertex(++number, "s" + number, kind, STARTED, blurb, properties, labels, null, null,
+        Vertex choiceStarted = new Vertex(++number, "s" + number, kind, kindNum, STARTED, blurb, properties, labels, null, null,
                 startedDistanceFromRoot, 0, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
-        Vertex choiceCompleted = new Vertex(++number, "s" + number, kind, COMPLETED, blurb, properties, labels, null, null,
+        Vertex choiceCompleted = new Vertex(++number, "s" + number, kind, kindNum, COMPLETED, blurb, properties, labels, null, null,
                 completedDistanceFromRoot, 0, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
-        Vertex choiceTerminated = new Vertex(++number, "s" + number, kind, TERMINATED, blurb, null, null, null, null,
+        Vertex choiceTerminated = new Vertex(++number, "s" + number, kind, kindNum, TERMINATED, blurb, null, null, null, null,
                 terminatedDistanceFromRoot, 1, 0, origNumber, origParents, origChildren,
                 origDistanceFromRoot, origSiblingNum, isRoot, isOriginal);
 

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static controller.types.graph.VertexKind.*;
 import static controller.utils.Utils.getLineNumber;
 
 public class ReadXml {
@@ -32,6 +33,11 @@ public class ReadXml {
     Options options;
     ListHelper listHelper;
     Document xmlDoc;
+    Integer _leafCount;
+    Integer _seqCount;
+    Integer _parCount;
+    Integer _choiceCount;
+    Integer _tryCount;
 
     public VertexList convertXmlToVertexList(String[] selectedXmlFilenamesArr, LabelHash labelHash) throws IOException, SAXException, ParserConfigurationException, ExceptionMessage {
 
@@ -56,6 +62,9 @@ public class ReadXml {
 
         ArrayList<VertexList> individualVertexLists = new ArrayList<VertexList>();
         for (String xmlFilename : xmlFilenamesArrList) {
+            if (xmlFilename == "TwoSteps.ljx") {
+                Integer debugPoint = 0;
+            }
             VertexList thisVertexList = xml.xmlFilepathToVertexList(xmlFilename, xmlDirPath, labelHash);
             individualVertexLists.add(thisVertexList);
         }
@@ -64,8 +73,10 @@ public class ReadXml {
             VertexList combinedVertexList = new VertexList();
 
             int vertexNum = 0;
+            VertexKind vertexKind = PARALLEL;
+            Integer kindNum = getKindNum(vertexKind);
             // Vertex newRoot = new Vertex();
-            Vertex newRoot = new Vertex(0,"s0",VertexKind.PARALLEL,null,"par 0",null,null,null,null,0,0,0,0,null,null,0,0,true,true);
+            Vertex newRoot = new Vertex(0,"s0",vertexKind,kindNum,null,"par 0",null,null,null,null,0,0,0,0,null,null,0,0,true,true);
             newRoot.setNumber(vertexNum);
             newRoot.setIsRoot(true);
             combinedVertexList.addVertex(newRoot);
@@ -120,6 +131,12 @@ public class ReadXml {
         Integer distanceFromRoot;
         Node root;
 
+        _leafCount = 0;
+        _seqCount = 0;
+        _parCount = 0;
+        _choiceCount = 0;
+        _tryCount = 0;
+
         vertexList = new VertexList();
         distanceFromRoot = -1;
         root = doc.getFirstChild();
@@ -127,6 +144,7 @@ public class ReadXml {
         return vertexList;
     }
 
+    // TODO: Start here 3/25
     private void docToVertexListRecursive(Document doc, VertexList vertexList, Node node, Vertex parentVertex, Integer distanceFromRoot, String xmlFileName, Boolean isInitial, LabelHash labelHash) throws ExceptionMessage {
         NodeList children;
         int numChildren;
@@ -201,6 +219,7 @@ public class ReadXml {
         String nodeName;
         String nodeBlurb;
         String nodeKind;
+        Integer kindNum;
         String property;
         String properties;
         VertexKind vertexKind;
@@ -227,6 +246,7 @@ public class ReadXml {
             if (hasNodeAttribute(node, "kind")) {
                 nodeKind = nodeAttributes.getNamedItem("kind").getNodeValue();
                 vertexKind = VertexKind.toEnum(nodeKind);
+                kindNum = getKindNum(vertexKind);
             } else {
                 throw new ExceptionMessage("controller.ReadXml.java " + getLineNumber() + ": Input XML file " + xmlFileName + " appears to have a step-declaration tag missing a kind attribute.");
             }
@@ -263,9 +283,6 @@ public class ReadXml {
                 }
             }
 
-
-
-
             nodeName = "s" + vertexNum;
             if (parentVertex != null) {
                 nodeParents = new ArrayList<Vertex>(Arrays.asList(parentVertex));
@@ -273,14 +290,13 @@ public class ReadXml {
                 nodeParents = null;
             }
 
-
             if (nodeParents == null) {
                 parentSiblingNum = null;
             } else {
                 parentSiblingNum = nodeParents.size() - 1;
             }
 
-            vertex = new Vertex(vertexNum, nodeName, vertexKind, null, nodeBlurb, nodeProperties, vertexLabels, nodeParents, null, distanceFromRoot, numSibling, parentSiblingNum, vertexNum, nodeParents, null, distanceFromRoot, numSibling, isInitial, true);
+            vertex = new Vertex(vertexNum, nodeName, vertexKind, kindNum, null, nodeBlurb, nodeProperties, vertexLabels, nodeParents, null, distanceFromRoot, numSibling, parentSiblingNum, vertexNum, nodeParents, null, distanceFromRoot, numSibling, isInitial, true);
 
         } else {
             throw new ExceptionMessage("controller.ReadXml.java " + getLineNumber() + ": Input XML file " + xmlFileName + " appears to have a step-declaration tag missing attributes.");
@@ -345,6 +361,28 @@ public class ReadXml {
     }
 
      */
+
+    // updates appropriate global kind counter and returns the updated counter
+    private Integer updateGlobalKindCount(VertexKind kind) {
+        if (kind == LEAF) {
+            _leafCount++;
+            return _leafCount;
+        } else if (kind == SEQUENTIAL) {
+            _seqCount++;
+            return _seqCount;
+        } else if (kind == PARALLEL) {
+            _parCount++;
+            return _parCount;
+        } else {
+            return -1;
+        }
+    }
+
+    //
+    private Integer getKindNum(VertexKind kind) {
+        Integer kindNum = updateGlobalKindCount(kind);
+        return kindNum;
+    }
 
     public Document xmlFilepathToDoc(String filepath, LabelHash labelHash) throws IOException, SAXException, ParserConfigurationException {
         File openFile;

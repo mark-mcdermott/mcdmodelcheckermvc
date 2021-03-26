@@ -13,8 +13,9 @@ public class Vertex {
 
     // inherent properties of a step
     private Integer number;                 // ex: 0
-    private String name;                    // ex: will be "s0" if number is 0
+    private String name;                    // ex: will be "s0" if number is 0 (zero based)
     private VertexKind kind;                // ex: LEAF
+    private Integer kindNum;                // ex: 1 (one based. so could be like s0: LEAF 1)
     private VertexStatus status;            // ex: STARTED
     private String blurb;                   // ex: "Doctor performs heart transplant"
     private ArrayList<String> properties;   // ex: "heart is ready"
@@ -308,6 +309,7 @@ public class Vertex {
             Integer number,
             String name,
             VertexKind kind,
+            Integer kindNum,
             VertexStatus status,
             String blurb,
             ArrayList<String> properties,
@@ -328,6 +330,7 @@ public class Vertex {
         this.number = number;
         this.name = name;
         this.kind = kind;
+        this.kindNum = kindNum;
         this.status = status;
         this.blurb = blurb;
         this.properties = properties;
@@ -513,6 +516,7 @@ public class Vertex {
         target.number = source.number;
         target.name = source.name;
         target.kind = source.kind;
+        target.kindNum = source.kindNum;
         target.status = source.status;
         target.blurb = source.blurb;
         target.distanceFromRoot = source.distanceFromRoot;
@@ -675,7 +679,8 @@ public class Vertex {
         String status = new String();
         String output = "";
         Integer number = this.number;
-        Integer origNumber = this.origNumber;
+        // Integer origNumber = this.origNumber;
+        Integer kindNum = this.kindNum;
         String kind = this.kind.toString();
         // String kind = this.kind.toFirstChar();
         if (this.status != null) {
@@ -686,10 +691,12 @@ public class Vertex {
 
         if (this.status != null) {
             // output = "s" + number + ":" + kind + origNumber + status + " " + blurb;
-            output = "s" + number + ": " + kind + " " + origNumber + " " + status;
+            // output = "s" + number + ": " + kind + " " + origNumber + " " + status;
+            output = "s" + number + ": " + kind + " " + kindNum + " " + status;
         } else {
             // output = "s" + number + ":" + kind + origNumber + " " + blurb;
-            output = "s" + number + ": " + kind + " " + origNumber;
+            // output = "s" + number + ": " + kind + " " + origNumber;
+            output = "s" + number + ": " + kind + " " + kindNum;
         }
         return output;
     }
@@ -839,6 +846,10 @@ public class Vertex {
 
     public VertexKind getKind() {
         return kind;
+    }
+
+    public Integer getKindNum() {
+        return kindNum;
     }
 
     public void setNumber(Integer number) {

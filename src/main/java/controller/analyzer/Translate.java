@@ -33,6 +33,9 @@ public class Translate {
     View view;
     Options options;
     Integer tempCurNum;
+    Integer _leafCount;
+    Integer _seqCount;
+    Integer _parCount;
 
     public Translate() {
         this.options = new Options();
@@ -80,14 +83,19 @@ public class Translate {
         translatedVertexList = new VertexList();
         VertexList copiedVertexList = origVertexList.copyVertexList();
         Vertex root = copiedVertexList.getRoot();
-        translateRootVertex(root, getInterleavings);
+
+        if (xmlFilenames[0] == "TwoSteps.ljx") {
+            Integer debugMarker = 0;
+        }
+
+        translateRootVertex(root, getInterleavings, xmlFilenames);
         numSteps++;
         Vertex translatedRoot = translatedVertexList.getRoot();
         if (!isStepSelected || targetStep == null || targetStep > 1 && numSteps < targetStep) {
             if (!debug || numNodesExpanded < targetNumNodesExpanded) {
                 if (root.getChildren() != null) {
                     for (Vertex child : translatedRoot.getChildren()) {
-                        translateChildrenRecursively(child, getInterleavings, loopsNum);
+                        translateChildrenRecursively(child, getInterleavings, loopsNum, xmlFilenames);
                     }
                 }
             }
@@ -106,7 +114,7 @@ public class Translate {
         return translatedVertexList;
     }
 
-    private void translateChildrenRecursively(Vertex vertex, Boolean getInterleavings, int loopsNum) {
+    private void translateChildrenRecursively(Vertex vertex, Boolean getInterleavings, int loopsNum, String[] xmlFilenames) {
         numSteps++;
 
         // TODO: remove this, for debugging only
@@ -115,7 +123,7 @@ public class Translate {
         }
 
         if (!debug || numNodesExpanded < targetNumNodesExpanded) {
-            translateVertexsChildren(vertex, getInterleavings);
+            translateVertexsChildren(vertex, getInterleavings, xmlFilenames);
         }
         vertex.setVisited(true);
         vertex.increaseNumVisitsByOne();
@@ -138,7 +146,7 @@ public class Translate {
                         if (curNumVisits <= loopsNum) {
                         // if (curNumVisits < loopsNum) {
                             if (targetStep == null || numSteps < targetStep) {
-                                translateChildrenRecursively(child, getInterleavings, loopsNum);
+                                translateChildrenRecursively(child, getInterleavings, loopsNum, xmlFilenames);
                             }
                         }
                         // TODO: remove this, for debugging only
@@ -151,7 +159,7 @@ public class Translate {
         }
     }
 
-    private void translateVertexsChildren(Vertex vertex, Boolean getInterleavings) {
+    private void translateVertexsChildren(Vertex vertex, Boolean getInterleavings, String[] xmlFilenames) {
         // create queue of children (to avoid concurrent modification errors)
         if (vertex.getChildren() != null) {
             if (queueToTranslate == null) { queueToTranslate = new LinkedList<>(); }
@@ -165,7 +173,7 @@ public class Translate {
         // translate the children in the queue
         if (queueToTranslate != null && queueToTranslate.peek() != null) {
             while (queueToTranslate.peek() != null) {
-                translateVertex(queueToTranslate.remove(), false, getInterleavings);
+                translateVertex(queueToTranslate.remove(), false, getInterleavings, xmlFilenames);
 
             }
         }
@@ -335,8 +343,12 @@ public class Translate {
         return true;
     }
 
-    private void translateVertex(Vertex vertex, Boolean isRoot, Boolean getInterleavings) {
+    private void translateVertex(Vertex vertex, Boolean isRoot, Boolean getInterleavings, String[] xmlFilenames) {
         TemplateSwapDetails templateSwapDetails = new TemplateSwapDetails();
+
+        if (xmlFilenames[0] == "TwoSteps.ljx") {
+            Integer debugMarker = 0;
+        }
 
         switch (vertex.getKind()) {
             case LEAF:
@@ -372,8 +384,8 @@ public class Translate {
     }
 
 
-    private void translateRootVertex(Vertex vertex, Boolean getInterleavings) {
-        translateVertex(vertex, true, getInterleavings);
+    private void translateRootVertex(Vertex vertex, Boolean getInterleavings, String[] xmlFilenames) {
+        translateVertex(vertex, true, getInterleavings, xmlFilenames);
     }
 
 
