@@ -50,6 +50,8 @@ public class DrawGraph {
     private Integer vertexVertMultiplier;
     private Integer layoutWidth;
     private Integer layoutHeight;
+    private Integer collisionXOffset;
+    private Integer collisionYOffest;
     private float scaleFactor;
     private double vertexAttractionMultiplier;
 
@@ -67,6 +69,8 @@ public class DrawGraph {
         this.vertexVertMultiplier = directedGraphOptions.getVertexVertMultiplier();
         this.layoutWidth = directedGraphOptions.getLayoutWidth();
         this.layoutHeight = directedGraphOptions.getLayoutHeight();
+        this.collisionXOffset = directedGraphOptions.getCollisionXOffset();
+        this.collisionYOffest = directedGraphOptions.getCollisionYOffest();
         this.scaleFactor = directedGraphOptions.getScaleFactor();
         this.vertexAttractionMultiplier = directedGraphOptions.getVertexAttractionMultiplier();
     }
@@ -132,7 +136,7 @@ public class DrawGraph {
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
-            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType);
+            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest);
             /*if (rootKind.equals(SEQUENTIAL) && graphType != XML_ONLY) {
                 placeSequentialRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
             } else if (rootKind.equals(PARALLEL) && graphType != XML_ONLY) {
@@ -213,7 +217,7 @@ public class DrawGraph {
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
-            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType);
+            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest);
         }
         for (Vertex vertex : vertexList.getList()) {
             if (vertex.getChildren()!= null) {
@@ -511,7 +515,7 @@ public class DrawGraph {
 
 
 
-    public static void placeChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, FRLayout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType) {
+    public static void placeChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, FRLayout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType, Integer collisionXOffset, Integer collisionYOffest) {
         level++;
         if (node.getChildren() != null) {
             Point2D parentPos = node.getTranslationGraphPos();
@@ -564,15 +568,13 @@ public class DrawGraph {
                     Double childY = xyCoords.y;
 
                     // this fixes the rare node collision where two nodes print directly on top of each other
-                    Integer collisionOffset = 25;
                     for (ArrayList<Double> thisTempXyCoords : tempXyCoords) {
                         if (thisTempXyCoords.get(0) != null && thisTempXyCoords.get(1) != null) {
                             Double thisX = thisTempXyCoords.get(0);
                             Double thisY = thisTempXyCoords.get(1);
                             if (childX.equals(thisX) && childY.equals(thisY)) {
-                                // xyCoords.x = childX + collisionOffset;
-                                xyCoords.x = childX;
-                                xyCoords.y = childY - collisionOffset;
+                                xyCoords.x = childX + collisionXOffset;
+                                xyCoords.y = childY + collisionYOffest;
                             }
                         }
                     }
@@ -589,7 +591,7 @@ public class DrawGraph {
                     // run this on on children recursively
                     if (child.getChildren() != null) {
                         // placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
-                        placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType);
+                        placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType, collisionXOffset, collisionYOffest);
                     }
                 }
             }

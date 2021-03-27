@@ -13,6 +13,8 @@ public class DirectedGraphOptions {
     private Integer layoutHeight;
     private Integer edgeXLength;
     private Integer edgeYLength;
+    private Integer collisionXOffset;
+    private Integer collisionYOffest;
     private float scaleFactor;
     private double vertexAttractionMultiplier;
 
@@ -28,6 +30,8 @@ public class DirectedGraphOptions {
             Integer layoutHeight,
             Integer edgeXLength,
             Integer edgeYLength,
+            Integer collisionXOffset,
+            Integer collisionYOffest,
             float scaleFactor,
             double vertexAttractionMultiplier
     ) {
@@ -42,6 +46,8 @@ public class DirectedGraphOptions {
         this.layoutHeight = layoutHeight;
         this.edgeXLength = edgeXLength;
         this.edgeYLength = edgeYLength;
+        this.collisionXOffset = collisionXOffset;
+        this.collisionYOffest = collisionYOffest;
         this.scaleFactor = scaleFactor;
         this.vertexAttractionMultiplier  = vertexAttractionMultiplier;
     }
@@ -88,6 +94,14 @@ public class DirectedGraphOptions {
 
     public Integer getEdgeYLength() {
         return edgeYLength;
+    }
+
+    public Integer getCollisionXOffset() {
+        return collisionXOffset;
+    }
+
+    public Integer getCollisionYOffest() {
+        return collisionYOffest;
     }
 
     public float getScaleFactor() {

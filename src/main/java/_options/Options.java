@@ -38,6 +38,8 @@ public class Options {
 
     private int translationGraphEdgeXLength;
     private int translationGraphEdgeYLength;
+    private int translationGraphCollisionXOffset;
+    private int translationGraphCollisiionYOffset;
     private int translationGraphNodeDiameter;
     private int translationGraphPanelWidth;
     private int translationGraphPanelHeight;
@@ -123,6 +125,8 @@ public class Options {
         translationGraphEdgeXLength = 50; // 50 is default i think
         translationGraphEdgeYLength = 35;
         translationGraphScaleFactor = 0.75f; // shrinks graphs to 75% size to fix in containing box
+        translationGraphCollisionXOffset = 0; // pushes colliding vertices this many pixels horizontally (pos or neg ok)
+        translationGraphCollisiionYOffset = -25; // pushes colliding vertices this many pixels vertically (pos or neg ok)
         translationGraphNodeDiameter = 18;
         translationGraphPanelWidth = 450;
         translationGraphPanelHeight = 800;
@@ -179,6 +183,8 @@ public class Options {
                 xmlGraphLayoutHeight,
                 xmlGraphEdgeXLength,
                 xmlGraphEdgeYLength,
+                translationGraphCollisionXOffset,
+                translationGraphCollisiionYOffset,
                 xmlGraphScaleFactor,
                 xmlGraphVertexAttractionMultiplier
         );
@@ -198,6 +204,8 @@ public class Options {
                 translationGraphLayoutHeight,
                 translationGraphEdgeXLength,
                 translationGraphEdgeYLength,
+                translationGraphCollisionXOffset,
+                translationGraphCollisiionYOffset,
                 translationGraphScaleFactor,
                 translationGraphVertexAttractionMultiplier
         );
@@ -217,6 +225,8 @@ public class Options {
                 translationGraphLayoutHeight,
                 translationGraphEdgeXLength,
                 translationGraphEdgeYLength,
+                translationGraphCollisionXOffset,
+                translationGraphCollisiionYOffset,
                 translationGraphScaleFactor,
                 translationGraphVertexAttractionMultiplier
         );
@@ -236,6 +246,8 @@ public class Options {
                 translationGraphLayoutHeight,
                 translationGraphEdgeXLength,
                 translationGraphEdgeYLength,
+                translationGraphCollisionXOffset,
+                translationGraphCollisiionYOffset,
                 translationGraphScaleFactor,
                 translationGraphVertexAttractionMultiplier
         );
