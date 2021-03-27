@@ -125,14 +125,14 @@ public class DrawGraph {
 
         // place root vertex
         tempXyCoords = new ArrayList<ArrayList<Double>>();
-        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0);
+        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0, null);
         Vertex rootVertex = vertexList.getRoot();
         VertexKind rootKind = rootVertex.getKind();
         placeVertex(rootVertex, rootXyCoords, layout);
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
-            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords);
+            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType);
             /*if (rootKind.equals(SEQUENTIAL) && graphType != XML_ONLY) {
                 placeSequentialRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
             } else if (rootKind.equals(PARALLEL) && graphType != XML_ONLY) {
@@ -154,7 +154,7 @@ public class DrawGraph {
 
     }
 
-    public void drawGraphAndMakePdf(JPanel thisGraphPanel, VertexList vertexList, VertexKind rootKind) throws IOException {
+    public void drawGraphAndMakePdf(JPanel thisGraphPanel, VertexList vertexList, VertexKind rootKind, DisplayType graphType) throws IOException {
 
         // clear temp lists between each graph
         tempPlacedVertices = new ArrayList<>();
@@ -208,12 +208,12 @@ public class DrawGraph {
 
         // place root vertex
         tempXyCoords = new ArrayList<ArrayList<Double>>();
-        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0);
+        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0, null);
         placeVertex(vertexList.getRoot(), rootXyCoords, layout);
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
-            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords);
+            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType);
         }
         for (Vertex vertex : vertexList.getList()) {
             if (vertex.getChildren()!= null) {
@@ -267,17 +267,60 @@ public class DrawGraph {
     // graph helpers
 
 
-    public static Point2D.Double calcXYSequentialCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, VertexStatus nodeStatus, String nodeName, Vertex vertex) {
+    public static Point2D.Double calcXYSequentialCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, VertexStatus nodeStatus, String nodeName, Vertex vertex, Point2D parentPos) {
         Float horizCenter = canvasWidth / 2f - 12;
+        horizCenter = (float) parentPos.getX();
         double x;
-        double leftSlot = horizCenter.intValue();
-        double middleSlot = leftSlot + vertexSiblingOffset * 1.00001;
-        double rightSlot = leftSlot + vertexSiblingOffset * 1.4;
+        double mainSlot = horizCenter.intValue();
+        double colWidth = vertexSiblingOffset;
+        // double middleSlot = leftSlot + vertexSiblingOffset * 1.00001;
+        // double rightSlot = leftSlot + vertexSiblingOffset * 1.4;
         String name = nodeName;
-        if (parentHorizPos == null || nodeStatus != TERMINATED) {
-            x = leftSlot;
-        } else {
 
+        if (parentHorizPos == null || nodeStatus != TERMINATED) { // if not a terminated, goes in left slot
+            x = mainSlot;
+
+        } else { // if a terminated, will go to the right of the main slot
+                 // how far right depends on if it has a parent that's a terminated. if so, it will go one half column to the right of the farthest right terminal parent
+                 // this is to cover situations like these https://imgur.com/a/tEkcUdh
+
+            ArrayList<Vertex> parents = vertex.getParents();
+            Double farthestRightTerminalPos = null;
+            Integer numTerminalParents = 0;
+            for (Vertex parent : parents) {
+                if (parent.getStatus() == TERMINATED) {
+                    numTerminalParents++;
+                }
+            }
+
+            if (numTerminalParents == 0) {
+                x = mainSlot + colWidth;
+            }
+            else if (numTerminalParents == 1) {
+                x = mainSlot;
+            } else {
+                for (Vertex parent : parents) {
+                    if (parent.getStatus() == TERMINATED) {
+                        if (parent.getTranslationGraphPos() != null) {
+                            Double thisParentPos = parent.getTranslationGraphPos().getX();
+                            if (farthestRightTerminalPos == null) {
+                                farthestRightTerminalPos = thisParentPos;
+                            } else {
+                                if (thisParentPos > farthestRightTerminalPos) {
+                                    farthestRightTerminalPos = thisParentPos;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (farthestRightTerminalPos == null) {
+                    x = mainSlot + colWidth;
+                } else {
+                    x = farthestRightTerminalPos + colWidth / 2;
+                }
+            }
+
+            /*
             ArrayList<Vertex> children = vertex.getChildren();
             Boolean found = false;
             if (children != null) {
@@ -293,14 +336,16 @@ public class DrawGraph {
             } else {
                 x = middleSlot;
             }
+            */
 
         }
         Integer y = level * vertexVertMultiplier;
         return new Point2D.Double(x, y);
     }
 
-        public static Point2D.Double calcXYParallelCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, VertexStatus nodeStatus, String nodeName, Vertex vertex) {
+        public static Point2D.Double calcXYParallelCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, VertexStatus nodeStatus, String nodeName, Vertex vertex, Point2D parentPos) {
         Float horizCenter = canvasWidth / 2f - 12;
+        horizCenter = (float) parentPos.getX();
         double x;
         double middleSlot = horizCenter.intValue();
         double colWidth = vertexSiblingOffset;
@@ -340,8 +385,14 @@ public class DrawGraph {
     }
 
 
-    public static Point2D.Double calcXYCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum) {
-        Float horizCenter = canvasWidth / 2f - 12;
+    public static Point2D.Double calcXYCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, Point2D parentPos) {
+        Float horizCenter;
+        if (parentPos == null) {
+            horizCenter = canvasWidth / 2f - 12;
+        } else {
+            horizCenter = (float) parentPos.getX();
+        }
+
         Integer x = horizCenter.intValue();
         Integer thisNodePos = x;
         Integer leftChildPos = x;
@@ -380,10 +431,11 @@ public class DrawGraph {
         level++;
         if (node.getChildren() != null) {
             Integer numChildren = node.getChildren().size();
+            Point2D parentPos = node.getTranslationGraphPos();
             for (Integer i=0; i<numChildren; i++) {
                 Vertex child = node.getChildren().get(i);
                 child.setSiblingNum(i);
-                Point2D.Double xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child);
+                Point2D.Double xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
 
                 // if not placed, then placed vertex
                 if (!tempPlacedVertices.contains(child)) {
@@ -414,10 +466,11 @@ public class DrawGraph {
         level++;
         if (node.getChildren() != null) {
             Integer numChildren = node.getChildren().size();
+            Point2D parentPos = node.getTranslationGraphPos();
             for (Integer i=0; i<numChildren; i++) {
                 Vertex child = node.getChildren().get(i);
                 child.setSiblingNum(i);
-                Point2D.Double xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child);
+                Point2D.Double xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
 
                 // if not placed, then placed vertex
                 if (!tempPlacedVertices.contains(child)) {
@@ -445,9 +498,10 @@ public class DrawGraph {
 
 
 
-    public static void placeChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, FRLayout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords) {
+    public static void placeChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, FRLayout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType) {
         level++;
         if (node.getChildren() != null) {
+            Point2D parentPos = node.getTranslationGraphPos();
             Integer numChildren = node.getChildren().size();
             for (Integer i=0; i<numChildren; i++) {
                 Vertex child = node.getChildren().get(i);
@@ -456,12 +510,12 @@ public class DrawGraph {
 
                 // calculate xy coordinates
                 Point2D.Double xyCoords;
-                if (childKind == SEQUENTIAL) {
-                    xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child);
+                if (childKind == SEQUENTIAL || rootKind == SEQUENTIAL && graphType != XML_ONLY) {
+                    xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
                 } else if (childKind == PARALLEL) {
-                    xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child);
+                    xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
                 } else {
-                    xyCoords = calcXYCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum());
+                    xyCoords = calcXYCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), parentPos);
                 }
 
                 // if not placed, then placed vertex
@@ -495,7 +549,7 @@ public class DrawGraph {
                     // run this on on children recursively
                     if (child.getChildren() != null) {
                         // placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
-                        placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D);
+                        placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType);
                     }
                 }
             }

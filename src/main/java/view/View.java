@@ -376,6 +376,11 @@ public class View extends JFrame implements Observer {
         if (appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
 
             Model debugModel = model;
+            String selectedFile = debugModel.getAnalyzerData().getSelections().getFiles()[0];
+            // TODO 3/27: add a check here for file you want to fix nested graph for
+            if (selectedFile == "TwoSteps.ljx") {
+                Integer debugPoint = 0;
+            }
 
 
             drawDefaultGraphs(drawGraph, type);
