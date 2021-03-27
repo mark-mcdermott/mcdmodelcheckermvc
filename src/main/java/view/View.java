@@ -374,6 +374,10 @@ public class View extends JFrame implements Observer {
         JPanel mainGraphPanel = components.mainGraphPanel;
 
         if (appState == ANALY_DEFAULT || appState == ANALY_RESULTS) {
+
+            Model debugModel = model;
+
+
             drawDefaultGraphs(drawGraph, type);
         } else if (appState == ANALY_COMP) {
             drawComparisonGraphs(drawGraph, type);
