@@ -125,7 +125,7 @@ public class DrawGraph {
 
         // place root vertex
         tempXyCoords = new ArrayList<ArrayList<Double>>();
-        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0, null);
+        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0, null, false, null);
         Vertex rootVertex = vertexList.getRoot();
         VertexKind rootKind = rootVertex.getKind();
         placeVertex(rootVertex, rootXyCoords, layout);
@@ -208,7 +208,7 @@ public class DrawGraph {
 
         // place root vertex
         tempXyCoords = new ArrayList<ArrayList<Double>>();
-        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0, null);
+        Point2D.Double rootXyCoords =  calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0, null, false, null);
         placeVertex(vertexList.getRoot(), rootXyCoords, layout);
 
         // place vertices and add edges
@@ -353,9 +353,11 @@ public class DrawGraph {
         if (parentHorizPos == null || nodeStatus == POSTED || nodeStatus == STARTED) {
             x = middleSlot;
         } else if (nodeStatus == COMPLETED) {
-            x = middleSlot - colWidth;
+            // x = middleSlot - colWidth;
+            x = middleSlot;
         } else if (nodeStatus == TERMINATED) {
-            x = middleSlot + colWidth;
+            // x = middleSlot + colWidth;
+            x = middleSlot;
         } else { // this is SUBSTEPS
 
             if (numChildren % 2 == 0) { // if num substeps is even
@@ -385,7 +387,7 @@ public class DrawGraph {
     }
 
 
-    public static Point2D.Double calcXYCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, Point2D parentPos) {
+    public static Point2D.Double calcXYCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, Point2D parentPos, Boolean isChildOfParallel, ArrayList<Vertex> siblings) {
         float horizCenter;
         if (parentPos == null) {
             horizCenter = canvasWidth / 2f - 12;
@@ -401,11 +403,17 @@ public class DrawGraph {
             // x = horizCenter.intValue();
             x = horizCenter;
         } else {
+
+            if (isChildOfParallel) {
+                Integer thisDebugPoint = 0;
+            }
+
             Integer initPos = parentHorizPos;
 
             // System.out.println("leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset * (level - 1) / 2) + parentSiblingNum * vertexSiblingOffset;");
             if (numChildren == 1) {
-                leftChildPos = initPos - ((numChildren) * vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
+                // leftChildPos = initPos - ((numChildren) * vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
+                leftChildPos = initPos - ((numChildren) * vertexSiblingOffset);
             } else {
                 // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
                 leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset);
@@ -414,11 +422,12 @@ public class DrawGraph {
             // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset * (level - 1)) + parentSiblingNum * vertexSiblingOffset;
             // if (leftChildPos != null && vertexSiblingOffset != null && numChild != null) {
             if (vertexSiblingOffset != null && numChild != null) {
+                // thisNodePos = leftChildPos + vertexSiblingOffset * (numChild + 1);
                 thisNodePos = leftChildPos + vertexSiblingOffset * (numChild + 1);
             }
             x = thisNodePos;
         }
-        Integer y = level * vertexVertMultiplier;
+        Integer y = (isChildOfParallel) ? (int) parentPos.getY() + vertexVertMultiplier : level * vertexVertMultiplier;
         return new Point2D.Double(x, y);
     }
 
@@ -507,19 +516,45 @@ public class DrawGraph {
         if (node.getChildren() != null) {
             Point2D parentPos = node.getTranslationGraphPos();
             Integer numChildren = node.getChildren().size();
+
             for (Integer i=0; i<numChildren; i++) {
                 Vertex child = node.getChildren().get(i);
                 child.setSiblingNum(i);
                 VertexKind childKind = child.getKind();
 
+                // check if child of parallel (special case)
+                Boolean isChildOfParallel = false;
+                for (Vertex parent : child.getParents()) {
+                    if (parent.getKind() == PARALLEL && parent.getStatus() == STARTED) {
+                        Vertex parStarted = parent;
+                        isChildOfParallel = true;
+                        parentPos = parStarted.getTranslationGraphPos();  // use the parentPos of the parent parallel started node, not just the node we traversed in on (this child is positioned directly underneath the parallel started node)
+
+                        // get correct sibling num (check how many children of parStarted are already placed)
+                        ArrayList<Vertex> childrenOfParallel = parStarted.getChildren();
+                        Integer numPlaced = 0;
+                        for (Vertex thisChildOfParallel : childrenOfParallel) {
+                            if (tempPlacedVertices.contains(thisChildOfParallel)) {
+                                numPlaced++;
+                            }
+                        }
+                        child.setSiblingNum(numPlaced);
+
+                        // get correct level
+                        double parStartedYPos = parStarted.getTranslationGraphPos().getY();
+                        level = (int) parStartedYPos / vertexVertMultiplier + 1;
+
+                    }
+                }
+
                 // calculate xy coordinates
                 Point2D.Double xyCoords;
-                if ((childKind == SEQUENTIAL || rootKind == SEQUENTIAL) && graphType != XML_ONLY) {
+                if (!isChildOfParallel && (childKind == SEQUENTIAL || rootKind == SEQUENTIAL) && graphType != XML_ONLY) {
                     xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
-                } else if (childKind == PARALLEL) {
+                } else if (!isChildOfParallel && childKind == PARALLEL) {
                     xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
                 } else {
-                    xyCoords = calcXYCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), parentPos);
+                    xyCoords = calcXYCoords(canvasWidth, level, vertexVertMultiplier, (int) parentPos.getX(), child.getSiblingNum(), numChildren, vertexSiblingOffset, node.getSiblingNum(), parentPos, isChildOfParallel, node.getChildren());
                 }
 
                 // if not placed, then placed vertex
@@ -529,17 +564,18 @@ public class DrawGraph {
                     Double childY = xyCoords.y;
 
                     // this fixes the rare node collision where two nodes print directly on top of each other
-                    /*
+                    Integer collisionOffset = 25;
                     for (ArrayList<Double> thisTempXyCoords : tempXyCoords) {
                         if (thisTempXyCoords.get(0) != null && thisTempXyCoords.get(1) != null) {
                             Double thisX = thisTempXyCoords.get(0);
                             Double thisY = thisTempXyCoords.get(1);
                             if (childX.equals(thisX) && childY.equals(thisY)) {
-                                xyCoords.x = childX + 100;
+                                // xyCoords.x = childX + collisionOffset;
+                                xyCoords.x = childX;
+                                xyCoords.y = childY - collisionOffset;
                             }
                         }
                     }
-                    */
 
                     // place vertex
                     ArrayList<Double> childXyCoords = new ArrayList<Double>();

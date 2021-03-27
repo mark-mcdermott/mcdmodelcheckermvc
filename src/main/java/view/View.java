@@ -378,7 +378,7 @@ public class View extends JFrame implements Observer {
             Model debugModel = model;
             String selectedFile = debugModel.getAnalyzerData().getSelections().getFiles()[0];
             // TODO 3/27: add a check here for file you want to fix nested graph for
-            if (selectedFile == "FiveSteps.ljx") {
+            if (selectedFile == "ParTwoSteps.ljx") {
                 Integer debugPoint = 0;
             }
 
