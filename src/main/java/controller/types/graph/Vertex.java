@@ -696,7 +696,8 @@ public class Vertex {
         } else {
             // output = "s" + number + ":" + kind + origNumber + " " + blurb;
             // output = "s" + number + ": " + kind + " " + origNumber;
-            output = "s" + number + ": " + kind + " " + kindNum;
+            // output = "s" + number + ": " + kind + " " + kindNum;
+            output = "s" + number + ": " + blurb + " (" + kind + " " + kindNum + ")";
         }
         return output;
     }

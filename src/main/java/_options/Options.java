@@ -118,8 +118,10 @@ public class Options {
         xmlGraphPanelHeight = 875;
         xmlGraphLayoutWidth = 275;
         xmlGraphLayoutHeight = 825;
+        // xmlGraphVertexAttractionMultiplier = .3;
         xmlGraphVertexAttractionMultiplier = .3;
-        xmlGraphVertexSiblingOffset = 150;
+        // xmlGraphVertexSiblingOffset = 150;
+        xmlGraphVertexSiblingOffset = 300;
 
         // translation graphs settings
         translationGraphEdgeXLength = 50; // 50 is default i think
@@ -127,7 +129,7 @@ public class Options {
         translationGraphScaleFactor = 0.75f; // shrinks graphs to 75% size to fix in containing box
         translationGraphCollisionXOffset = 0; // pushes colliding vertices this many pixels horizontally (pos or neg ok)
         // translationGraphCollisiionYOffset = -25; // pushes colliding vertices this many pixels vertically (pos or neg ok)
-        translationGraphCollisiionYOffset = -35; // pushes colliding vertices this many pixels vertically (pos or neg ok)
+        translationGraphCollisiionYOffset = 35; // pushes colliding vertices this many pixels vertically (pos or neg ok)
         translationGraphNodeDiameter = 18;
         translationGraphPanelWidth = 450;
         translationGraphPanelHeight = 800;
@@ -138,10 +140,10 @@ public class Options {
         translationGraphCanvasWidth = 475;
         translationGraphCanvasHeight = 350;
         // translationGraphVertexSiblingOffset = 150;
-        translationGraphVertexSiblingOffset = 50;
+        translationGraphVertexSiblingOffset = 25;
         translationGraphVertexAttractionMultiplier = .99;
         // translationGraphVertexVertMultiplier = 60;
-        translationGraphVertexVertMultiplier = 20;
+        translationGraphVertexVertMultiplier = 25;
 
         // interleavings graphs settings
         interleavingsGraphEdgeXLength = 50; // 50 is default i think

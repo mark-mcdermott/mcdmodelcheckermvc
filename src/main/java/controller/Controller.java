@@ -348,7 +348,8 @@ public class Controller {
         // String[] files = {"TransSeqTwoSubsteps.ljx"};
         // String[] files = {"covid-test-no-right-side.ljx"};
         // String[] files = {"Covid.ljx"};
-        String[] files = {"Bank-Parallel.ljx"};
+        // String[] files = {"Bank-Parallel.ljx"};
+        String[] files = {"ProcessChecks2.ljx"};
         // String[] files = {"OneStep.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?
         DisplayType displayType = ALL_GRAPHS;
         Integer step = null;
