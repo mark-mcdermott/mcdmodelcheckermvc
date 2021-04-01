@@ -7,10 +7,11 @@ import controller.types.graph.VertexKind;
 import controller.types.graph.VertexList;
 import controller.types.graph.VertexStatus;
 import controller.utils.ListHelper;
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.graph.DirectedGraph;
-import edu.uci.ics.jung.graph.DirectedSparseMultigraph;
+import edu.uci.ics.jung.algorithms.layout.StaticLayout;
+import edu.uci.ics.jung.graph.*;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
 import edu.uci.ics.jung.visualization.VisualizationImageServer;
 import edu.uci.ics.jung.visualization.VisualizationViewer;
@@ -77,6 +78,91 @@ public class DrawGraph {
         this.vertexAttractionMultiplier = directedGraphOptions.getVertexAttractionMultiplier();
     }
 
+        public void drawSingleNodeGraph(JPanel thisGraphPanel, VertexList vertexList, DisplayType graphType) {
+
+        // clear temp lists between each graph
+        tempPlacedVertices = new ArrayList<>();
+        tempXyCoords = new ArrayList<>();
+
+        // init vars
+        VisualizationViewer<Vertex,Integer> visualizationViewer;
+        KeyListener graphMouseKeyListener;
+
+        // create directed graph
+        UndirectedSparseMultigraph<Vertex, Integer> graph = new UndirectedSparseMultigraph<Vertex, Integer>();
+        Layout<Vertex, Integer> layout = new CircleLayout<Vertex, Integer>(graph);
+
+        // create jung layout and visualization viewer
+        // StaticLayout<Vertex, Integer> layout = new StaticLayout<Vertex, Integer>(graph);
+        visualizationViewer = new VisualizationViewer<Vertex,Integer>(layout);
+
+        // set dimensions
+        layout.setSize(new Dimension(layoutWidth, layoutHeight));
+        // layout.setAttractionMultiplier(vertexAttractionMultiplier);
+        visualizationViewer.setPreferredSize(new Dimension(layoutWidth, layoutHeight));
+        visualizationViewer.setBackground(Color.white);
+
+        // grey vertices
+        Transformer<Vertex, Paint> vertexPaint = new Transformer<Vertex, Paint>() {
+            public Paint transform(Vertex i) { return Color.LIGHT_GRAY; }
+        };
+
+        // shrink the vertices a bit
+        visualizationViewer.getRenderContext().setVertexShapeTransformer(n -> {
+            int xyOffset = nodeDiameter / -2; // xyOffset recenters the vertices after shrinking them
+            return new Ellipse2D.Double(xyOffset, xyOffset, nodeDiameter, nodeDiameter);
+        });
+
+        visualizationViewer.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
+        visualizationViewer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+        visualizationViewer.getRenderer().getVertexLabelRenderer().setPosition(edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position.E);
+
+        // shrink the whole tree a bit
+        ScalingControl scaler = new ViewScalingControl();
+        scaler.scale(visualizationViewer, scaleFactor, visualizationViewer.getCenter());
+
+        // setup mouse zoom
+        final AbstractModalGraphMouse graphMouse = new DefaultModalGraphMouse<Vertex, Number>();
+        visualizationViewer.setGraphMouse(graphMouse);
+        visualizationViewer.addKeyListener((graphMouse.getModeKeyListener()));
+        GraphZoomScrollPane graphZoomScrollPane = new GraphZoomScrollPane(visualizationViewer);
+        thisGraphPanel.add(graphZoomScrollPane);
+        visualizationViewer.setGraphMouse(graphMouse);
+        graphMouseKeyListener = graphMouse.getModeKeyListener();
+        visualizationViewer.addKeyListener(graphMouseKeyListener);
+
+        // place root vertex
+        tempXyCoords = new ArrayList<ArrayList<Double>>();
+        Point2D.Double rootXyCoords = calcXYCoords(layoutWidth, level, vertexVertMultiplier, null, 0, 1, vertexSiblingOffset, 0, null, false, null, null);
+        Vertex rootVertex = vertexList.getRoot();
+        VertexKind rootKind = rootVertex.getKind();
+        placeVertex(rootVertex, rootXyCoords, layout);
+
+        // place vertices and add edges
+        if (vertexList.getRoot().getChildren() != null) {
+            placeStaticChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest);
+            /*if (rootKind.equals(SEQUENTIAL) && graphType != XML_ONLY) {
+                placeSequentialRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
+            } else if (rootKind.equals(PARALLEL) && graphType != XML_ONLY) {
+                placeParallelRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
+            } else {
+                placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
+            }*/
+        }
+        /*
+        for (Vertex vertex : vertexList.getList()) {
+            if (vertex.getChildren()!= null) {
+                for (Vertex child : vertex.getChildren()) {
+                    graph.addEdge(numEdges, vertex, child);
+                    numEdges++;
+                }
+            }
+        }
+        */
+
+
+    }
+
     public void drawGraph(JPanel thisGraphPanel, VertexList vertexList, DisplayType graphType) {
 
         // clear temp lists between each graph
@@ -89,6 +175,7 @@ public class DrawGraph {
 
         // create directed graph
         DirectedGraph<Vertex, Integer> graph = new DirectedSparseMultigraph<Vertex, Integer>();
+        // DirectedGraph<Vertex, Integer> graph = new DirectedGraph<>();
 
         // create jung layout and visualization viewer
         FRLayout layout = new FRLayout<Vertex, Integer>(graph);
@@ -155,8 +242,6 @@ public class DrawGraph {
                 }
             }
         }
-
-
 
     }
 
@@ -426,19 +511,19 @@ public class DrawGraph {
 
             // System.out.println("leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset * (level - 1) / 2) + parentSiblingNum * vertexSiblingOffset;");
             if (numChildren == 1) {
-                // leftChildPos = initPos - ((numChildren) * vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
-                leftChildPos = initPos - ((numChildren) * vertexSiblingOffset);
+                leftChildPos = initPos - ((numChildren) * vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
+                // leftChildPos = initPos - ((numChildren) * vertexSiblingOffset);
             } else {
-                // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
+                leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
                 // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset);
-                leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2);
+                // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2);
             }
             // System.out.println(leftChildPos+" = "+initPos+" - (("+numChildren+" - 1) * "+vertexSiblingOffset+" / 2) - ("+vertexSiblingOffset+" * ("+level+" - 1) / 2) + "+parentSiblingNum+" * "+vertexSiblingOffset+"\n");
             // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset * (level - 1)) + parentSiblingNum * vertexSiblingOffset;
             // if (leftChildPos != null && vertexSiblingOffset != null && numChild != null) {
             if (vertexSiblingOffset != null && numChild != null) {
-                // thisNodePos = leftChildPos + vertexSiblingOffset * (numChild + 1);
-                thisNodePos = leftChildPos + vertexSiblingOffset * numChild;
+                thisNodePos = leftChildPos + vertexSiblingOffset * (numChild + 1);
+                // thisNodePos = leftChildPos + vertexSiblingOffset * numChild;
             }
             x = thisNodePos;
         }
@@ -594,9 +679,10 @@ public class DrawGraph {
                             Double thisX = thisTempXyCoords.get(0);
                             Double thisY = thisTempXyCoords.get(1);
                             // if (childX.equals(thisX) && childY.equals(thisY)) {
-                            if (abs(childX - thisX) < 10 && abs(childY - thisY) < 10) {
+                            // if (abs(childX - thisX) < 10 && abs(childY - thisY) < 10) {
+                            if (abs(childY - thisY) < 10) {
 
-                                xyCoords.x = childX + collisionXOffset;
+                                // xyCoords.x = childX + collisionXOffset;
                                 // Integer randomYOffset = randomNum(25,100);
                                 xyCoords.y = childY + collisionYOffest;
                                 // xyCoords.y = childY + randomYOffset;
@@ -617,6 +703,100 @@ public class DrawGraph {
                     if (child.getChildren() != null) {
                         // placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
                         placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType, collisionXOffset, collisionYOffest);
+                    }
+                }
+            }
+        }
+    }
+
+    public static void placeStaticChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, Layout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType, Integer collisionXOffset, Integer collisionYOffest) {
+        level++;
+        if (node.getChildren() != null) {
+            Point2D parentPos = node.getTranslationGraphPos();
+            Integer numChildren = node.getChildren().size();
+            Vertex prevChild = null;
+            VertexKind prevChildKind = null;
+
+            for (Integer i=0; i<numChildren; i++) {
+                Vertex child = node.getChildren().get(i);
+                child.setSiblingNum(i);
+                VertexKind childKind = child.getKind();
+                if (i>0) {
+                    prevChild = node.getChildren().get(i-1);
+                    prevChildKind = prevChild.getKind();
+                }
+
+                // check if child of parallel (special case)
+                Boolean isChildOfParallel = false;
+                for (Vertex parent : child.getParents()) {
+                    if (parent.getKind() == PARALLEL && parent.getStatus() == STARTED) {
+                        Vertex parStarted = parent;
+                        isChildOfParallel = true;
+                        parentPos = parStarted.getTranslationGraphPos();  // use the parentPos of the parent parallel started node, not just the node we traversed in on (this child is positioned directly underneath the parallel started node)
+
+                        // get correct sibling num (check how many children of parStarted are already placed)
+                        ArrayList<Vertex> childrenOfParallel = parStarted.getChildren();
+                        Integer numPlaced = 0;
+                        for (Vertex thisChildOfParallel : childrenOfParallel) {
+                            if (tempPlacedVertices.contains(thisChildOfParallel)) {
+                                numPlaced++;
+                            }
+                        }
+                        child.setSiblingNum(numPlaced);
+
+                        // get correct level
+                        double parStartedYPos = parStarted.getTranslationGraphPos().getY();
+                        level = (int) parStartedYPos / vertexVertMultiplier + 1;
+
+                    }
+                }
+
+                // calculate xy coordinates
+                Point2D.Double xyCoords;
+                if (!isChildOfParallel && (childKind == SEQUENTIAL || rootKind == SEQUENTIAL) && graphType != XML_ONLY) {
+                    xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
+                } else if (!isChildOfParallel && childKind == PARALLEL) {
+                    xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
+                } else {
+                    xyCoords = calcXYCoords(canvasWidth, level, vertexVertMultiplier, (int) parentPos.getX(), child.getSiblingNum(), numChildren, vertexSiblingOffset, node.getSiblingNum(), parentPos, isChildOfParallel, node.getChildren(), prevChildKind);
+                }
+
+                // if not placed, then placed vertex
+                if (!tempPlacedVertices.contains(child)) {
+
+                    Double childX = xyCoords.x;
+                    Double childY = xyCoords.y;
+
+                    // this fixes the rare node collision where two nodes print directly on top of each other
+                    for (ArrayList<Double> thisTempXyCoords : tempXyCoords) {
+                        if (thisTempXyCoords.get(0) != null && thisTempXyCoords.get(1) != null) {
+                            Double thisX = thisTempXyCoords.get(0);
+                            Double thisY = thisTempXyCoords.get(1);
+                            // if (childX.equals(thisX) && childY.equals(thisY)) {
+                            // if (abs(childX - thisX) < 10 && abs(childY - thisY) < 10) {
+                            if (abs(childY - thisY) < 10) {
+
+                                // xyCoords.x = childX + collisionXOffset;
+                                // Integer randomYOffset = randomNum(25,100);
+                                xyCoords.y = childY + collisionYOffest;
+                                // xyCoords.y = childY + randomYOffset;
+                            }
+                        }
+                    }
+
+                    // place vertex
+                    ArrayList<Double> childXyCoords = new ArrayList<Double>();
+                    Point2D.Double childXyCoordsPoint2D = new Point2D.Double(childX,childY);
+                    childXyCoords.add(childX);
+                    childXyCoords.add(childY);
+                    tempXyCoords.add(childXyCoords);
+                    // placeVertex(child, xyCoords, layout, xyCoords, childXyCoords);
+                    placeVertex(child, xyCoords, layout);
+
+                    // run this on on children recursively
+                    if (child.getChildren() != null) {
+                        // placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
+                        placeStaticChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType, collisionXOffset, collisionYOffest);
                     }
                 }
             }

@@ -370,7 +370,7 @@ public class View extends JFrame implements Observer {
         // get necessary vars
         // AppState appState = model.getAppState();
         // DisplayType type = model.getSelectedDisplay();
-        DisplayType type = XML_ONLY;
+        DisplayType type = ALL_GRAPHS;
         DrawGraph drawGraph = new DrawGraph(graphOptions);
         JPanel mainGraphPanel = components.mainGraphPanel;
 

@@ -129,7 +129,7 @@ public class Options {
         translationGraphScaleFactor = 0.75f; // shrinks graphs to 75% size to fix in containing box
         translationGraphCollisionXOffset = 0; // pushes colliding vertices this many pixels horizontally (pos or neg ok)
         // translationGraphCollisiionYOffset = -25; // pushes colliding vertices this many pixels vertically (pos or neg ok)
-        translationGraphCollisiionYOffset = 35; // pushes colliding vertices this many pixels vertically (pos or neg ok)
+        translationGraphCollisiionYOffset = -5; // pushes colliding vertices this many pixels vertically (pos or neg ok)
         translationGraphNodeDiameter = 18;
         translationGraphPanelWidth = 450;
         translationGraphPanelHeight = 800;
@@ -143,7 +143,7 @@ public class Options {
         translationGraphVertexSiblingOffset = 25;
         translationGraphVertexAttractionMultiplier = .99;
         // translationGraphVertexVertMultiplier = 60;
-        translationGraphVertexVertMultiplier = 25;
+        translationGraphVertexVertMultiplier = 10;
 
         // interleavings graphs settings
         interleavingsGraphEdgeXLength = 50; // 50 is default i think

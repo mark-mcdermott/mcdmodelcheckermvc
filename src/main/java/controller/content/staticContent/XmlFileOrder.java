@@ -6,8 +6,8 @@ public class XmlFileOrder {
 
     public XmlFileOrder() {
         // fileOrder = new String[] {"TransSeqTwoSubsteps.ljx"};
-        // fileOrder = new String[] {"OneStep.ljx","TwoSteps.ljx","ThreeSteps.ljx","FourSteps.ljx","FiveSteps.ljx","SeqTest.ljx","ParTwoSteps.ljx","ParThreeStep.ljx","TransSeqTwoSubsteps.ljx","TransParTwoSubsteps.ljx"};
-        fileOrder = new String[] {"ProcessChecks2.ljx", "OneStep.ljx","TwoSteps.ljx","ThreeSteps.ljx","FourSteps.ljx","FiveSteps.ljx","SeqTest.ljx","ParTwoSteps.ljx","ParThreeStep.ljx","TransSeqTwoSubsteps.ljx","TransParTwoSubsteps.ljx"};
+        fileOrder = new String[] {"OneStep.ljx","TwoSteps.ljx","ThreeSteps.ljx","FourSteps.ljx","FiveSteps.ljx","SeqTest.ljx","ParTwoSteps.ljx","ParThreeStep.ljx","TransSeqTwoSubsteps.ljx","TransParTwoSubsteps.ljx"};
+        // fileOrder = new String[] {"ProcessChecks2.ljx", "OneStep.ljx","TwoSteps.ljx","ThreeSteps.ljx","FourSteps.ljx","FiveSteps.ljx","SeqTest.ljx","ParTwoSteps.ljx","ParThreeStep.ljx","TransSeqTwoSubsteps.ljx","TransParTwoSubsteps.ljx"};
         // fileOrder = new String[] {"Bank-Parallel.ljx"};
         // fileOrder = new String[] {"ProcessChecks2.ljx"};
         // fileOrder = new String[] {"covid-test-no-right-side.ljx"};
