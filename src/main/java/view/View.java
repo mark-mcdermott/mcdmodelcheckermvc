@@ -370,7 +370,11 @@ public class View extends JFrame implements Observer {
         // get necessary vars
         // AppState appState = model.getAppState();
         // DisplayType type = model.getSelectedDisplay();
-        DisplayType type = ALL_GRAPHS;
+
+        // TODO: swap these two lines!!
+        // DisplayType type = ALL_GRAPHS;
+        DisplayType type = XML_ONLY;
+
         DrawGraph drawGraph = new DrawGraph(graphOptions);
         JPanel mainGraphPanel = components.mainGraphPanel;
 
@@ -379,11 +383,9 @@ public class View extends JFrame implements Observer {
             Model debugModel = model;
             String selectedFile = debugModel.getAnalyzerData().getSelections().getFiles()[0];
             // TODO 3/27: add a check here for file you want to fix nested graph for
-            if (selectedFile == "ParTwoSteps.ljx") {
+            if (selectedFile == "ProcessChecks.ljx") {
                 Integer debugPoint = 0;
             }
-
-
             drawDefaultGraphs(drawGraph, type);
         } else if (appState == ANALY_COMP) {
             drawComparisonGraphs(drawGraph, type);
@@ -418,14 +420,14 @@ public class View extends JFrame implements Observer {
 
         // add one-across graph and its title
         if (displayType == XML_ONLY) {
-            drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList(), displayType);
+            drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList(), displayType, model.getSelectedFiles()[0]);
             components.graphPanel1Title.setText("XML");
         } else if (displayType == TRANS_ONLY) {
-            drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList(), displayType);
+            drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList(), displayType, model.getSelectedFiles()[0]);
             components.graphPanel1Title.setText("Translation");
         } else if (displayType == INTER_ONLY) {
             // drawGraph.drawGraphAndMakePdf(components.graphPanel1, model.getInterleavingsVertexList());
-            drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList(), displayType);
+            drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList(), displayType, model.getSelectedFiles()[0]);
             components.graphPanel1Title.setText("Interleavings");
         }
     }
@@ -447,8 +449,8 @@ public class View extends JFrame implements Observer {
         Integer stepX = stepGraphSelectedStep.getNumTotalSteps();
         Integer stepXMinus1 = stepX - 1;
 
-        drawGraph.drawGraph(components.graphPanel1, stepGraphSelectedStepMinusOne, TWO_GRAPHS);
-        drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep, TWO_GRAPHS);
+        drawGraph.drawGraph(components.graphPanel1, stepGraphSelectedStepMinusOne, TWO_GRAPHS, model.getSelectedFiles()[0]);
+        drawGraph.drawGraph(components.graphPanel2, stepGraphSelectedStep, TWO_GRAPHS, model.getSelectedFiles()[0]);
 
         if (type == TRANS_COMP) {
             components.graphPanel1Title.setText("Translation Step " + stepXMinus1.toString());
@@ -461,9 +463,9 @@ public class View extends JFrame implements Observer {
 
     private void drawThreeAcrossGraphs(DrawGraph drawGraph) {
         // draw three-across graphs
-        drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList(), XML_ONLY);
-        drawGraph.drawGraph(components.graphPanel2, model.getTranslationVertexList(), TRANS_ONLY);
-        drawGraph.drawGraph(components.graphPanel3, model.getInterleavingsVertexList(), INTER_ONLY);
+        drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList(), XML_ONLY, model.getSelectedFiles()[0]);
+        drawGraph.drawGraph(components.graphPanel2, model.getTranslationVertexList(), TRANS_ONLY, model.getSelectedFiles()[0]);
+        drawGraph.drawGraph(components.graphPanel3, model.getInterleavingsVertexList(), INTER_ONLY, model.getSelectedFiles()[0]);
         // add three-across graphs
         components.mainGraphPanel.remove(components.graphPanel1);
         components.mainGraphPanel.add(components.graphPanel1, new BorderLayout());

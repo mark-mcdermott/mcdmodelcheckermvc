@@ -345,7 +345,7 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        String[] files = {"OneStep.ljx"};
+        String[] files = {"ProcessTransfers.ljx"};
         // String[] files = {"covid-test-no-right-side.ljx"};
         // String[] files = {"Covid.ljx"};
         // String[] files = {"Bank-Parallel.ljx"};

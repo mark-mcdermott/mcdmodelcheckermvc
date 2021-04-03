@@ -27,8 +27,14 @@
             <step-declaration id="_56" kind="sequential" name="processTransfers(transfers)" property="processing transfers">
                   <step-declaration id="_43" kind="sequential" name="processTransfer(transfer)">
                         <step-declaration id="_51" kind="leaf" name="get transfer details variables from transfer" />
-                        <step-declaration id="_38" kind="leaf" name="process from member account transaction" />
-                        <step-declaration id="_57" kind="leaf" name="process to member account transaction"  />
+                        <step-declaration id="_38" kind="leaf" name="process from account transaction">
+                              <step-declaration id="_53" kind="leaf" name="fromAcct = bank.getAcct" />
+                              <step-declaration id="_37" kind="leaf" name="fromAcct.withdraw" />
+                        </step-declaration>
+                        <step-declaration id="_57" kind="sequential" name="process to member account transaction">
+                              <step-declaration id="_53" kind="leaf" name="toAcct = bank.getAcct" />
+                              <step-declaration id="_37" kind="leaf" name="toAcct.deposit" />
+                        </step-declaration>
                   </step-declaration>
             </step-declaration>
       </step-declaration>

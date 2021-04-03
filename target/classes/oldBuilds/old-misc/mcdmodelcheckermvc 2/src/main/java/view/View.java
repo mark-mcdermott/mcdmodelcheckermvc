@@ -385,13 +385,13 @@ public class View extends JFrame implements Observer {
         components.graphPanel1.setPreferredSize(new Dimension(options.getGraphLayout1AcrossWidth(), options.getGraphLayoutsHeight()));
         // add one-across graph and its title
         if (displayType == XML_ONLY) {
-            drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList());
+            drawGraph.drawGraph(components.graphPanel1, model.getXmlVertexList(), model.getSelectedFiles()[0]);
             components.graphPanel1Title.setText("XML");
         } else if (displayType == TRANS_ONLY) {
-            drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList());
+            drawGraph.drawGraph(components.graphPanel1, model.getTranslationVertexList(), model.getSelectedFiles()[0]);
             components.graphPanel1Title.setText("Translation");
         } else if (displayType == INTER_ONLY) {
-            drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList());
+            drawGraph.drawGraph(components.graphPanel1, model.getInterleavingsVertexList(), model.getSelectedFiles()[0]);
             components.graphPanel1Title.setText("Interleavings");
         }
     }

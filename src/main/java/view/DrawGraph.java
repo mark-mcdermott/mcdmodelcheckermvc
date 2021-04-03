@@ -2,10 +2,7 @@ package view;
 
 import _options.DirectedGraphOptions;
 import controller.types.analyzer.analyzerData.DisplayType;
-import controller.types.graph.Vertex;
-import controller.types.graph.VertexKind;
-import controller.types.graph.VertexList;
-import controller.types.graph.VertexStatus;
+import controller.types.graph.*;
 import controller.utils.ListHelper;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
@@ -32,6 +29,7 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -39,6 +37,7 @@ import static controller.types.analyzer.analyzerData.DisplayType.INTER_ONLY;
 import static controller.types.analyzer.analyzerData.DisplayType.XML_ONLY;
 import static controller.types.graph.VertexKind.PARALLEL;
 import static controller.types.graph.VertexKind.SEQUENTIAL;
+import static controller.types.graph.HardCodedNode.*;
 import static controller.types.graph.VertexStatus.*;
 import static java.lang.StrictMath.abs;
 
@@ -57,6 +56,65 @@ public class DrawGraph {
     private Integer collisionYOffest;
     private float scaleFactor;
     private double vertexAttractionMultiplier;
+
+
+
+    // process checks xml graph
+    static HardCodedNode[] processChecksHardcodedNodes = {
+            new HardCodedNode("s0", 125,5 ),
+            new HardCodedNode("s1", 98,19 ),
+            new HardCodedNode("s2", 120,18 ),
+            new HardCodedNode("s3", 115,23 ),
+            new HardCodedNode("s4", 94,31 ),
+            new HardCodedNode("s5", 95,38 ),
+            new HardCodedNode("s6", 105,44 ),
+            new HardCodedNode("s7", 100,50 ),
+            new HardCodedNode("s8", 103,53 ),
+            new HardCodedNode("s9", 109,56 ),
+            new HardCodedNode("s10", 121,27 ),
+            new HardCodedNode("s11", 136,32 ),
+            new HardCodedNode("s12", 130,39 ),
+            new HardCodedNode("s13", 146,36 ),
+            new HardCodedNode("s14", 135,45 ),
+            new HardCodedNode("s15", 140,48 ),
+            new HardCodedNode("s16", 145,51 ),
+            new HardCodedNode("s17", 150,54 ),
+            new HardCodedNode("s18", 150,13 ),
+            new HardCodedNode("s19", 160,18 ),
+            new HardCodedNode("s20", 147,24 ),
+            new HardCodedNode("s21", 160,21 ),
+    };
+
+        static HardCodedNode[] processTransfersHardcodedNodes = {
+            new HardCodedNode("s0", 125,5 ),
+            new HardCodedNode("s1", 98,19 ),
+            new HardCodedNode("s2", 102,24 ),
+            new HardCodedNode("s3", 94,37 ),
+            new HardCodedNode("s4", 89,41 ),
+            new HardCodedNode("s5", 90,46 ),
+            new HardCodedNode("s6", 93,51 ),
+            new HardCodedNode("s7", 100,56 ),
+            new HardCodedNode("s8", 95,60 ),
+            new HardCodedNode("s9", 100,63 ),
+            new HardCodedNode("s10", 109,66 ),
+            new HardCodedNode("s11", 108,54 ),
+            new HardCodedNode("s12", 102,31 ),
+            new HardCodedNode("s13", 98,34 ),
+            new HardCodedNode("s14", 135,45 ),
+            new HardCodedNode("s15", 130,48 ),
+            new HardCodedNode("s16", 135,51 ),
+            new HardCodedNode("s17", 140,54 ),
+            new HardCodedNode("s18", 145,57 ),
+            new HardCodedNode("s19", 135,14 ),
+            new HardCodedNode("s20", 135,17 ),
+            new HardCodedNode("s21", 128,28 ),
+            new HardCodedNode("s22", 136,31 ),
+            new HardCodedNode("s23", 127,34 ),
+            new HardCodedNode("s24", 132,40 ),
+            new HardCodedNode("s25", 140,21 ),
+            new HardCodedNode("s26", 140,24 ),
+            new HardCodedNode("s27", 150,26 ),
+    };
 
     // TODO: delete these?
     public static ArrayList<Vertex> tempPlacedVertices = new ArrayList<Vertex>();
@@ -163,7 +221,7 @@ public class DrawGraph {
 
     }
 
-    public void drawGraph(JPanel thisGraphPanel, VertexList vertexList, DisplayType graphType) {
+    public void drawGraph(JPanel thisGraphPanel, VertexList vertexList, DisplayType graphType, String file) {
 
         // clear temp lists between each graph
         tempPlacedVertices = new ArrayList<>();
@@ -225,7 +283,7 @@ public class DrawGraph {
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
-            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest);
+            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest, file);
             /*if (rootKind.equals(SEQUENTIAL) && graphType != XML_ONLY) {
                 placeSequentialRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
             } else if (rootKind.equals(PARALLEL) && graphType != XML_ONLY) {
@@ -245,7 +303,7 @@ public class DrawGraph {
 
     }
 
-    public void drawGraphAndMakePdf(JPanel thisGraphPanel, VertexList vertexList, VertexKind rootKind, DisplayType graphType) throws IOException {
+    public void drawGraphAndMakePdf(JPanel thisGraphPanel, VertexList vertexList, VertexKind rootKind, DisplayType graphType, String file) throws IOException {
 
         // clear temp lists between each graph
         tempPlacedVertices = new ArrayList<>();
@@ -304,7 +362,7 @@ public class DrawGraph {
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
-            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest);
+            placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest, file);
         }
         for (Vertex vertex : vertexList.getList()) {
             if (vertex.getChildren()!= null) {
@@ -491,7 +549,8 @@ public class DrawGraph {
         if (parentPos == null) {
             horizCenter = canvasWidth / 2f - 12;
         } else {
-            horizCenter = (float) parentPos.getX();
+            // horizCenter = (float) parentPos.getX();
+            horizCenter = canvasWidth / 2f - 12;
         }
 
         // Integer x = horizCenter.intValue();
@@ -514,8 +573,8 @@ public class DrawGraph {
                 leftChildPos = initPos - ((numChildren) * vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
                 // leftChildPos = initPos - ((numChildren) * vertexSiblingOffset);
             } else {
-                leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
-                // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset);
+                // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
+                leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset);
                 // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2);
             }
             // System.out.println(leftChildPos+" = "+initPos+" - (("+numChildren+" - 1) * "+vertexSiblingOffset+" / 2) - ("+vertexSiblingOffset+" * ("+level+" - 1) / 2) + "+parentSiblingNum+" * "+vertexSiblingOffset+"\n");
@@ -613,9 +672,66 @@ public class DrawGraph {
         }
     }
 
+    public static Boolean checkNodeForCollision(ArrayList<Double> oldNode, Point2D.Double thisNode) {
+        Boolean collision = false;
+        if (abs(oldNode.get(0) - thisNode.x) <= 50 && abs(oldNode.get(1) - thisNode.y) < 10) {
+            collision = true;
+        } else {
+            collision = false;
+        }
+        return collision;
+    }
+
+    public static Double getYCollision(ArrayList<ArrayList<Double>> oldNodes, Point2D.Double thisNode) {
+        Double collisionY = -1.0;
+        for (ArrayList<Double> oldNode : oldNodes) {
+            if (checkNodeForCollision(oldNode, thisNode)) {
+                collisionY = thisNode.y;
+                return collisionY;
+            }
+        }
+        return collisionY;
+    }
+
+    public static Point2D.Double collisionCorrect(ArrayList<ArrayList<Double>> oldNodes, Point2D.Double thisNode, Integer yOffset, Integer level, Integer numChild, String name) {
+        if (level == 2 && numChild == 2) {
+            thisNode.x = thisNode.x + 30;
+        }
+        Double yCollisionPoint = getYCollision(oldNodes, thisNode);
+        if (yCollisionPoint != -1.0) {
+            thisNode.y = thisNode.y - yOffset;
+        }
+        while (yCollisionPoint != -1.0) {
+            yCollisionPoint = getYCollision(oldNodes, thisNode);
+            if (yCollisionPoint != -1.0) {
+                thisNode.y = thisNode.y - yOffset;
+            }
+        }
+        return thisNode;
+    }
+
+    public static Point2D.Double getHardcodedCoords(String file, String nodeName) {
+        if (file.equals("ProcessChecks.ljx")) {
+            for (HardCodedNode hardCodedNode : processChecksHardcodedNodes) {
+                String hardCodedNodeName = hardCodedNode.getName();
+                if (hardCodedNodeName.equals(nodeName)) {
+                    return hardCodedNode.getXy();
+                }
+            }
+        } else if (file.equals("ProcessTransfers.ljx")) {
+            for (HardCodedNode hardCodedNode : processTransfersHardcodedNodes) {
+                String hardCodedNodeName = hardCodedNode.getName();
+                if (hardCodedNodeName.equals(nodeName)) {
+                    return hardCodedNode.getXy();
+                }
+            }
+        }
+        return null;
+    }
 
 
-    public static void placeChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, FRLayout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType, Integer collisionXOffset, Integer collisionYOffest) {
+
+    public static void placeChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, FRLayout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType, Integer collisionXOffset, Integer collisionYOffest, String file) {
         level++;
         if (node.getChildren() != null) {
             Point2D parentPos = node.getTranslationGraphPos();
@@ -624,9 +740,11 @@ public class DrawGraph {
             VertexKind prevChildKind = null;
 
             for (Integer i=0; i<numChildren; i++) {
+                Integer numChild = i;
                 Vertex child = node.getChildren().get(i);
                 child.setSiblingNum(i);
                 VertexKind childKind = child.getKind();
+                String childName = child.getName();
                 if (i>0) {
                     prevChild = node.getChildren().get(i-1);
                     prevChildKind = prevChild.getKind();
@@ -659,7 +777,11 @@ public class DrawGraph {
 
                 // calculate xy coordinates
                 Point2D.Double xyCoords;
-                if (!isChildOfParallel && (childKind == SEQUENTIAL || rootKind == SEQUENTIAL) && graphType != XML_ONLY) {
+
+                Point2D.Double hardcodedCoords = getHardcodedCoords(file, child.getName());
+                if (hardcodedCoords != null) {
+                    xyCoords = hardcodedCoords;
+                } else if (!isChildOfParallel && (childKind == SEQUENTIAL || rootKind == SEQUENTIAL) && graphType != XML_ONLY) {
                     xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
                 } else if (!isChildOfParallel && childKind == PARALLEL) {
                     xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
@@ -672,23 +794,43 @@ public class DrawGraph {
 
                     Double childX = xyCoords.x;
                     Double childY = xyCoords.y;
+                    ArrayList<Double> doubleArrCoords = new ArrayList<>();
+                    doubleArrCoords.add(childX);
+                    doubleArrCoords.add(childY);
+                    Point2D.Double childXY = new Point2D.Double(childX,childY);
+
+                    Double collisionY = -1.0;
+                    Double oldY;
+                    do {
+                        oldY = childY;
+                        // childY = collisionCorrect(tempXyCoords,childXY,collisionYOffest);
+                    } while (oldY != childY);
+
+                    // collisionCorrect(tempXyCoords, xyCoords);
+                    childY = xyCoords.y;
 
                     // this fixes the rare node collision where two nodes print directly on top of each other
+                    /*
+                    Boolean collision = false;
                     for (ArrayList<Double> thisTempXyCoords : tempXyCoords) {
                         if (thisTempXyCoords.get(0) != null && thisTempXyCoords.get(1) != null) {
                             Double thisX = thisTempXyCoords.get(0);
                             Double thisY = thisTempXyCoords.get(1);
                             // if (childX.equals(thisX) && childY.equals(thisY)) {
-                            // if (abs(childX - thisX) < 10 && abs(childY - thisY) < 10) {
-                            if (abs(childY - thisY) < 10) {
+                            if (abs(childX - thisX) <= 50 && abs(childY - thisY) < 10) {
+                                collision = true;
+                            // if (abs(childY - thisY) <= 10) {
 
                                 // xyCoords.x = childX + collisionXOffset;
                                 // Integer randomYOffset = randomNum(25,100);
-                                xyCoords.y = childY + collisionYOffest;
+                                Double newY = childY - collisionYOffest;
+                                xyCoords.y = newY;
+                                childY = newY;
                                 // xyCoords.y = childY + randomYOffset;
                             }
                         }
                     }
+                    */
 
                     // place vertex
                     ArrayList<Double> childXyCoords = new ArrayList<Double>();
@@ -702,7 +844,7 @@ public class DrawGraph {
                     // run this on on children recursively
                     if (child.getChildren() != null) {
                         // placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
-                        placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType, collisionXOffset, collisionYOffest);
+                        placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType, collisionXOffset, collisionYOffest, file);
                     }
                 }
             }
