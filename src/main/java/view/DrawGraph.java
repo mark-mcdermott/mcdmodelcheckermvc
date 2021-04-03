@@ -116,6 +116,60 @@ public class DrawGraph {
             new HardCodedNode("s27", 150,26 ),
     };
 
+    static HardCodedNode[] bankingParallelHardcodedNodes = {
+            new HardCodedNode("s0", 125,5 ),
+            new HardCodedNode("s1", 105,15 ),
+            new HardCodedNode("s2", 88,18 ),
+            new HardCodedNode("s3", 92,21 ),
+            new HardCodedNode("s4", 85,30 ),
+            new HardCodedNode("s5", 74,35 ),
+            new HardCodedNode("s6", 75,38 ),
+            new HardCodedNode("s7", 81,44 ),
+            new HardCodedNode("s8", 80,50 ),
+            new HardCodedNode("s9", 85,53 ),
+            new HardCodedNode("s10", 90,47 ),
+            new HardCodedNode("s11", 90,33 ),
+            new HardCodedNode("s12", 110,32 ),
+            new HardCodedNode("s13", 105,39 ),
+            new HardCodedNode("s14", 110,41 ),
+            new HardCodedNode("s15", 105,45 ),
+            new HardCodedNode("s16", 110,48 ),
+            new HardCodedNode("s17", 115,51 ),
+            new HardCodedNode("s18", 120,54 ),
+            new HardCodedNode("s19", 120,18 ),
+            new HardCodedNode("s20", 120,23 ),
+            new HardCodedNode("s21", 115,26 ),
+            new HardCodedNode("s22", 117,30 ),
+            new HardCodedNode("s23", 155,15 ),
+            new HardCodedNode("s24", 145,21 ),
+            new HardCodedNode("s25", 155,41 ),
+            new HardCodedNode("s26", 150,43 ),
+            new HardCodedNode("s27", 135,50 ),
+            new HardCodedNode("s28", 140,55 ),
+            new HardCodedNode("s29", 145,59 ),
+            new HardCodedNode("s30", 150,62 ),
+            new HardCodedNode("s31", 145,67 ),
+            new HardCodedNode("s32", 150,72 ),
+            new HardCodedNode("s33", 155,75 ),
+            new HardCodedNode("s34", 160,82 ),
+            new HardCodedNode("s35", 165,45 ),
+            new HardCodedNode("s36", 175,50 ),
+            new HardCodedNode("s37", 175,55 ),
+            new HardCodedNode("s38", 185,60 ),
+            new HardCodedNode("s39", 180,65 ),
+            new HardCodedNode("s40", 162,70 ),
+            new HardCodedNode("s41", 175,75 ),
+            new HardCodedNode("s42", 165,18 ),
+            new HardCodedNode("s43", 162,24 ),
+            new HardCodedNode("s44", 160,32 ),
+            new HardCodedNode("s45", 172,34 ),
+            new HardCodedNode("s46", 160,36 ),
+            new HardCodedNode("s47", 172,38 ),
+            new HardCodedNode("s48", 175,26 ),
+            new HardCodedNode("s49", 170,28 ),
+            new HardCodedNode("s50", 180,30 ),
+    };
+
     // TODO: delete these?
     public static ArrayList<Vertex> tempPlacedVertices = new ArrayList<Vertex>();
     public static ArrayList<ArrayList<Double>> tempXyCoords;
@@ -720,6 +774,13 @@ public class DrawGraph {
             }
         } else if (file.equals("ProcessTransfers.ljx")) {
             for (HardCodedNode hardCodedNode : processTransfersHardcodedNodes) {
+                String hardCodedNodeName = hardCodedNode.getName();
+                if (hardCodedNodeName.equals(nodeName)) {
+                    return hardCodedNode.getXy();
+                }
+            }
+        } else if (file.equals("Bank-Parallel.ljx")) {
+            for (HardCodedNode hardCodedNode : bankingParallelHardcodedNodes) {
                 String hardCodedNodeName = hardCodedNode.getName();
                 if (hardCodedNodeName.equals(nodeName)) {
                     return hardCodedNode.getXy();
