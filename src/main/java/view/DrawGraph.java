@@ -3,11 +3,9 @@ package view;
 import _options.DirectedGraphOptions;
 import controller.types.analyzer.analyzerData.DisplayType;
 import controller.types.graph.*;
-import controller.utils.ListHelper;
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.algorithms.layout.FRLayout;
 import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 import edu.uci.ics.jung.graph.*;
 import edu.uci.ics.jung.visualization.GraphZoomScrollPane;
 import edu.uci.ics.jung.visualization.VisualizationImageServer;
@@ -16,7 +14,6 @@ import edu.uci.ics.jung.visualization.control.AbstractModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
 import edu.uci.ics.jung.visualization.control.ScalingControl;
 import edu.uci.ics.jung.visualization.control.ViewScalingControl;
-import edu.uci.ics.jung.visualization.decorators.EdgeShape;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import org.apache.commons.collections15.Transformer;
 
@@ -29,15 +26,13 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static controller.types.analyzer.analyzerData.DisplayType.INTER_ONLY;
+import static controller.types.analyzer.analyzerData.DisplayType.TRANS_ONLY;
 import static controller.types.analyzer.analyzerData.DisplayType.XML_ONLY;
 import static controller.types.graph.VertexKind.PARALLEL;
 import static controller.types.graph.VertexKind.SEQUENTIAL;
-import static controller.types.graph.HardCodedNode.*;
 import static controller.types.graph.VertexStatus.*;
 import static java.lang.StrictMath.abs;
 
@@ -60,7 +55,7 @@ public class DrawGraph {
 
 
     // process checks xml graph
-    static HardCodedNode[] processChecksHardcodedNodes = {
+    static HardCodedNode[] hardcodedChecksXml = {
             new HardCodedNode("s0", 125,5 ),
             new HardCodedNode("s1", 98,19 ),
             new HardCodedNode("s2", 120,18 ),
@@ -85,7 +80,7 @@ public class DrawGraph {
             new HardCodedNode("s21", 160,21 ),
     };
 
-        static HardCodedNode[] processTransfersHardcodedNodes = {
+        static HardCodedNode[] hardcodedTransfersXml = {
             new HardCodedNode("s0", 125,5 ),
             new HardCodedNode("s1", 98,19 ),
             new HardCodedNode("s2", 102,24 ),
@@ -116,7 +111,7 @@ public class DrawGraph {
             new HardCodedNode("s27", 150,26 ),
     };
 
-    static HardCodedNode[] bankingParallelHardcodedNodes = {
+    static HardCodedNode[] hardcodedBankingParallelXml = {
             new HardCodedNode("s0", 125,5 ),
             new HardCodedNode("s1", 105,15 ),
             new HardCodedNode("s2", 88,18 ),
@@ -168,6 +163,77 @@ public class DrawGraph {
             new HardCodedNode("s48", 175,26 ),
             new HardCodedNode("s49", 170,28 ),
             new HardCodedNode("s50", 180,30 ),
+    };
+
+    static HardCodedNode[] hardcodedCovidXml = {
+            new HardCodedNode("s0", 125,5 ),
+            new HardCodedNode("s1", 125,20 ),
+            new HardCodedNode("s2", 102,24 ),
+            new HardCodedNode("s3", 86,37 ),
+            new HardCodedNode("s4", 89,41 ),
+            new HardCodedNode("s5", 92,46 ),
+            new HardCodedNode("s6", 95,51 ),
+            new HardCodedNode("s7", 100,56 ),
+            new HardCodedNode("s8", 95,60 ),
+            new HardCodedNode("s9", 105,63 ),
+            new HardCodedNode("s10", 120,66 ),
+            new HardCodedNode("s11", 135,69 ),
+            new HardCodedNode("s12", 150,20 ),
+            new HardCodedNode("s13", 130,30 ),
+            new HardCodedNode("s14", 120,33 ),
+            new HardCodedNode("s15", 125,36 ),
+            new HardCodedNode("s16", 130,39 ),
+            new HardCodedNode("s17", 141,43 ),
+            new HardCodedNode("s18", 151,46 ),
+            new HardCodedNode("s19", 161,49 ),
+            new HardCodedNode("s20", 171,52 ),
+            new HardCodedNode("s21", 128,28 ),
+            new HardCodedNode("s22", 136,31 ),
+            new HardCodedNode("s23", 127,34 ),
+            new HardCodedNode("s24", 132,40 ),
+            new HardCodedNode("s25", 140,21 ),
+            new HardCodedNode("s26", 140,24 ),
+            new HardCodedNode("s27", 150,26 ),
+    };
+
+        static HardCodedNode[] hardcodedCovidTrans = {
+            new HardCodedNode("s1", 125,14 ),
+            new HardCodedNode("s2", 100,18 ),
+            new HardCodedNode("s3", 100,22 ),
+            new HardCodedNode("s4", 100,26 ),
+            new HardCodedNode("s5", 100,30 ),
+            new HardCodedNode("s6", 85,34 ),
+            new HardCodedNode("s7", 85,38 ),
+            new HardCodedNode("s8", 80,42 ),
+            new HardCodedNode("s9", 90,42 ),
+            new HardCodedNode("s10", 120,66 ),
+            new HardCodedNode("s11", 135,69 ),
+            new HardCodedNode("s12", 150,20 ),
+            new HardCodedNode("s13", 130,30 ),
+            new HardCodedNode("s14", 120,33 ),
+            new HardCodedNode("s15", 125,36 ),
+            new HardCodedNode("s16", 130,39 ),
+            new HardCodedNode("s17", 141,43 ),
+            new HardCodedNode("s18", 150,18 ),
+            new HardCodedNode("s19", 150,22 ),
+            new HardCodedNode("s20", 171,52 ),
+            new HardCodedNode("s21", 128,28 ),
+            new HardCodedNode("s22", 136,31 ),
+            new HardCodedNode("s23", 127,34 ),
+            new HardCodedNode("s24", 132,40 ),
+            new HardCodedNode("s25", 140,21 ),
+            new HardCodedNode("s26", 140,24 ),
+            new HardCodedNode("s27", 150,26 ),
+            new HardCodedNode("s70", 100,34 ),
+            new HardCodedNode("s71", 100,38 ),
+            new HardCodedNode("s72", 95,42 ),
+            new HardCodedNode("s73", 115,34 ),
+            new HardCodedNode("s74", 115,40 ),
+            new HardCodedNode("s75", 110,44 ),
+            new HardCodedNode("s76", 130,34 ),
+            new HardCodedNode("s77", 130,38 ),
+            new HardCodedNode("s82", 100,42 ),
+            new HardCodedNode("s83", 90,42 ),
     };
 
     // TODO: delete these?
@@ -334,6 +400,10 @@ public class DrawGraph {
         Vertex rootVertex = vertexList.getRoot();
         VertexKind rootKind = rootVertex.getKind();
         placeVertex(rootVertex, rootXyCoords, layout);
+        ArrayList<Double> rootCoordsArrList = new ArrayList<>();
+        rootCoordsArrList.add(rootXyCoords.x);
+        rootCoordsArrList.add(rootXyCoords.y);
+        tempXyCoords.add(rootCoordsArrList);
 
         // place vertices and add edges
         if (vertexList.getRoot().getChildren() != null) {
@@ -764,27 +834,31 @@ public class DrawGraph {
         return thisNode;
     }
 
-    public static Point2D.Double getHardcodedCoords(String file, String nodeName) {
-        if (file.equals("ProcessChecks.ljx")) {
-            for (HardCodedNode hardCodedNode : processChecksHardcodedNodes) {
-                String hardCodedNodeName = hardCodedNode.getName();
-                if (hardCodedNodeName.equals(nodeName)) {
-                    return hardCodedNode.getXy();
-                }
+    private static Point2D.Double getHardcodedCoordsHelper (HardCodedNode[] hardcodedNodesArr, String nodeName) {
+        for (HardCodedNode hardCodedNode : hardcodedNodesArr) {
+            String hardCodedNodeName = hardCodedNode.getName();
+            if (hardCodedNodeName.equals(nodeName)) {
+                return hardCodedNode.getXy();
             }
-        } else if (file.equals("ProcessTransfers.ljx")) {
-            for (HardCodedNode hardCodedNode : processTransfersHardcodedNodes) {
-                String hardCodedNodeName = hardCodedNode.getName();
-                if (hardCodedNodeName.equals(nodeName)) {
-                    return hardCodedNode.getXy();
-                }
+        }
+        return null;
+    }
+
+    public static Point2D.Double getHardcodedCoords(String file, DisplayType graphType, String nodeName) {
+        if (graphType == XML_ONLY) {
+            if (file.equals("ProcessChecks.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedChecksXml, nodeName);
+            } else if (file.equals("ProcessTransfers.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedTransfersXml, nodeName);
+            } else if (file.equals("Bank-Parallel.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedBankingParallelXml, nodeName);
+            } else if (file.equals("Covid.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedCovidXml, nodeName);
             }
-        } else if (file.equals("Bank-Parallel.ljx")) {
-            for (HardCodedNode hardCodedNode : bankingParallelHardcodedNodes) {
-                String hardCodedNodeName = hardCodedNode.getName();
-                if (hardCodedNodeName.equals(nodeName)) {
-                    return hardCodedNode.getXy();
-                }
+        }
+        if (graphType == TRANS_ONLY) {
+            if (file.equals("Covid.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedCovidTrans, nodeName);
             }
         }
         return null;
@@ -839,7 +913,7 @@ public class DrawGraph {
                 // calculate xy coordinates
                 Point2D.Double xyCoords;
 
-                Point2D.Double hardcodedCoords = getHardcodedCoords(file, child.getName());
+                Point2D.Double hardcodedCoords = getHardcodedCoords(file, graphType, child.getName());
                 if (hardcodedCoords != null) {
                     xyCoords = hardcodedCoords;
                 } else if (!isChildOfParallel && (childKind == SEQUENTIAL || rootKind == SEQUENTIAL) && graphType != XML_ONLY) {
