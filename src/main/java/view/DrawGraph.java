@@ -282,6 +282,96 @@ public class DrawGraph {
             new HardCodedNode("s83", 83,44 ),
     };
 
+    static HardCodedNode[] hardcodedBankingTrans = {
+        new HardCodedNode("s1", 125, 14),
+        new HardCodedNode("s2", 100, 18),
+        new HardCodedNode("s3", 100, 22),
+        new HardCodedNode("s4", 100, 26),
+        new HardCodedNode("s5", 100, 30),
+        new HardCodedNode("s6", 100, 34),
+        new HardCodedNode("s7", 100, 38),
+        new HardCodedNode("s8", 100, 42),
+        new HardCodedNode("s9", 100, 46),
+        new HardCodedNode("s10", 100, 50),
+        new HardCodedNode("s11", 100, 54),
+        new HardCodedNode("s12", 100, 58),
+        new HardCodedNode("s13", 100, 62),
+        new HardCodedNode("s14", 100, 66),
+        new HardCodedNode("s15", 100, 70),
+        new HardCodedNode("s16", 100, 74),
+        new HardCodedNode("s17", 100, 78),
+        new HardCodedNode("s18", 100, 82),
+        new HardCodedNode("s19", 100, 86),
+        new HardCodedNode("s20", 100, 90),
+        new HardCodedNode("s21", 100, 94),
+        new HardCodedNode("s22", 100, 98),
+        new HardCodedNode("s23", 100, 102),
+        new HardCodedNode("s24", 100, 106),
+        new HardCodedNode("s25", 100, 110),
+        new HardCodedNode("s26", 100, 114),
+        new HardCodedNode("s27", 100, 118),
+        new HardCodedNode("s28", 100, 122),
+        new HardCodedNode("s29", 100, 126),
+        new HardCodedNode("s30", 100, 130),
+        new HardCodedNode("s31", 100, 134),
+        new HardCodedNode("s32", 100, 138),
+        new HardCodedNode("s33", 100, 142),
+        new HardCodedNode("s34", 100, 146),
+        new HardCodedNode("s35", 100, 150),
+        new HardCodedNode("s36", 100, 154),
+        new HardCodedNode("s37", 100, 158),
+        new HardCodedNode("s38", 100, 162),
+        new HardCodedNode("s39", 100, 166),
+        new HardCodedNode("s40", 100, 170),
+        new HardCodedNode("s41", 100, 174),
+        new HardCodedNode("s42", 100, 178),
+        new HardCodedNode("s43", 100, 182),
+        new HardCodedNode("s44", 100, 186),
+        new HardCodedNode("s45", 100, 190),
+        new HardCodedNode("s46", 100, 194),
+        new HardCodedNode("s47", 100, 198),
+        new HardCodedNode("s48", 100, 202),
+        new HardCodedNode("s49", 100, 206),
+        new HardCodedNode("s50", 100, 210),
+        new HardCodedNode("s51", 100, 214),
+        new HardCodedNode("s52", 100, 218),
+        new HardCodedNode("s53", 100, 222),
+        new HardCodedNode("s54", 100, 226),
+        new HardCodedNode("s55", 100, 230),
+        new HardCodedNode("s56", 100, 234),
+        new HardCodedNode("s57", 100, 238),
+        new HardCodedNode("s58", 100, 242),
+        new HardCodedNode("s59", 100, 246),
+        new HardCodedNode("s60", 100, 250),
+        new HardCodedNode("s61", 100, 254),
+        new HardCodedNode("s62", 100, 258),
+        new HardCodedNode("s63", 100, 262),
+        new HardCodedNode("s64", 100, 266),
+        new HardCodedNode("s65", 100, 270),
+        new HardCodedNode("s66", 100, 274),
+        new HardCodedNode("s67", 100, 278),
+        new HardCodedNode("s68", 100, 282),
+        new HardCodedNode("s69", 150, 18),
+        new HardCodedNode("s70", 150, 22),
+        new HardCodedNode("s71", 150, 26),
+        new HardCodedNode("s72", 150, 30),
+        new HardCodedNode("s73", 150, 34),
+        new HardCodedNode("s74", 150, 38),
+        new HardCodedNode("s75", 150, 42),
+        new HardCodedNode("s76", 150, 46),
+        new HardCodedNode("s77", 150, 50),
+        new HardCodedNode("s78", 150, 54),
+        new HardCodedNode("s79", 150, 58),
+        new HardCodedNode("s80", 150, 62),
+        new HardCodedNode("s81", 150, 66),
+        new HardCodedNode("s82", 150, 70),
+        new HardCodedNode("s83", 150, 74),
+
+        new HardCodedNode("s194", 125, 62),
+        new HardCodedNode("s195", 125, 30),
+};
+
+
     // TODO: delete these?
     public static ArrayList<Vertex> tempPlacedVertices = new ArrayList<Vertex>();
     public static ArrayList<ArrayList<Double>> tempXyCoords;
@@ -905,6 +995,9 @@ public class DrawGraph {
         if (graphType == TRANS_ONLY) {
             if (file.equals("Covid.ljx")) {
                 return getHardcodedCoordsHelper(hardcodedCovidTrans, nodeName);
+            }
+            if (file.equals("Bank-Parallel.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedBankingTrans, nodeName);
             }
         }
         return null;
