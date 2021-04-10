@@ -374,7 +374,8 @@ public class View extends JFrame implements Observer {
         // TODO: swap these two lines!!
         // DisplayType type = ALL_GRAPHS;
         // DisplayType type = XML_ONLY;
-        DisplayType type = TRANS_ONLY;
+        // DisplayType type = TRANS_ONLY;
+        DisplayType type = INTER_ONLY;
 
         DrawGraph drawGraph = new DrawGraph(graphOptions);
         JPanel mainGraphPanel = components.mainGraphPanel;

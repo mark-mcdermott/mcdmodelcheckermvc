@@ -1,0 +1,231 @@
+translate(nodeList, showInterleavings) {
+
+  // swap in template for root node
+  root = nodeList.getRoot
+  switch (root.getNodeType) {
+    case leaf: root = leafTemplate(root)
+    case sequential: root = sequentialTemplate(root)
+    case parallel: root = parallelTemplate(root, showInterleavings)
+  }
+
+  // run translateRecursively on root's children
+  for (child in root.children) {
+    translateChildrenRecursively()
+  }
+
+}
+
+translateChildrenRecursively(node, showInterleavings) {
+    for (child in node.getChildren) {
+        if (child.isOriginal) {
+          switch (root.getNodeType) {
+            case leaf: swapInTemplate(leafTemplate(node))
+            case sequential: swapInTemplate(sequentialTemplate(node))
+            case parallel: swapInTemplate(parallelTemplate(node, showInterleavings))
+          }
+        }
+        translateChildrenRecursively(child, showInterleavings)
+    }
+}
+
+swapInTemplate(template) {
+  for (node in template.nodeList) nodeList.add(node)        // add template nodes to nodeList
+  nodeList.remove(template.nodeToReplace)                   // remove the node being replaced
+  nodeList.remove(template.childrenReplacedByInterleavings) // remove children replaced by interleavings
+}
+
+leafTemplate(node) {
+
+  // create template nodes
+  leafPosted = new node()
+  leafStarted = new node()
+  leafCompleted = new node()
+  leafTerminated = new node()
+
+  // hook template nodes to each other
+  leafPosted.addChild(leafStarted)
+  leafStarted.addChild(leafCompleted)
+  leafStarted.addChild(leafTerminated)
+
+  // hook up parents
+  parents = node.getParents
+  for (parent in parents) {
+    parent.addChild(leafPosted)
+  }
+
+  // hook up children
+  children = node.getChildren
+  for (child in children) {
+    if (child.getStatus == terminated) {
+      leafTerminated.addChild(child)
+    } else if (child.getStatus == completed) {
+      leafCompleted.addChild(child)
+    }
+  }
+
+  return new nodeList(leafPosted,leafStarted,leafCompleted,leafTerminated)
+
+}
+
+sequentialTemplate(node) {
+
+  // get substeps
+  substeps = node.getSubsteps
+
+  // create template nodes
+  seqPosted = new node()
+  seqStarted = new node()
+  seqCompleted = new node()
+  seqTerminated = new node()
+
+  seqPosted.addChild(leafStarted)  // hook up template nodes to each other
+  seqStarted.addChild(substeps[0]) // hook up seqStarted to first substep
+
+  // hook up parents
+  parents = node.getParents
+  for (parent in parents) {
+    parent.addChild(seqPosted)
+  }
+
+  // hook up substeps
+  for (i=0; i<substeps.length; i++) {
+    substep = substeps[i]
+    lastIndex = i - 1
+
+    // if not last substep, hook up to next substep
+    if (i != lastIndex) {
+        substep[i].addChild(substep[i+1])
+    // if last substep, hook up to seqCompleted
+    } else {
+        substep.addChild(seqCompleted)
+    }
+    // all substeps get hooked up to seqTerminated
+    substep.addChild(seqTerminated)
+  }
+
+  // hook up children
+  children = node.getChildren
+  for (child in children) {
+    // hook up seqTerminated to any children of status terminated
+    if (child.getStatus == terminated) {
+      seqTerminated.addChild(child)
+    // hook up all other children to seqCompleted
+    } else if {
+      leafCompleted.addChild(child)
+    }
+  }
+
+  return new nodeList(seqPosted,seqStarted,seqCompleted,seqTerminated)
+
+}
+
+interleavings = new array() // global variable to store the interleavings
+parallelTemplate(node, showInterleavings) {
+
+  // create template nodes
+  parPosted = new node()
+  parStarted = new node()
+  parCompleted = new node()
+  parTerminated = new node()
+
+  // hook up template nodes
+  parPosted.addChild(parStarted)
+
+  // hook up parents
+  parents = node.getParents
+  for (parent in parents) {
+    parent.addChild(seqPosted)
+  }
+
+  // get getChildren
+  children = node.getChildren
+  childrenOriginal = node.getChildrenOriginal
+  childrenNotOriginal = node.getChildrenNotOriginal
+
+  // if not showing interleavings
+  if (!showInterleavings) {
+
+    // hook up substeps
+    substeps = node.getSubsteps
+    for (i=0; i<substeps.length; i++) {
+      substep = substeps[i]
+      for (j=0; j<substeps.length; j++) {
+        if (i != j) {
+          substep.addChild(substep[j])
+        }
+      }
+      substep.addChild(parCompleted)
+      substep.addChild(parTerminated)
+    }
+
+    // hook up children
+    for (child in children) {
+      // hook up parTerminated to any children of status terminated
+      if (child.getStatus == terminated) {
+        parTerminated.addChild(child)
+      // hook up all other children to leafCompleted
+      } else if {
+        parCompleted.addChild(child)
+      }
+    }
+
+    return new nodeList(parPosted, parStarted, parCompleted, parTerminated, new List(origChildren))
+
+  // else if showing interleavings
+  } else {
+
+    // get interleavings & store in global interleavings variable
+    l=0                 // index of first element to permute
+    r=child.length - 1  // index of last element to permute
+    getInterleavings(children, l, r) // stores permutations in interleavings global variable
+
+    // clean up the interleavings
+    for (interleaving in interleavings) {
+      for (i=0; i < interleaving.length; i++) {
+        thisNode = interleaving[i]
+        thisNode.removeChildren()                 // remove original children from each node
+        if (i == 0) {
+          parStarted.addChild(thisNode)           // hook up first node in each interleaving to parStarted
+        }
+        if (i < interleavings.length - 1) {
+          nextNode = interleaving[i + 1]
+          thisNode.addChild(nextNode)             // link interleaving nodes in the order of each permutation
+        }
+      }
+    }
+
+    // hook up children
+    for (childNotOrig in childrenNotOriginal) {
+      status = childNotOrig.getStatus
+      if (status == TERMINATED) {
+        parTerminated.addChild(childNotOrig)
+      } else {
+        parCompleted.addChild(childNotOrig)
+      }
+    }
+
+    return new nodeList(parPosted, parStarted, parCompleted, parTerminated, interleavings)
+
+  }
+
+}
+
+// gets all permutations of the list parameter
+// initially l is 0 and r is index of last list element
+// this permutation strategy from https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/
+getInterleavings(list, l, r) {
+
+  // base case
+  if (l == r) {
+    interleavings.add(list) // unique permutation found and stored in interleavings global variable
+
+  // recursive case
+  } else {
+    for (int i=l; i<=r; i++) {
+        swap(list[l], list[i]);             // swaps l & i elements
+        getInterleavings(list, l+1, r);     // l increases by one with each recursion until base case is met
+        swap(list[l], list[i]);             // swaps l & i elements back
+    }
+  }
+
+}

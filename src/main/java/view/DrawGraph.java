@@ -29,8 +29,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import static controller.types.analyzer.analyzerData.DisplayType.TRANS_ONLY;
-import static controller.types.analyzer.analyzerData.DisplayType.XML_ONLY;
+import static controller.types.analyzer.analyzerData.DisplayType.*;
 import static controller.types.graph.VertexKind.PARALLEL;
 import static controller.types.graph.VertexKind.SEQUENTIAL;
 import static controller.types.graph.VertexStatus.*;
@@ -281,6 +280,135 @@ public class DrawGraph {
             new HardCodedNode("s82", 98,44 ),
             new HardCodedNode("s83", 83,44 ),
     };
+
+        static HardCodedNode[] hardcodedCovidInter = {
+new HardCodedNode("s1",125,14),
+new HardCodedNode("s2",100,18),
+new HardCodedNode("s3",100,22),
+new HardCodedNode("s4",100,26),
+new HardCodedNode("s5",100,30),
+new HardCodedNode("s6",-200,34),
+new HardCodedNode("s7",-200,38),
+new HardCodedNode("s8",-200,42),
+new HardCodedNode("s9",-200,46),
+new HardCodedNode("s10",-200,50),
+new HardCodedNode("s11",-200,54),
+new HardCodedNode("s12",-200,58),
+new HardCodedNode("s13",-200,62),
+new HardCodedNode("s14",-200,66),
+new HardCodedNode("s15",-200,70),
+new HardCodedNode("s16",-200,74),
+new HardCodedNode("s17",-200,78),
+new HardCodedNode("s18",-200,82),
+new HardCodedNode("s19",-200,86),
+new HardCodedNode("s20",-200,90),
+new HardCodedNode("s21",-200,94),
+new HardCodedNode("s22",-200,98),
+new HardCodedNode("s23",-200,102),
+new HardCodedNode("s24",-200,106),
+new HardCodedNode("s25",-200,110),
+new HardCodedNode("s26",-200,114),
+new HardCodedNode("s27",-200,118),
+new HardCodedNode("s28",-200,122),
+new HardCodedNode("s29",-200,126),
+new HardCodedNode("s30",-200,130),
+new HardCodedNode("s31",-200,134),
+new HardCodedNode("s32",-200,138),
+new HardCodedNode("s33",-200,142),
+new HardCodedNode("s34",-200,146),
+new HardCodedNode("s35",-200,150),
+new HardCodedNode("s36",-200,154),
+new HardCodedNode("s37",-200,158),
+new HardCodedNode("s38",-200,162),
+new HardCodedNode("s39",-200,166),
+new HardCodedNode("s40",-200,170),
+new HardCodedNode("s41",-200,174),
+new HardCodedNode("s42",-200,178),
+new HardCodedNode("s43",-200,182),
+new HardCodedNode("s44",-200,186),
+new HardCodedNode("s45",-200,190),
+new HardCodedNode("s46",-200,194),
+new HardCodedNode("s47",-200,198),
+new HardCodedNode("s48",-200,202),
+new HardCodedNode("s49",-200,206),
+new HardCodedNode("s50",-200,210),
+new HardCodedNode("s51",-200,214),
+new HardCodedNode("s52",-200,218),
+new HardCodedNode("s53",-200,222),
+new HardCodedNode("s54",-200,226),
+new HardCodedNode("s55",-200,230),
+new HardCodedNode("s56",-200,234),
+new HardCodedNode("s57",-200,238),
+new HardCodedNode("s58",-200,242),
+new HardCodedNode("s59",-200,246),
+new HardCodedNode("s60",-200,250),
+new HardCodedNode("s61",-200,254),
+new HardCodedNode("s62",-200,258),
+new HardCodedNode("s63",-200,262),
+new HardCodedNode("s447",-180,78),
+new HardCodedNode("s449",-180,66),
+new HardCodedNode("s450",-180,54),
+new HardCodedNode("s451",-180,42),
+
+new HardCodedNode("s452",-150,34),
+new HardCodedNode("s453",-150,38),
+new HardCodedNode("s454",-150,42),
+new HardCodedNode("s455",-150,46),
+new HardCodedNode("s456",-150,50),
+new HardCodedNode("s457",-150,54),
+new HardCodedNode("s458",-150,58),
+new HardCodedNode("s459",-150,62),
+new HardCodedNode("s460",-150,66),
+new HardCodedNode("s461",-150,70),
+new HardCodedNode("s462",-150,74),
+new HardCodedNode("s463",-150,78),
+
+new HardCodedNode("s464",-130,78),
+new HardCodedNode("s465",-130,66),
+new HardCodedNode("s466",-130,54),
+new HardCodedNode("s467",-130,42),
+
+new HardCodedNode("s468",-100,34),
+new HardCodedNode("s469",-100,38),
+new HardCodedNode("s470",-100,42),
+new HardCodedNode("s471",-100,46),
+new HardCodedNode("s472",-100,50),
+new HardCodedNode("s473",-100,54),
+new HardCodedNode("s474",-100,58),
+new HardCodedNode("s475",-100,62),
+new HardCodedNode("s476",-100,66),
+new HardCodedNode("s477",-100,70),
+new HardCodedNode("s478",-100,74),
+new HardCodedNode("s479",-100,78),
+
+new HardCodedNode("s480",-80,78),
+new HardCodedNode("s481",-80,66),
+new HardCodedNode("s482",-80,54),
+new HardCodedNode("s483",-80,42),
+
+new HardCodedNode("s484",-50,34),
+new HardCodedNode("s485",-50,38),
+new HardCodedNode("s486",-50,42),
+new HardCodedNode("s487",-50,46),
+new HardCodedNode("s488",-50,50),
+new HardCodedNode("s489",-50,54),
+new HardCodedNode("s490",-50,58),
+new HardCodedNode("s491",-50,62),
+new HardCodedNode("s492",-50,66),
+new HardCodedNode("s493",-50,70),
+new HardCodedNode("s494",-50,74),
+new HardCodedNode("s495",-50,78),
+
+new HardCodedNode("s496",-130,78),
+new HardCodedNode("s497",-130,66),
+new HardCodedNode("s498",-130,54),
+new HardCodedNode("s499",-130,42),
+
+
+
+        };
+
+
 
     static HardCodedNode[] hardcodedBankingTrans = {
         new HardCodedNode("s1", 125, 14),
@@ -1082,8 +1210,12 @@ public class DrawGraph {
     private static Point2D.Double getHardcodedCoordsHelper (HardCodedNode[] hardcodedNodesArr, String nodeName) {
         for (HardCodedNode hardCodedNode : hardcodedNodesArr) {
             String hardCodedNodeName = hardCodedNode.getName();
-            if (hardCodedNodeName.equals(nodeName)) {
-                return hardCodedNode.getXy();
+            if (hardCodedNode.getXy().x == -1 || hardCodedNode.getXy().y == -1) {
+                return null;
+            } else {
+                if (hardCodedNodeName.equals(nodeName)) {
+                    return hardCodedNode.getXy();
+                }
             }
         }
         return null;
@@ -1107,6 +1239,11 @@ public class DrawGraph {
             }
             if (file.equals("Bank-Parallel.ljx")) {
                 return getHardcodedCoordsHelper(hardcodedBankingTrans, nodeName);
+            }
+        }
+        if (graphType == INTER_ONLY) {
+            if (file.equals("Covid.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedCovidInter, nodeName);
             }
         }
         return null;
