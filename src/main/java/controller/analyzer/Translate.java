@@ -91,7 +91,12 @@ public class Translate {
         translateRootVertex(root, getInterleavings, xmlFilenames);
         numSteps++;
         Vertex translatedRoot = translatedVertexList.getRoot();
-        if (!isStepSelected || targetStep == null || targetStep > 1 && numSteps < targetStep) {
+
+        // this is the fix for the below code that "looks" wrong
+        translateChildrenRecursively(translatedRoot, getInterleavings, loopsNum, xmlFilenames);
+
+        // this worked, but "looks" wrong. since's root's children are never original nodes, they don't need to be translated
+        /*if (!isStepSelected || targetStep == null || targetStep > 1 && numSteps < targetStep) {
             if (!debug || numNodesExpanded < targetNumNodesExpanded) {
                 if (root.getChildren() != null) {
                     for (Vertex child : translatedRoot.getChildren()) {
@@ -99,7 +104,8 @@ public class Translate {
                     }
                 }
             }
-        }
+        }*/
+
         if (!isStepSelected) {
             translatedVertexList.setNumTotalSteps(numSteps);
         } else {
