@@ -8,14 +8,14 @@ translate(nodeList, showInterleavings) {
     case parallel: root = parallelTemplate(root, showInterleavings)
   }
 
-  // run translateRecursively on root's children
-  for (child in root.children) {
-    translateChildrenRecursively()
-  }
+  // run translateChildrenRecursively on root
+  translateChildrenRecursively(root)
 
 }
 
 translateChildrenRecursively(node, showInterleavings) {
+
+    // translate all the children
     for (child in node.getChildren) {
         if (child.isOriginal) {
           switch (root.getNodeType) {
@@ -24,12 +24,16 @@ translateChildrenRecursively(node, showInterleavings) {
             case parallel: swapInTemplate(parallelTemplate(node, showInterleavings))
           }
         }
-        translateChildrenRecursively(child, showInterleavings)
+    }
+
+    // loop through all current children and run
+    for (child in node.getChildren) {
+      translateChildrenRecursively(child, showInterleavings)
     }
 }
 
 swapInTemplate(template) {
-  for (node in template.nodeList) nodeList.add(node)        // add template nodes to nodeList
+  for (node in template.nodeList) { nodeList.add(node) }    // add template nodes to nodeList
   nodeList.remove(template.nodeToReplace)                   // remove the node being replaced
   nodeList.remove(template.childrenReplacedByInterleavings) // remove children replaced by interleavings
 }
@@ -78,7 +82,7 @@ sequentialTemplate(node) {
   seqCompleted = new node()
   seqTerminated = new node()
 
-  seqPosted.addChild(leafStarted)  // hook up template nodes to each other
+  seqPosted.addChild(seqStarted)  // hook up template nodes to each other
   seqStarted.addChild(substeps[0]) // hook up seqStarted to first substep
 
   // hook up parents
@@ -90,7 +94,7 @@ sequentialTemplate(node) {
   // hook up substeps
   for (i=0; i<substeps.length; i++) {
     substep = substeps[i]
-    lastIndex = i - 1
+    lastIndex = substeps.length - 1
 
     // if not last substep, hook up to next substep
     if (i != lastIndex) {
@@ -120,6 +124,7 @@ sequentialTemplate(node) {
 }
 
 interleavings = new array() // global variable to store the interleavings
+
 parallelTemplate(node, showInterleavings) {
 
   // create template nodes

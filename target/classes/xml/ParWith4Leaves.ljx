@@ -2,7 +2,7 @@
     <module>
         <step-declaration id="_0" kind="parallel" name="par 1">
             <step-declaration id="_2" kind="leaf" name="leaf 1" />
-            <step-declaration id="_2" kind="leaf" name="leaf 1" />
+            <step-declaration id="_2" kind="leaf" name="leaf 1" property="alarm sounding" />
             <step-declaration id="_2" kind="leaf" name="leaf 1" />
             <step-declaration id="_2" kind="leaf" name="leaf 1" />
         </step-declaration>

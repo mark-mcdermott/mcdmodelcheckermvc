@@ -5,6 +5,7 @@ public class Models {
     String[][] models; // array with two elements, each a String[]: models1Var & models2Var
 
     public Models() {
+        // String[] models1Var = {"⊤"};
         String[] models1Var = {"⊤","⊥","p","¬p","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))"};
         // String[] models2Var = {"∧(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(p→q)","EG(p→q)","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
         String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
