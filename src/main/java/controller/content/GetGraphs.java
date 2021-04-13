@@ -117,14 +117,25 @@ public class GetGraphs {
             xmlVertList = getJointVertexListFromXmlFilenames(xmlFilenames, labelHash, xmlFileCache);
         }
         VertexList transVertList = getTransVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
+
+        // moving stopwatch to only time translation before interleavings
+        // comment the next 5 lines
+        // Kripke xmlKripke = new Kripke(xmlVertList);
+        // Kripke transKripke = new Kripke(transVertList);
+        // Instant stopWatchEnd = Instant.now();
+        // Double translationTime = durationToSecs(stopWatchStart, stopWatchEnd);
+        // System.out.println("nodes: " + transVertList.getList().size());
+
         VertexList interVertList = getInterVertList(xmlVertList, translate, numLoops, isStepSelected, prevStep, selectedStep, xmlFilenames);
 
         // get xml, translation & interleavings kripke structures
+        // uncomment these
         Kripke xmlKripke = new Kripke(xmlVertList);
         Kripke transKripke = new Kripke(transVertList);
         Kripke interKripke = new Kripke(interVertList);
 
-        // start translation time stopwatch
+        // end translation time stopwatch
+        // uncomment these
         Instant stopWatchEnd = Instant.now();
         Double translationTime = durationToSecs(stopWatchStart, stopWatchEnd);
 
