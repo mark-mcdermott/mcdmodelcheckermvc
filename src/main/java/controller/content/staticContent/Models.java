@@ -8,7 +8,7 @@ public class Models {
         // String[] models1Var = {"⊤"};
         String[] models1Var = {"⊤","⊥","p","¬p","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))"};
         // String[] models2Var = {"∧(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(p→q)","EG(p→q)","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
-        String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
+        // String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
 
 
         // String[] models2Var = {"A[pUq]","∧(¬p,¬q)","EG(¬q)","E[¬qU∧(¬p,¬q)]","∨(E[¬qU∧(¬p,¬q)],EG(¬q))","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
@@ -16,7 +16,7 @@ public class Models {
         // String[] models2Var = {"A[pUq]","∧(¬p,¬q)","EG(¬q)","¬E[¬qU∧(¬p,¬q)]","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
         //
         // this is the Covid.ljx models
-        // String[] models2Var = {"AG(¬∧(s,q))","AG(→(u,AF(v)))"};
+        String[] models2Var = {"AG(¬∧(s,q))","AG(→(u,AF(v)))"};
         //
         // this is the banking model
         // String[] models2Var = {"¬∨(E[∧(s,¬q)U∧(t,¬∧(s,¬q))],EG(¬∧(s,¬q)))"}; // this gets the correct answer, verified by hand

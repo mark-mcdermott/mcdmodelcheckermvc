@@ -682,6 +682,7 @@ public class Vertex {
         // Integer origNumber = this.origNumber;
         Integer kindNum = this.kindNum;
         String kind = this.kind.toString();
+        String property = this.getPropertiesStr();
         // String kind = this.kind.toFirstChar();
         if (this.status != null) {
             // status = this.status.toFirstChar();
@@ -689,7 +690,9 @@ public class Vertex {
         }
         String blurb = this.blurb;
 
-        if (this.status != null) {
+        if (property != null && property != "" && this.status != null) {
+            output = "s" + number + ": " + kind + " " + kindNum + " " + status + " (" + property + ")";
+        } else if (this.status != null) {
             // output = "s" + number + ":" + kind + origNumber + status + " " + blurb;
             // output = "s" + number + ": " + kind + " " + origNumber + " " + status;
             output = "s" + number + ": " + kind + " " + kindNum + " " + status;
