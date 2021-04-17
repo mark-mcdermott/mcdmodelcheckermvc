@@ -225,6 +225,7 @@ public class GetGraphs {
     }
 
     private File getCacheFileFromFilename(String filename, File[] xmlFileCache) {
+        // System.out.println("first line of getCacheFileFromFilename() ");
         int numFiles = xmlFileCache.length;
         for (int i=0; i<numFiles; i++) {
             File thisFileFromCache = xmlFileCache[i];
@@ -232,9 +233,23 @@ public class GetGraphs {
             String[] thisFilenameFromCacheArr = thisFilenameFromCacheWithPath.split("/");
             String thisFilenameFromCache = thisFilenameFromCacheArr[thisFilenameFromCacheArr.length - 1];
             if (thisFilenameFromCache.equals(filename)) {
+
+                if (thisFilenameFromCache.equals(filename)) {
+                    if(xmlFileCache[i] == null) {
+                        System.out.println("getCacheFileFromFilename: xmlFileCache[" + i + "] is null");
+                    }
+                    System.out.println("found match");
+                    System.out.println("getCacheFileFromFilename: xmlFileCache[" + i + "] is " + thisFilenameFromCache);
+                    System.out.println("getCacheFileFromFilename: filename is " + filename);
+                    return xmlFileCache[i];
+                }
                 return xmlFileCache[i];
+            } else {
+                System.out.println("getCacheFileFromFilename: xmlFileCache[" + i + "] is " + xmlFileCache[i]);
+                System.out.println("getCacheFileFromFilename: filename is " + filename);
             }
         }
+
         new ExceptionMessage("Xml file not found in xmlFileCache. GetGraphs.java");
         return null;
     }
