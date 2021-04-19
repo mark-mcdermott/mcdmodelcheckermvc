@@ -102,11 +102,13 @@ public class Options {
         graphPanelsHeight = 970;
         graphPanels3AcrossWidth = 500;
         graphLayouts3AcrossXMLWidth = 465;
-        graphLayouts3AcrossWidthMacBookMonitor = 465;
-        graphLayouts3AcrossWidthAOCMonitor = 865;
+        graphLayouts3AcrossWidthMacBookMonitor = 465; // 456
+        graphLayouts3AcrossWidthAOCMonitor = 1600; // 865
         graphLayouts3AcrossWidth = graphLayouts3AcrossWidthAOCMonitor; // 465 // TODO: change this to graphLayouts3AcrossWidthMacBookMonitor if on macbook
+        // graphLayouts3AcrossWidth = graphLayouts3AcrossWidthMacBookMonitor; // 465 // TODO: change this to graphLayouts3AcrossWidthAOCMonitor if on desktop
         graphLayout2AcrossWidth = 675;
         graphayout1AcrossWidth = 2500; // 1400 for macbook
+        // graphayout1AcrossWidth = 1400; // 2500 for making diagrams for the paper
         graphLayoutsHeight = 920;
 
         // xml graphs settings
@@ -155,7 +157,7 @@ public class Options {
         interleavingsGraphNodeDiameter = 18;
         interleavingsGraphPanelWidth = 550;
         interleavingsGraphPanelHeight = 900;
-        interleavingsGraphLayoutWidth = 525;;
+        interleavingsGraphLayoutWidth = 525;
         interleavingsGraphLayoutHeight = 875;
         interleavingsGraphScaleFactor = 0.75f; // shrinks graphs to 75% size to fix in containing box
         interleavingsGraphVertexAttractionMultiplier = .99;

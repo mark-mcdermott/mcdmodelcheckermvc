@@ -691,7 +691,8 @@ public class Vertex {
         String blurb = this.blurb;
 
         if (property != null && property != "" && this.status != null) {
-            output = "s" + number + ": " + kind + " " + kindNum + " " + status + " (" + property + ")";
+            // output = "s" + number + ": " + kind + " " + kindNum + " " + status + " (" + property + ")";
+            output = "s" + number + ": " + kind + " " + kindNum + " " + status;
         } else if (this.status != null) {
             // output = "s" + number + ":" + kind + origNumber + status + " " + blurb;
             // output = "s" + number + ": " + kind + " " + origNumber + " " + status;
@@ -700,7 +701,8 @@ public class Vertex {
             // output = "s" + number + ":" + kind + origNumber + " " + blurb;
             // output = "s" + number + ": " + kind + " " + origNumber;
             // output = "s" + number + ": " + kind + " " + kindNum;
-            output = "s" + number + ": " + blurb + " (" + kind + " " + kindNum + ")";
+            // output = "s" + number + ": " + blurb + " (" + kind + " " + kindNum + ")";
+            output = "s" + number + ": " + kind + " " + kindNum;
         }
         return output;
     }
