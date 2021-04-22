@@ -608,6 +608,21 @@ new HardCodedNode("s499",-130,42),
         new HardCodedNode("s195", 125, 34),
 };
 
+        static HardCodedNode[] hardcodedDualParallelXml = {
+            new HardCodedNode("s1", 100, 20),
+            new HardCodedNode("s4", 150, 20),
+    };
+
+    static HardCodedNode[] hardcodedDualParallelTrans = {
+            new HardCodedNode("s2", 75, 29),
+            new HardCodedNode("s9", 195, 29),
+    };
+
+        static HardCodedNode[] hardcodedDualParallelInter = {
+            new HardCodedNode("s2", 85, 9),
+            new HardCodedNode("s44", 185, 9),
+    };
+
 
     // TODO: delete these?
     public static ArrayList<Vertex> tempPlacedVertices = new ArrayList<Vertex>();
@@ -778,8 +793,12 @@ new HardCodedNode("s499",-130,42),
         rootCoordsArrList.add(rootXyCoords.y);
         tempXyCoords.add(rootCoordsArrList);
 
+
+
         // place vertices and add edges
-        if (vertexList.getRoot().getChildren() != null) {
+        if (file == "Covid.ljx") {
+            placeCovidChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest, file, rootVertex.getName(), null);
+        } else if (vertexList.getRoot().getChildren() != null) {
             placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind, rootXyCoords, rootKind, graphType, collisionXOffset, collisionYOffest, file);
             /*if (rootKind.equals(SEQUENTIAL) && graphType != XML_ONLY) {
                 placeSequentialRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
@@ -789,6 +808,7 @@ new HardCodedNode("s499",-130,42),
                 placeChildrenRecursively(vertexList.getRoot(), level, layoutWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
             }*/
         }
+        // }
         for (Vertex vertex : vertexList.getList()) {
             if (vertex.getChildren()!= null) {
                 for (Vertex child : vertex.getChildren()) {
@@ -1091,6 +1111,59 @@ new HardCodedNode("s499",-130,42),
         return new Point2D.Double(x, y);
     }
 
+
+    public static Point2D.Double calcCovidXYCoords(Integer canvasWidth, Integer level, Integer vertexVertMultiplier, Integer parentHorizPos, Integer numChild, Integer numChildren, Integer vertexSiblingOffset, Integer parentSiblingNum, Point2D parentPos, Boolean isChildOfParallel, ArrayList<Vertex> siblings, VertexKind prevChildKind, String name, String currentType) {
+        float horizCenter;
+        if (parentPos == null) {
+            horizCenter = canvasWidth / 2f - 12;
+        } else {
+            // horizCenter = (float) parentPos.getX();
+            horizCenter = canvasWidth / 2f - 12;
+        }
+
+        // Integer x = horizCenter.intValue();
+        float x = horizCenter;
+        float thisNodePos = x;
+        float leftChildPos = x;
+        if (parentHorizPos == null) {
+            // x = horizCenter.intValue();
+            x = horizCenter;
+        } else {
+
+            if (isChildOfParallel) {
+                Integer thisDebugPoint = 0;
+            }
+
+            Integer initPos = parentHorizPos;
+
+            // System.out.println("leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset * (level - 1) / 2) + parentSiblingNum * vertexSiblingOffset;");
+            if (numChildren == 1) {
+                leftChildPos = initPos - ((numChildren) * vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
+                // leftChildPos = initPos - ((numChildren) * vertexSiblingOffset);
+            } else {
+                // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset) + parentSiblingNum * vertexSiblingOffset;
+                leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset);
+                // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2);
+            }
+            // System.out.println(leftChildPos+" = "+initPos+" - (("+numChildren+" - 1) * "+vertexSiblingOffset+" / 2) - ("+vertexSiblingOffset+" * ("+level+" - 1) / 2) + "+parentSiblingNum+" * "+vertexSiblingOffset+"\n");
+            // leftChildPos = initPos - ((numChildren - 1) * vertexSiblingOffset / 2) - (vertexSiblingOffset * (level - 1)) + parentSiblingNum * vertexSiblingOffset;
+            // if (leftChildPos != null && vertexSiblingOffset != null && numChild != null) {
+            if (vertexSiblingOffset != null && numChild != null) {
+                thisNodePos = leftChildPos + vertexSiblingOffset * (numChild + 1);
+                // thisNodePos = leftChildPos + vertexSiblingOffset * numChild;
+            }
+            x = thisNodePos;
+        }
+
+        Integer randomVertOffset = randomNum(0,75);
+
+        Integer y = (isChildOfParallel) ? (int) parentPos.getY() + vertexVertMultiplier : level * vertexVertMultiplier;
+        // Integer y = (isChildOfParallel) ? (int) parentPos.getY() + vertexVertMultiplier : level * vertexVertMultiplier + randomVertOffset;
+        return new Point2D.Double(x, y);
+    }
+
+
+
     public static void placeVertex(Vertex vertex, Point2D.Double xyCoords, Layout layout) {
         layout.setLocation(vertex,xyCoords);
         layout.lock(vertex, true);
@@ -1229,9 +1302,12 @@ new HardCodedNode("s499",-130,42),
                 return getHardcodedCoordsHelper(hardcodedTransfersXml, nodeName);
             } else if (file.equals("Bank-Parallel.ljx")) {
                 return getHardcodedCoordsHelper(hardcodedBankingParallelXml, nodeName);
-            } else if (file.equals("Covid.ljx")) {
-                return getHardcodedCoordsHelper(hardcodedCovidXml, nodeName);
+            } else if (file.equals("DualParallel.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedDualParallelXml, nodeName);
             }
+            // else if (file.equals("Covid.ljx")) {
+                // return getHardcodedCoordsHelper(hardcodedCovidXml, nodeName);
+            // }
         }
         if (graphType == TRANS_ONLY) {
             if (file.equals("Covid.ljx")) {
@@ -1240,11 +1316,17 @@ new HardCodedNode("s499",-130,42),
             if (file.equals("Bank-Parallel.ljx")) {
                 return getHardcodedCoordsHelper(hardcodedBankingTrans, nodeName);
             }
+            if (file.equals("DualParallel.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedDualParallelTrans, nodeName);
+            }
         }
         if (graphType == INTER_ONLY) {
-            if (file.equals("Covid.ljx")) {
-                return getHardcodedCoordsHelper(hardcodedCovidInter, nodeName);
+            if (file.equals("DualParallel.ljx")) {
+                return getHardcodedCoordsHelper(hardcodedDualParallelInter, nodeName);
             }
+            // if (file.equals("Covid.ljx")) {
+                // return getHardcodedCoordsHelper(hardcodedCovidInter, nodeName);
+            // }
         }
         return null;
     }
@@ -1370,6 +1452,131 @@ new HardCodedNode("s499",-130,42),
             }
         }
     }
+
+
+
+        public static void placeCovidChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, FRLayout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType, Integer collisionXOffset, Integer collisionYOffest, String file, String name, String currentType) {
+        level++;
+        if (node.getChildren() != null) {
+            Point2D parentPos = node.getTranslationGraphPos();
+            Integer numChildren = node.getChildren().size();
+            Vertex prevChild = null;
+            VertexKind prevChildKind = null;
+
+            for (Integer i=0; i<numChildren; i++) {
+                Integer numChild = i;
+                Vertex child = node.getChildren().get(i);
+                child.setSiblingNum(i);
+                VertexKind childKind = child.getKind();
+                String childName = child.getName();
+                if (i>0) {
+                    prevChild = node.getChildren().get(i-1);
+                    prevChildKind = prevChild.getKind();
+                }
+
+                // check if child of parallel (special case)
+                Boolean isChildOfParallel = false;
+                for (Vertex parent : child.getParents()) {
+                    if (parent.getKind() == PARALLEL && parent.getStatus() == STARTED) {
+                        Vertex parStarted = parent;
+                        isChildOfParallel = true;
+                        parentPos = parStarted.getTranslationGraphPos();  // use the parentPos of the parent parallel started node, not just the node we traversed in on (this child is positioned directly underneath the parallel started node)
+
+                        // get correct sibling num (check how many children of parStarted are already placed)
+                        ArrayList<Vertex> childrenOfParallel = parStarted.getChildren();
+                        Integer numPlaced = 0;
+                        for (Vertex thisChildOfParallel : childrenOfParallel) {
+                            if (tempPlacedVertices.contains(thisChildOfParallel)) {
+                                numPlaced++;
+                            }
+                        }
+                        child.setSiblingNum(numPlaced);
+
+                        // get correct level
+                        double parStartedYPos = parStarted.getTranslationGraphPos().getY();
+                        level = (int) parStartedYPos / vertexVertMultiplier + 1;
+
+                    }
+                }
+
+                // calculate xy coordinates
+                Point2D.Double xyCoords;
+
+                Point2D.Double hardcodedCoords = getHardcodedCoords(file, graphType, child.getName());
+                xyCoords = calcCovidXYCoords(canvasWidth, level, vertexVertMultiplier, (int) parentPos.getX(), child.getSiblingNum(), numChildren, vertexSiblingOffset, node.getSiblingNum(), parentPos, isChildOfParallel, node.getChildren(), prevChildKind, child.getName(), currentType);
+                /*if (hardcodedCoords != null) {
+                    xyCoords = hardcodedCoords;
+                } else if (!isChildOfParallel && (childKind == SEQUENTIAL || rootKind == SEQUENTIAL) && graphType != XML_ONLY) {
+                    xyCoords = calcXYSequentialCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
+                } else if (!isChildOfParallel && childKind == PARALLEL) {
+                    xyCoords = calcXYParallelCoords(canvasWidth, level, vertexVertMultiplier, (int) node.getTranslationGraphPos().getX(), i, numChildren, vertexSiblingOffset, node.getSiblingNum(), child.getStatus(), child.toString(), child, parentPos);
+                } else {
+                    xyCoords = calcXYCoords(canvasWidth, level, vertexVertMultiplier, (int) parentPos.getX(), child.getSiblingNum(), numChildren, vertexSiblingOffset, node.getSiblingNum(), parentPos, isChildOfParallel, node.getChildren(), prevChildKind);
+                }*/
+
+                // if not placed, then placed vertex
+                if (!tempPlacedVertices.contains(child)) {
+
+                    Double childX = xyCoords.x;
+                    Double childY = xyCoords.y;
+                    ArrayList<Double> doubleArrCoords = new ArrayList<>();
+                    doubleArrCoords.add(childX);
+                    doubleArrCoords.add(childY);
+                    Point2D.Double childXY = new Point2D.Double(childX,childY);
+
+                    Double collisionY = -1.0;
+                    Double oldY;
+                    do {
+                        oldY = childY;
+                        // childY = collisionCorrect(tempXyCoords,childXY,collisionYOffest);
+                    } while (oldY != childY);
+
+                    // collisionCorrect(tempXyCoords, xyCoords);
+                    childY = xyCoords.y;
+
+                    // this fixes the rare node collision where two nodes print directly on top of each other
+                    /*
+                    Boolean collision = false;
+                    for (ArrayList<Double> thisTempXyCoords : tempXyCoords) {
+                        if (thisTempXyCoords.get(0) != null && thisTempXyCoords.get(1) != null) {
+                            Double thisX = thisTempXyCoords.get(0);
+                            Double thisY = thisTempXyCoords.get(1);
+                            // if (childX.equals(thisX) && childY.equals(thisY)) {
+                            if (abs(childX - thisX) <= 50 && abs(childY - thisY) < 10) {
+                                collision = true;
+                            // if (abs(childY - thisY) <= 10) {
+
+                                // xyCoords.x = childX + collisionXOffset;
+                                // Integer randomYOffset = randomNum(25,100);
+                                Double newY = childY - collisionYOffest;
+                                xyCoords.y = newY;
+                                childY = newY;
+                                // xyCoords.y = childY + randomYOffset;
+                            }
+                        }
+                    }
+                    */
+
+                    // place vertex
+                    ArrayList<Double> childXyCoords = new ArrayList<Double>();
+                    Point2D.Double childXyCoordsPoint2D = new Point2D.Double(childX,childY);
+                    childXyCoords.add(childX);
+                    childXyCoords.add(childY);
+                    tempXyCoords.add(childXyCoords);
+                    // placeVertex(child, xyCoords, layout, xyCoords, childXyCoords);
+                    placeVertex(child, xyCoords, layout);
+
+                    // run this on on children recursively
+                    if (child.getChildren() != null) {
+                        // placeChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, rootKind);
+                        placeCovidChildrenRecursively(child, level, canvasWidth, vertexVertMultiplier, layout, vertexSiblingOffset, childKind, childXyCoordsPoint2D, rootKind, graphType, collisionXOffset, collisionYOffest, file, child.getName(), currentType);
+                    }
+                }
+            }
+        }
+    }
+
+
 
     public static void placeStaticChildrenRecursively(Vertex node, Integer level, Integer canvasWidth, Integer vertexVertMultiplier, Layout layout, Integer vertexSiblingOffset, VertexKind vertexKind, Point2D.Double nodeXyCoords, VertexKind rootKind, DisplayType graphType, Integer collisionXOffset, Integer collisionYOffest) {
         level++;

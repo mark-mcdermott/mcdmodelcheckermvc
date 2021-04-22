@@ -345,9 +345,10 @@ public class Controller {
     }
 
     private Selections initialSelections() {
-        String[] files = {"OneStep.ljx"};
+        // String[] files = {"OneStep.ljx"};
         // String[] files = {"covid-test-no-right-side.ljx"};
         // String[] files = {"Covid.ljx"};
+        String[] files = {"DualParallel.ljx"};
         // String[] files = {"Bank-Parallel.ljx"};
         // String[] files = {"ProcessChecks2.ljx"};
         // String[] files = {"ParTwoSteps.ljx"}; // file choice may be hard coded here // TODO: remove this hard coding?

@@ -146,6 +146,7 @@ public class Options {
         translationGraphVertexAttractionMultiplier = .99;
         // translationGraphVertexVertMultiplier = 60;
         translationGraphVertexVertMultiplier = 10;
+        // translationGraphVertexVertMultiplier = 3;
 
         // interleavings graphs settings
         interleavingsGraphEdgeXLength = 50; // 50 is default i think

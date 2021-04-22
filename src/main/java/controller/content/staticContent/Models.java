@@ -8,11 +8,11 @@ public class Models {
         // String[] models1Var = {"⊤"};
         String[] models1Var = {"⊤","⊥","p","¬p","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))"};
         // String[] models2Var = {"∧(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(p→q)","EG(p→q)","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
-        String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
+        // String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","EX(p)","AX(p)","EG(p)","AG(p)","EF(p)","AF(p)","EX(AF(p))","AG(EF(p))","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","E[qUp]","A[qUp]"};
 
 
         // String[] models2Var = {"A[pUq]","∧(¬p,¬q)","EG(¬q)","E[¬qU∧(¬p,¬q)]","∨(E[¬qU∧(¬p,¬q)],EG(¬q))","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
-        // String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","∧(¬p,¬q)","EG(¬q)","E[¬qU∧(¬p,¬q)]","∨(E[¬qU∧(¬p,¬q)],EG(¬q))","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
+        String[] models2Var = {"∧(p,q)","∨(p,q)","→(p,q)","AG(→(p,q))","EG(→(p,q))","E[pUq]","A[pUq]","∧(¬p,¬q)","EG(¬q)","E[¬qU∧(¬p,¬q)]","∨(E[¬qU∧(¬p,¬q)],EG(¬q))","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
         // String[] models2Var = {"A[pUq]","∧(¬p,¬q)","EG(¬q)","¬E[¬qU∧(¬p,¬q)]","¬(∨(E[¬qU∧(¬p,¬q)],EG(¬q)))"};
         //
         // this is the Covid.ljx models
